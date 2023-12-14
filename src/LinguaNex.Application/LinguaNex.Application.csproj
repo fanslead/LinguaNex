@@ -23,7 +23,6 @@
 
 	<ItemGroup>
 	  <Folder Include="Cultures\Dtos\" />
-	  <Folder Include="Projects\Dtos\" />
 	  <Folder Include="Resources\Dtos\" />
 	</ItemGroup>
 

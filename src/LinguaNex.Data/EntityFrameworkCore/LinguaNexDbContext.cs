@@ -20,12 +20,15 @@ namespace LinguaNex.EntityFrameworkCore
                 e.HasKey(a => a.Id);
                 e.Property(a => a.Id).HasMaxLength(36);
                 e.Property(a => a.Name).HasMaxLength(128);
+                e.HasMany(a=>a.ProjectAssociations);
             });
             modelBuilder.Entity<ProjectAssociation>(e =>
             {
                 e.HasKey(a => new { a.MainProjectId, a.AssociationProjectId });
                 e.Property(a => a.MainProjectId).HasMaxLength(36);
                 e.Property(a => a.AssociationProjectId).HasMaxLength(36);
+                e.HasOne(a => a.MainProject);
+                e.HasOne(a => a.AssociationProject);
             });
             modelBuilder.Entity<Culture>(e =>
             {

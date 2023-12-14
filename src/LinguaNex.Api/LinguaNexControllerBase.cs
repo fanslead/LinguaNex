@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Wheel.Core.Dto;
 using Wheel.EventBus.Distributed;
 using Wheel.EventBus.Local;
 using Wheel.Utilities;
@@ -46,6 +47,19 @@ namespace Wheel.Controllers
         public T LazyGetService<T>() where T : notnull
         {
             return new Lazy<T>(ServiceProvider.GetRequiredService<T>).Value;
+        }
+
+        protected R Success()
+        {
+            return new R();
+        }
+        protected R<T> Success<T>(T data)
+        {
+            return new R<T>(data);
+        }
+        protected Page<T> Page<T>(List<T> data, long total)
+        {
+            return new Page<T>(data, total);
         }
     }
 }
