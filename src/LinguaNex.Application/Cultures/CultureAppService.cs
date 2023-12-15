@@ -19,10 +19,10 @@ namespace LinguaNex.Cultures
         public async Task<R<CultureDto>> CreateAsync(CreateCultureDto dto)
         {
             if (!SupportedCulture.All().Any(a => a.Name == dto.Name))
-                throw new BusinessException(ErrorCode.NotSupported).WithMessageDataData(dto.Name);
+                throw new BusinessException(ErrorCode.NotSupported, ErrorCode.NotSupported).WithMessageDataData(dto.Name);
 
             if(!await projectsRepository.AnyAsync(a => a.Id == dto.ProjectId))
-                throw new BusinessException(ErrorCode.NotExist).WithMessageDataData(dto.ProjectId);
+                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.ProjectId);
 
             var entity = Mapper.Map<Culture>(dto);
             entity.Id = GuidGenerator.Create().ToString();
