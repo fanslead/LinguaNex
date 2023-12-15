@@ -35,7 +35,7 @@ namespace LinguaNex.Project
 
         public async Task<R> UpdateEnableAsync(string id)
         {
-            await projectsRepository.UpdateAsync(a=>a.Id == id, a=> a.SetProperty(e=>e.Enalbe, e => !e.Enalbe));
+            await projectsRepository.UpdateAsync(a=>a.Id == id, a=> a.SetProperty(e=>e.Enalbe, e => !e.Enalbe), true);
             return Success();
         }
     }
