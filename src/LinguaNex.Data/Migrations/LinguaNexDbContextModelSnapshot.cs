@@ -52,14 +52,9 @@ namespace LinguaNex.Migrations
                         .HasMaxLength(36)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ProjectsId")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("MainProjectId", "AssociationProjectId");
 
                     b.HasIndex("AssociationProjectId");
-
-                    b.HasIndex("ProjectsId");
 
                     b.ToTable("ProjectAssociation");
                 });
@@ -136,14 +131,10 @@ namespace LinguaNex.Migrations
                         .IsRequired();
 
                     b.HasOne("LinguaNex.Entities.Projects", "MainProject")
-                        .WithMany()
+                        .WithMany("ProjectAssociations")
                         .HasForeignKey("MainProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("LinguaNex.Entities.Projects", null)
-                        .WithMany("ProjectAssociations")
-                        .HasForeignKey("ProjectsId");
 
                     b.Navigation("AssociationProject");
 

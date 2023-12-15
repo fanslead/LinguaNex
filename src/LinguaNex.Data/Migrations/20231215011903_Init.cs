@@ -47,8 +47,7 @@ namespace LinguaNex.Migrations
                 columns: table => new
                 {
                     MainProjectId = table.Column<string>(type: "TEXT", maxLength: 36, nullable: false),
-                    AssociationProjectId = table.Column<string>(type: "TEXT", maxLength: 36, nullable: false),
-                    ProjectsId = table.Column<string>(type: "TEXT", nullable: true)
+                    AssociationProjectId = table.Column<string>(type: "TEXT", maxLength: 36, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -65,11 +64,6 @@ namespace LinguaNex.Migrations
                         principalTable: "Projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProjectAssociation_Projects_ProjectsId",
-                        column: x => x.ProjectsId,
-                        principalTable: "Projects",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -108,11 +102,6 @@ namespace LinguaNex.Migrations
                 name: "IX_ProjectAssociation_AssociationProjectId",
                 table: "ProjectAssociation",
                 column: "AssociationProjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProjectAssociation_ProjectsId",
-                table: "ProjectAssociation",
-                column: "ProjectsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Resource_CultureId",
