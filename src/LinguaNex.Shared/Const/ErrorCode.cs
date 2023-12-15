@@ -14,6 +14,7 @@
         #region 4XXXX
         public const string NotExist = "40004";
         public const string NotEnable = "40010";
+        public const string NotSupported = "40020";
         #endregion
     }
 }

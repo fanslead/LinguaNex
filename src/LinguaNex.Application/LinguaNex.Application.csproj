@@ -21,9 +21,4 @@
 		<ProjectReference Include="..\LinguaNex.Data\LinguaNex.Data.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Cultures\Dtos\" />
-	  <Folder Include="Resources\Dtos\" />
-	</ItemGroup>
-
 </Project>

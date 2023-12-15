@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LinguaNex.Project.Dtos
+namespace LinguaNex.Cultures.Dtos
 {
-    public class ProjectDto
+    public class CultureDto
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public bool Enalbe { get; set; }
+        public string ProjectId { get; set; }
     }
 }

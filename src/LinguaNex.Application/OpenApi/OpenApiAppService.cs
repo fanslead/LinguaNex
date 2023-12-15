@@ -13,7 +13,7 @@ namespace LinguaNex.OpenApi
 {
     public class OpenApiAppService(IBasicRepository<Culture, string> cultureRepository, IBasicRepository<Projects, string> projectsRepository, IBasicRepository<ProjectAssociation> projectAssociationRepository) : LinguaNexServiceBase, IOpenApiAppService
     {
-        public async Task<R<List<ResourcesDto>>> GetResources(string projectId, string? cultureName, bool? all)
+        public async Task<R<List<ResourcesDto>>> GetResources(string projectId, string? cultureName, bool all)
         {
             var project = await projectsRepository.FindAsync(projectId);
             if(project == null)
@@ -25,7 +25,7 @@ namespace LinguaNex.OpenApi
                 cultureRepository.BuildPredicate(
                     (true, a => a.ProjectId == projectId),
                     (!string.IsNullOrWhiteSpace(cultureName), a => a.Name == cultureName),
-                    (!all.HasValue && string.IsNullOrWhiteSpace(cultureName), a => a.Name == CultureInfo.CurrentUICulture.Name)
+                    (!all && string.IsNullOrWhiteSpace(cultureName), a => a.Name == CultureInfo.CurrentUICulture.Name)
                     ),
                 propertySelectors: a => a.Resources
                 );
@@ -43,7 +43,7 @@ namespace LinguaNex.OpenApi
                 cultureRepository.BuildPredicate(
                     (true, a => pa.Contains(a.ProjectId)),
                     (!string.IsNullOrWhiteSpace(cultureName), a => a.Name == cultureName),
-                    (!all.HasValue && string.IsNullOrWhiteSpace(cultureName), a => a.Name == CultureInfo.CurrentUICulture.Name)
+                    (!all && string.IsNullOrWhiteSpace(cultureName), a => a.Name == CultureInfo.CurrentUICulture.Name)
                     ),
                 propertySelectors: a => a.Resources
                 )).Select(a => new ResourcesDto
