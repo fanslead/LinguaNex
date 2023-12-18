@@ -10,12 +10,6 @@ namespace LinguaNex.Extensions.Localization.Json.Internal
 {
     public class LinguaNexResourceManager
     {
-        private static readonly JsonDocumentOptions _jsonDocumentOptions = new JsonDocumentOptions
-        {
-            CommentHandling = JsonCommentHandling.Skip,
-            AllowTrailingCommas = true,
-        };
-
         private ConcurrentDictionary<string, ConcurrentDictionary<string, string>> _resourcesCache = new ConcurrentDictionary<string, ConcurrentDictionary<string, string>>();
 
         private readonly HttpClient _httpClient;
