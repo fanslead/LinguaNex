@@ -24,6 +24,7 @@ using Wheel.Core.Exceptions;
 using Wheel.Core.Dto;
 using Microsoft.Extensions.DependencyInjection;
 using LinguaNex.Hubs;
+using Wheel.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
 // Kestrel
@@ -56,6 +57,10 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
         .AddSupportedUICultures(supportedCultures);
     options.ApplyCurrentCultureToResponseHeaders = true;
 });
+
+// Localizer
+builder.Services.AddEFStringLocalizer(typeof(EFStringLocalizerStore));
+builder.Services.AddLocalization();
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
