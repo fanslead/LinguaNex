@@ -29,9 +29,9 @@ namespace LinguaNex.Hubs
             }
         }
 
-        public Task<R<List<ResourcesDto>>> GetResources(string projectId, string? cultureName, bool all)
+        public async Task<List<ResourcesDto>> GetResources(string projectId, string? cultureName, bool all)
         {
-            return openApiAppService.GetResources(projectId, cultureName, all);
+            return (await openApiAppService.GetResources(projectId, cultureName, all)).Data;
         }
 
     }
