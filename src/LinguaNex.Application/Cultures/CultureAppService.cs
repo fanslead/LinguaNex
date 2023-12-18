@@ -25,7 +25,7 @@ namespace LinguaNex.Cultures
                 throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.ProjectId);
 
             var entity = Mapper.Map<Culture>(dto);
-            entity.Id = GuidGenerator.Create().ToString();
+            entity.Id = SnowflakeIdGenerator.Create().ToString();
             entity = await cultureRepository.InsertAsync(entity, true);
             return Success(Mapper.Map<CultureDto>(entity));
         }
