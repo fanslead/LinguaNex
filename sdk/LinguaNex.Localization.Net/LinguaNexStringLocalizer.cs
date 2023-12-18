@@ -15,34 +15,34 @@ namespace LinguaNex.Extensions.Localization.Json
     {
         private readonly ConcurrentDictionary<string, object> _missingManifestCache = new ConcurrentDictionary<string, object>();
         private readonly IResourceNamesCache _resourceNamesCache;
-        private readonly LinguaNexResourceManager _jsonResourceManager;
+        private readonly LinguaNexResourceManager _linguaNexResourceManager;
         private readonly IResourceStringProvider _resourceStringProvider;
         private readonly ILogger _logger;
 
         private string _searchedLocation;
 
         public LinguaNexStringLocalizer(
-            LinguaNexResourceManager jsonResourceManager,
+            LinguaNexResourceManager linguaNexResourceManager,
             IResourceNamesCache resourceNamesCache,
             ILogger logger)
-            : this(jsonResourceManager,
-                new LinguaNexStringProvider(resourceNamesCache, jsonResourceManager),
+            : this(linguaNexResourceManager,
+                new LinguaNexStringProvider(resourceNamesCache, linguaNexResourceManager),
                 resourceNamesCache,
                 logger)
         {
-
         }
 
         public LinguaNexStringLocalizer(
-            LinguaNexResourceManager jsonResourceManager,
+            LinguaNexResourceManager linguaNexResourceManager,
             IResourceStringProvider resourceStringProvider,
             IResourceNamesCache resourceNamesCache,
             ILogger logger)
         {
-            _jsonResourceManager = jsonResourceManager ?? throw new ArgumentNullException(nameof(jsonResourceManager));
+            _linguaNexResourceManager = linguaNexResourceManager ?? throw new ArgumentNullException(nameof(linguaNexResourceManager));
             _resourceStringProvider = resourceStringProvider ?? throw new ArgumentNullException(nameof(resourceStringProvider));
             _resourceNamesCache = resourceNamesCache ?? throw new ArgumentNullException(nameof(resourceNamesCache));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _searchedLocation = linguaNexResourceManager.Project;
         }
 
         public LocalizedString this[string name]
@@ -109,7 +109,7 @@ namespace LinguaNex.Extensions.Localization.Json
             var keyCulture = culture ?? CultureInfo.CurrentUICulture;
             var cacheKey = $"name={name}&culture={keyCulture.Name}";
 
-            _logger.SearchedLocation(name, _jsonResourceManager.Project, keyCulture);
+            _logger.SearchedLocation(name, _linguaNexResourceManager.Project, keyCulture);
 
             if (_missingManifestCache.ContainsKey(cacheKey))
             {
@@ -119,8 +119,8 @@ namespace LinguaNex.Extensions.Localization.Json
             try
             {
                 return culture == null
-                        ? _jsonResourceManager.GetString(name)
-                        : _jsonResourceManager.GetString(name, culture);
+                        ? _linguaNexResourceManager.GetString(name)
+                        : _linguaNexResourceManager.GetString(name, culture);
             }
             catch (MissingManifestResourceException)
             {
