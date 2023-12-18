@@ -17,6 +17,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinguaNex.Application", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinguaNex.Api", "src\LinguaNex.Api\LinguaNex.Api.csproj", "{AC004CB9-1ACF-43C5-B778-F647C5A6ECBA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sdk", "sdk", "{C20335B3-4D7E-4DAC-B81C-19EE8EBF7470}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinguaNex.Localization.Net", "sdk\LinguaNex.Localization.Net\LinguaNex.Localization.Net.csproj", "{2D990B6F-54AF-4B0C-AEE7-06616555FB83}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +51,10 @@ Global
 		{AC004CB9-1ACF-43C5-B778-F647C5A6ECBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC004CB9-1ACF-43C5-B778-F647C5A6ECBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC004CB9-1ACF-43C5-B778-F647C5A6ECBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D990B6F-54AF-4B0C-AEE7-06616555FB83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D990B6F-54AF-4B0C-AEE7-06616555FB83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D990B6F-54AF-4B0C-AEE7-06616555FB83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D990B6F-54AF-4B0C-AEE7-06616555FB83}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +66,7 @@ Global
 		{046D05E4-DC19-47FB-A7E4-A16AEB0AE0B1} = {6D79D340-9BE1-42E5-BD08-D58DB9362081}
 		{23B6EF22-036C-452C-8517-073347CA6B6B} = {6D79D340-9BE1-42E5-BD08-D58DB9362081}
 		{AC004CB9-1ACF-43C5-B778-F647C5A6ECBA} = {6D79D340-9BE1-42E5-BD08-D58DB9362081}
+		{2D990B6F-54AF-4B0C-AEE7-06616555FB83} = {C20335B3-4D7E-4DAC-B81C-19EE8EBF7470}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {60962C31-4099-4849-916C-79CFBB18DBAC}

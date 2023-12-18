@@ -20,9 +20,9 @@ namespace LinguaNex.Controllers
         /// <param name="all">是否获取所有</param>
         /// <returns></returns>
         [HttpGet("Resources/{projectId}")]
-        public Task<R<List<ResourcesDto>>> GetResources(string projectId, string? cultureName, bool all)
+        public async Task<List<ResourcesDto>> GetResources(string projectId, string? cultureName, bool all)
         {
-            return openApiAppService.GetResources(projectId, cultureName, all);
+            return (await openApiAppService.GetResources(projectId, cultureName, all)).Data;
         }
     }
 }
