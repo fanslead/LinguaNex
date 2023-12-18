@@ -99,6 +99,10 @@ namespace LinguaNex.EntityFrameworkCore
         {
             return await dbContext.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(predicate, cancellationToken);
         }
+        public async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<TEntity, object>>[] propertySelectors)
+        {
+            return await GetQueryableWithIncludes(propertySelectors).AsNoTracking().FirstOrDefaultAsync(predicate, cancellationToken);
+        }
         public async Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
         {
             return await dbContext.Set<TEntity>().Where(predicate).ToListAsync(cancellationToken);
