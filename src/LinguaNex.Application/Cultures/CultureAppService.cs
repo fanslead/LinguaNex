@@ -30,9 +30,9 @@ namespace LinguaNex.Cultures
             return Success(Mapper.Map<CultureDto>(entity));
         }
 
-        public async Task<Page<CultureDto>> PageListAsync(PageRequest request)
+        public async Task<Page<CultureDto>> PageListAsync(CulturePageRequest request)
         {
-            var (entities, total) = await cultureRepository.GetPageListAsync(a => true, (request.PageIndex - 1) * request.PageSize, request.PageSize, request.OrderBy);
+            var (entities, total) = await cultureRepository.GetPageListAsync(a => a.ProjectId == request.ProjectId, (request.PageIndex - 1) * request.PageSize, request.PageSize, request.OrderBy);
             return Page(Mapper.Map<List<CultureDto>>(entities), total);
         }
 

@@ -13,7 +13,7 @@ namespace LinguaNex.Cultures
     {
         Task<R<CultureDto>> CreateAsync(CreateCultureDto dto);
 
-        Task<Page<CultureDto>> PageListAsync(PageRequest request);
+        Task<Page<CultureDto>> PageListAsync(CulturePageRequest request);
 
         Task<R> DeleteAsync(string id);
     }
