@@ -1,6 +1,7 @@
 ﻿using LinguaNex.Resources;
 using LinguaNex.Resources.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using Wheel.Controllers;
 using Wheel.Core.Dto;
 
@@ -34,6 +35,17 @@ namespace LinguaNex.Controllers
         public Task<R<ResourceDto>> UpdateAsync(UpdateResourceDto dto)
         {
             return resourcesAppService.UpdateAsync(dto);
+        }
+
+        /// <summary>
+        /// 测试多语言
+        /// </summary>
+        /// <param name="testStr">测试字符串</param>
+        /// <returns></returns>
+        [HttpGet("Test")]
+        public R<string> Test(string testStr)
+        {
+            return Success(L[testStr].ToString());
         }
     }
 }

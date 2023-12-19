@@ -34,7 +34,6 @@ namespace LinguaNex.Extensions.Localization.Json
 
         public IStringLocalizer Create(Type resourceSource)
         {
-
             return _localizerCache.GetOrAdd($"culture={CultureInfo.CurrentUICulture.Name}", _ => CreateJsonStringLocalizer());
         }
 
