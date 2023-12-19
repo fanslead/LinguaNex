@@ -28,6 +28,7 @@ using Wheel.Localization;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using Microsoft.Extensions.Options;
+using LinguaNex.DataSeeders;
 
 var builder = WebApplication.CreateBuilder(args);
 // Kestrel
@@ -178,6 +179,9 @@ builder.Services.AddHealthChecks();
 builder.Services.AddCors();
 
 var app = builder.Build();
+
+//初始化种子信息
+await app.SeedData();
 
 app.UseRequestLocalization();
 
