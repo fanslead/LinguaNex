@@ -112,6 +112,8 @@ namespace LinguaNex.Extensions.Localization.Json.Internal
 
         private async Task LoadResources(string? cultureName, bool all = false)
         {
+            if (_resourcesCache.TryGetValue(cultureName, out var _))
+                return;
             var response = await _httpClient.GetStringAsync($"api/OpenApi/Resources/{Project}?cultureName={cultureName}&all={all}");
             var resources = JsonSerializer.Deserialize<List<LinguaNexResources>>(response);
             foreach (var resource in resources)
