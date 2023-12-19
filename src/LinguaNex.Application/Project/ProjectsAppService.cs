@@ -6,7 +6,7 @@ using Wheel.Services;
 
 namespace LinguaNex.Project
 {
-    public class ProjectsAppService(IBasicRepository<Projects, string> projectsRepository) : LinguaNexServiceBase, IProjectsAppService
+    public class ProjectsAppService(IBasicRepository<Projects, string> projectsRepository, IBasicRepository<ProjectAssociation> projectsAssociationRepository) : LinguaNexServiceBase, IProjectsAppService
     {
         public async Task<R<ProjectDto>> FindAsync(string id)
         {
@@ -36,6 +36,18 @@ namespace LinguaNex.Project
         public async Task<R> UpdateEnableAsync(string id)
         {
             await projectsRepository.UpdateAsync(a=>a.Id == id, a=> a.SetProperty(e=>e.Enalbe, e => !e.Enalbe), true);
+            return Success();
+        }
+
+        public async Task<R> CreateProjectAssociation(CreateProjectAssociationDto dto)
+        {
+            await projectsAssociationRepository.InsertManyAsync(dto.AssociationProjectIds.Select(a => new ProjectAssociation { MainProjectId = dto.MainProjectId, AssociationProjectId = a }).ToList(), true);
+            return Success();
+        }
+
+        public async Task<R> DeleteProjectAssociation(DeleteProjectAssociationDto dto)
+        {
+            await projectsAssociationRepository.DeleteAsync(a => a.MainProjectId == dto.MainProjectId && a.AssociationProjectId == dto.AssociationProjectId, true);
             return Success();
         }
     }

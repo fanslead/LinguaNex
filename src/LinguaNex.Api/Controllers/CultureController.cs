@@ -45,7 +45,7 @@ namespace LinguaNex.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpGet()]
-        public Task<Page<CultureDto>> PageListAsync([FromQuery]PageRequest request)
+        public Task<Page<CultureDto>> PageListAsync([FromQuery] CulturePageRequest request)
         {
             return cultureAppService.PageListAsync(request);
         }

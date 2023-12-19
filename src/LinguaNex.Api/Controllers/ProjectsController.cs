@@ -1,4 +1,5 @@
-﻿using LinguaNex.Project;
+﻿using IdGen;
+using LinguaNex.Project;
 using LinguaNex.Project.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -30,6 +31,17 @@ namespace LinguaNex.Controllers
             return projectsAppService.CreateAsync(dto);
         }
         /// <summary>
+        /// 创建项目关联
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        [HttpPost("ProjectAssociation")]
+        public Task<R> CreateProjectAssociation(CreateProjectAssociationDto dto)
+        {
+            return projectsAppService.CreateProjectAssociation(dto);
+        }
+
+        /// <summary>
         /// 删除
         /// </summary>
         /// <param name="id"></param>
@@ -39,6 +51,17 @@ namespace LinguaNex.Controllers
         {
             return projectsAppService.DeleteAsync(id);
         }
+        /// <summary>
+        /// 删除项目关联
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        [HttpDelete("ProjectAssociation")]
+        public Task<R> DeleteProjectAssociation([FromBody]DeleteProjectAssociationDto dto)
+        {
+            return projectsAppService.DeleteProjectAssociation(dto);
+        }
+
         /// <summary>
         /// 获取单个
         /// </summary>

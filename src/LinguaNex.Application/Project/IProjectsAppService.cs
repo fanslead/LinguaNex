@@ -11,5 +11,7 @@ namespace LinguaNex.Project
         Task<R<ProjectDto>> CreateAsync(CreateProjectDto dto);
         Task<R> DeleteAsync(string id);
         Task<R> UpdateEnableAsync(string id);
+        Task<R> CreateProjectAssociation(CreateProjectAssociationDto dto);
+        Task<R> DeleteProjectAssociation(DeleteProjectAssociationDto dto);
     }
 }
