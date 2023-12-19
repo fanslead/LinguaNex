@@ -22,7 +22,7 @@ namespace LinguaNex.Controllers
             return (await openApiAppService.GetResources(projectId, cultureName, all)).Data;
         }
         /// <summary>
-        /// 
+        /// 导出JSON文件
         /// </summary>
         /// <param name="projectId"></param>
         /// <param name="cultureName"></param>
