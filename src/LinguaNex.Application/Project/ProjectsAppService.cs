@@ -50,5 +50,13 @@ namespace LinguaNex.Project
             await projectsAssociationRepository.DeleteAsync(a => a.MainProjectId == dto.MainProjectId && a.AssociationProjectId == dto.AssociationProjectId, true);
             return Success();
         }
+
+        public async Task<R<List<ProjectDto>>> GetCanAssociationProjects(string projectId)
+        {
+            var projectAssociations = await projectsAssociationRepository.SelectListAsync(a => a.MainProjectId == projectId, a=>a.AssociationProjectId);
+            var entities = await projectsRepository.GetListAsync(a => a.Id != projectId && projectAssociations.Contains(a.Id));
+
+            return Success(Mapper.Map<List<ProjectDto>>(entities));
+        }
     }
 }

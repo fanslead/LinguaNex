@@ -82,6 +82,7 @@ namespace LinguaNex.Controllers
         {
             return projectsAppService.PageListAsync(request);
         }
+
         /// <summary>
         /// 修改是否启用
         /// </summary>
@@ -91,6 +92,17 @@ namespace LinguaNex.Controllers
         public Task<R> UpdateEnableAsync(string id)
         {
             return projectsAppService.UpdateEnableAsync(id);
+        }
+
+        /// <summary>
+        /// 获取可关联项目
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
+        [HttpGet("CanAssociationProjects")]
+        public Task<R<List<ProjectDto>>> GetCanAssociationProjects(string projectId)
+        {
+            return projectsAppService.GetCanAssociationProjects(projectId);
         }
     }
 }
