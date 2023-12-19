@@ -12,6 +12,7 @@
         public const string InternalError = "50000";
         #endregion
         #region 4XXXX
+        public const string Exist = "40003";
         public const string NotExist = "40004";
         public const string NotEnable = "40010";
         public const string NotSupported = "40020";
