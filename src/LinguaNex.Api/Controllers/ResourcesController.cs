@@ -53,7 +53,7 @@ namespace LinguaNex.Controllers
         [HttpGet("list")]
         public Task<Page<ResourceDto>> GetResourcePageByCulture([FromQuery]ResourcePageRequest request)
         {
-            return resourcesAppService.GetResourcePageByCulture(request);
+            return resourcesAppService.GetResourcePageByCulture(request); 
         }
         /// <summary>
         /// 更新

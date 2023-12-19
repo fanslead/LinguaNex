@@ -25,6 +25,9 @@ using Wheel.Core.Dto;
 using Microsoft.Extensions.DependencyInjection;
 using LinguaNex.Hubs;
 using Wheel.Localization;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 // Kestrel
@@ -74,7 +77,6 @@ builder.Services.Configure<FormOptions>(options =>
     options.MultipartBodyLengthLimit = 1024 * 1024 * 256;
 });
 
-
 builder.Services.AddAutoMapper();
 builder.Services.AddIdGen(0);
 
@@ -116,6 +118,7 @@ builder.Services.AddSignalR()
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
+    options.SerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
     options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     options.SerializerOptions.Converters.Add(new Int32Converter());
     options.SerializerOptions.Converters.Add(new LongJsonConverter());
@@ -126,6 +129,7 @@ builder.Services.AddControllers()
     .AddControllersAsServices()
     .AddJsonOptions(configure =>
     {
+        configure.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
         configure.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         configure.JsonSerializerOptions.Converters.Add(new Int32Converter());
         configure.JsonSerializerOptions.Converters.Add(new LongJsonConverter());

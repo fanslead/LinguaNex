@@ -1,4 +1,5 @@
-﻿using LinguaNex.Cultures;
+﻿using LinguaNex.Const;
+using LinguaNex.Cultures;
 using LinguaNex.Cultures.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -47,6 +48,15 @@ namespace LinguaNex.Controllers
         public Task<Page<CultureDto>> PageListAsync([FromQuery]PageRequest request)
         {
             return cultureAppService.PageListAsync(request);
+        }
+        /// <summary>
+        /// 获取支持的地区码
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("SupportedCultures")]
+        public R<List<SupportedCulture>> GetNeutralCultures()
+        {
+            return Success(SupportedCulture.All());
         }
     }
 }

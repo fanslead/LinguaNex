@@ -2,6 +2,7 @@
 using LinguaNex.Cultures.Dtos;
 using LinguaNex.Entities;
 using LinguaNex.Project.Dtos;
+using LinguaNex.Resources.Dtos;
 
 namespace LinguaNex.AutoMapper
 {
@@ -13,6 +14,8 @@ namespace LinguaNex.AutoMapper
             CreateMap<Projects, ProjectDto>();
             CreateMap<CreateCultureDto, Culture>(MemberList.Source);
             CreateMap<Culture, CultureDto>();
+            CreateMap<CreateResourceDto, Resource>(MemberList.Source);
+            CreateMap<Resource, ResourceDto>();
         }
     }
 }

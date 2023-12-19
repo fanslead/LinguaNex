@@ -3,11 +3,14 @@ using LinguaNex.OpenApi;
 using Microsoft.AspNetCore.Mvc;
 using System.IO.Compression;
 using System.Reflection;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
+using Wheel.Controllers;
 namespace LinguaNex.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OpenApiController(IOpenApiAppService openApiAppService) : ControllerBase
+    public class OpenApiController(IOpenApiAppService openApiAppService) : LinguaNexControllerBase
     {
         /// <summary>
         /// 获取资源
@@ -38,7 +41,10 @@ namespace LinguaNex.Controllers
                 {
                     foreach (var resource in result.Data)
                     {
-                        var resourceBytes = resource.ToJson().GetBytes();
+                        var resourceBytes = resource.ToJson(new System.Text.Json.JsonSerializerOptions
+                        {
+                            Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
+                        }).GetBytes();
 
                         ZipArchiveEntry entry = zip.CreateEntry($"{resource.CultureName}.json");
                         using (Stream sw = entry.Open())
