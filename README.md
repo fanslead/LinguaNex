@@ -12,6 +12,7 @@
 - [x] SignalR获取多语言资源与实时推送更新多语言资源
 - [ ] 集成三方翻译API
 - [ ] 集成AI翻译
+- [x] 导出JSON多语言文件
 - [x] .NET SDK
 - [ ] JS SDK
 - [ ] JAVA SDK
