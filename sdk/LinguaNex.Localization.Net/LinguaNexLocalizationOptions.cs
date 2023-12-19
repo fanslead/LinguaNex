@@ -4,5 +4,6 @@
     {
         public string LinguaNexApiUrl { get; set; }
         public string Project { get; set; }
+        public bool UseWebSocket { get; set; } = false;
     }
 }

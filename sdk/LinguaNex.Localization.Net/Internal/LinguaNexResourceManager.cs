@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
@@ -14,7 +16,7 @@ namespace LinguaNex.Extensions.Localization.Json.Internal
 
         private readonly HttpClient _httpClient;
 
-        public LinguaNexResourceManager(string linguaNexApiUrl, string project)
+        public LinguaNexResourceManager(string linguaNexApiUrl, string project, bool useWebSocket)
         {
             if (linguaNexApiUrl == null)
                 throw new ArgumentNullException(nameof(linguaNexApiUrl));
@@ -23,12 +25,18 @@ namespace LinguaNex.Extensions.Localization.Json.Internal
 
             LinguaNexApiUrl = linguaNexApiUrl;
             Project = project;
+            UseWebSocket = useWebSocket;
             _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new System.Uri(linguaNexApiUrl);
+            _httpClient.BaseAddress = new Uri(linguaNexApiUrl);
+            if (useWebSocket)
+            {
+                InitWebocket(linguaNexApiUrl, project);
+            }
         }
 
         public string LinguaNexApiUrl { get; set; }
         public string Project { get; set; }
+        public bool UseWebSocket { get; set; }
 
         public virtual ConcurrentDictionary<string, string> GetResourceSet(CultureInfo culture, bool tryParents)
         {
@@ -120,6 +128,29 @@ namespace LinguaNex.Extensions.Localization.Json.Internal
             {
                 _resourcesCache.TryAdd(resource.CultureName, new ConcurrentDictionary<string, string>(resource.Resources));
             }
+        }
+
+        private void InitWebocket(string linguaNexApiUrl, string project)
+        {
+            var connection = new HubConnectionBuilder()
+                .WithUrl($"{linguaNexApiUrl}/hubs/LinguaNex?project={project}", Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets)
+                .AddJsonProtocol()
+                .WithAutomaticReconnect()
+                .Build();
+
+            connection.On<LinguaNexResources>("CreateOrUpdateResource", obj => 
+            {
+                if (_resourcesCache.TryGetValue(obj.CultureName, out var value))
+                {
+                    foreach (var resource in obj.Resources)
+                    {
+                        value[resource.Key] = resource.Value;
+                    }
+                    _resourcesCache[obj.CultureName] = value;
+                }
+            });
+
+            connection.StartAsync();
         }
     }
 }

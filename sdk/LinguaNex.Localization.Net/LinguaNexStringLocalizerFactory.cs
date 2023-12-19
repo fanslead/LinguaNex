@@ -18,18 +18,20 @@ namespace LinguaNex.Extensions.Localization.Json
 
         private readonly string LinguaNexApiUrl;
         private readonly string Project;
+        private readonly bool UseWebSocket;
         public LinguaNexStringLocalizerFactory(
             IOptions<LinguaNexLocalizationOptions> localizationOptions,
             ILoggerFactory loggerFactory)
         {
+            _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
+
             if (localizationOptions == null)
             {
                 throw new ArgumentNullException(nameof(localizationOptions));
             }
             LinguaNexApiUrl = localizationOptions.Value.LinguaNexApiUrl;
             Project = localizationOptions.Value.Project;
-
-            _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
+            UseWebSocket = localizationOptions.Value.UseWebSocket;
         }
 
         public IStringLocalizer Create(Type resourceSource)
@@ -47,7 +49,7 @@ namespace LinguaNex.Extensions.Localization.Json
 
         protected virtual LinguaNexStringLocalizer CreateJsonStringLocalizer()
         {
-            var resourceManager = new LinguaNexResourceManager(LinguaNexApiUrl, Project);
+            var resourceManager = new LinguaNexResourceManager(LinguaNexApiUrl, Project, UseWebSocket);
             var logger = _loggerFactory.CreateLogger<LinguaNexStringLocalizer>();
 
             return new LinguaNexStringLocalizer(resourceManager, _resourceNamesCache, logger);
