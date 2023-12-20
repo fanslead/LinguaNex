@@ -1,6 +1,7 @@
 ﻿using LinguaNex.Domain;
 using LinguaNex.Entities;
 using LinguaNex.Project.Dtos;
+using System.Collections.Generic;
 using Wheel.Core.Dto;
 using Wheel.Services;
 
@@ -51,12 +52,16 @@ namespace LinguaNex.Project
             return Success();
         }
 
-        public async Task<R<List<ProjectDto>>> GetCanAssociationProjects(string projectId)
+        public async Task<R<AssociationProjectsDto>> GetCanAssociationProjects(string projectId)
         {
-            var projectAssociations = await projectsAssociationRepository.SelectListAsync(a => a.MainProjectId == projectId, a=>a.AssociationProjectId);
-            var entities = await projectsRepository.GetListAsync(a => a.Id != projectId && projectAssociations.Contains(a.Id));
+            var result = new AssociationProjectsDto();
+            var projectAssociations = await projectsAssociationRepository.GetListAsync(a => a.MainProjectId == projectId, propertySelectors: a => a.AssociationProject);
+            result.HasAssociationProjects = Mapper.Map<List<ProjectDto>>(projectAssociations.Select(a => a.AssociationProject).ToList());
+            var ids = projectAssociations.Select(a => a.AssociationProjectId).ToList();
+            var entities = await projectsRepository.GetListAsync(a => a.Id != projectId && ids.Contains(a.Id));
 
-            return Success(Mapper.Map<List<ProjectDto>>(entities));
+            result.HasAssociationProjects = Mapper.Map<List<ProjectDto>>(entities);
+            return Success(result);
         }
     }
 }

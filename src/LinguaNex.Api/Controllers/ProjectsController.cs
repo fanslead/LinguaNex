@@ -100,7 +100,7 @@ namespace LinguaNex.Controllers
         /// <param name="projectId"></param>
         /// <returns></returns>
         [HttpGet("CanAssociationProjects")]
-        public Task<R<List<ProjectDto>>> GetCanAssociationProjects(string projectId)
+        public Task<R<AssociationProjectsDto>> GetCanAssociationProjects(string projectId)
         {
             return projectsAppService.GetCanAssociationProjects(projectId);
         }
