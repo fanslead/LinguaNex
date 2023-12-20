@@ -10,6 +10,7 @@
     {
         #region 5XXXX
         public const string InternalError = "50000";
+        public const string TranslateError = "54000";
         #endregion
         #region 4XXXX
         public const string Exist = "40003";
