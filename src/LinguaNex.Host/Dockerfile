@@ -9,6 +9,11 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/LinguaNex.Host/LinguaNex.Host.csproj", "src/LinguaNex.Host/"]
+COPY ["src/LinguaNex.Api/LinguaNex.Api.csproj", "src/LinguaNex.Api/"]
+COPY ["src/LinguaNex.Application/LinguaNex.Application.csproj", "src/LinguaNex.Application/"]
+COPY ["src/LinguaNex.Data/LinguaNex.Data.csproj", "src/LinguaNex.Data/"]
+COPY ["src/LinguaNex.Domain/LinguaNex.Domain.csproj", "src/LinguaNex.Domain/"]
+COPY ["src/LinguaNex.Shared/LinguaNex.Shared.csproj", "src/LinguaNex.Shared/"]
 RUN dotnet restore "./src/LinguaNex.Host/./LinguaNex.Host.csproj"
 COPY . .
 WORKDIR "/src/src/LinguaNex.Host"
