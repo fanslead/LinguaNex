@@ -195,11 +195,11 @@ forwardOptions.KnownProxies.Clear();
 app.UseForwardedHeaders(forwardOptions);
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+//if (app.Environment.IsDevelopment())
+//{
+app.UseSwagger();
+app.UseSwaggerUI();
+//}
 
 app.UseReDoc(options => options.RoutePrefix = "doc");
 
