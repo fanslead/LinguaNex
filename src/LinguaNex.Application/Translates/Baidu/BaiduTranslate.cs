@@ -5,9 +5,8 @@ using Wheel.Core.Exceptions;
 
 namespace LinguaNex.Translates.Baidu
 {
-    public class BaiduTranslate(IOptions<BaiduTranslateClientOptions> baiduTranslateClientOptions) : ITranslate
+    public class BaiduTranslate(BaiduTranslateClient Client) : ITranslate
     {
-        BaiduTranslateClient Client = new BaiduTranslateClient(baiduTranslateClientOptions.Value);
         /// <summary>
         /// 百度翻译
         /// </summary>
