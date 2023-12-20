@@ -67,7 +67,7 @@ namespace LinguaNex.Controllers
                     int nowPos = (int)ms.Position;
                     res = new byte[ms.Length];
                     ms.Position = 0;
-                    ms.Read(res, 0, res.Length);
+                    await ms.ReadAsync(res, 0, res.Length);
                     ms.Position = nowPos;
                 }
                 return File(res, "application/octet-stream", "json.zip");
@@ -95,7 +95,7 @@ namespace LinguaNex.Controllers
                             var sw = new StreamWriter(resourceStream);
                             foreach (var r in resource.Resources)
                             {
-                                sw.WriteLine($"{r.Key}={r.Value}");
+                                await sw.WriteLineAsync($"{r.Key}={r.Value}");
                             }
                             await sw.FlushAsync();
                             ZipArchiveEntry entry = zip.CreateEntry($"{resource.CultureName}.toml");
@@ -110,7 +110,7 @@ namespace LinguaNex.Controllers
                     int nowPos = (int)ms.Position;
                     res = new byte[ms.Length];
                     ms.Position = 0;
-                    ms.Read(res, 0, res.Length);
+                    await ms.ReadAsync(res, 0, res.Length);
                     ms.Position = nowPos;
                 }
                 return File(res, "application/octet-stream", "toml.zip");
@@ -138,7 +138,7 @@ namespace LinguaNex.Controllers
                             var sw = new StreamWriter(resourceStream);
                             foreach (var r in resource.Resources)
                             {
-                                sw.WriteLine($"{r.Key}={r.Value}");
+                                await sw.WriteLineAsync($"{r.Key}={r.Value}");
                             }
                             await sw.FlushAsync();
                             ZipArchiveEntry entry = zip.CreateEntry($"messages_{resource.CultureName}.properties");
@@ -153,10 +153,55 @@ namespace LinguaNex.Controllers
                     int nowPos = (int)ms.Position;
                     res = new byte[ms.Length];
                     ms.Position = 0;
-                    ms.Read(res, 0, res.Length);
+                    await ms.ReadAsync(res, 0, res.Length);
                     ms.Position = nowPos;
                 }
                 return File(res, "application/octet-stream", "properties.zip");
+            }
+        }
+        /// <summary>
+        /// 导出xml文件
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="cultureName"></param>
+        /// <returns></returns>
+        [HttpGet("Resources/xml/{projectId}")]
+        public async Task<IActionResult> ExportXml(string projectId, string? cultureName)
+        {
+            var result = await openApiAppService.GetResources(projectId, cultureName, string.IsNullOrWhiteSpace(cultureName));
+            byte[] res;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                using (ZipArchive zip = new ZipArchive(ms, ZipArchiveMode.Create, true))
+                {
+                    foreach (var resource in result.Data)
+                    {
+                        using(var resourceStream = new MemoryStream())
+                        {
+                            var sw = new StreamWriter(resourceStream);
+                            await sw.WriteLineAsync("<resources>");
+                            foreach (var r in resource.Resources)
+                            {
+                                sw.WriteLine($"     <string name=\"{r.Key}\">{r.Value}</string>");
+                            }
+                            await sw.WriteLineAsync("</resources>");
+                            await sw.FlushAsync();
+                            ZipArchiveEntry entry = zip.CreateEntry($"strings_{resource.CultureName}.xml");
+                            using(var writer = entry.Open())
+                            {
+                                var bt = resourceStream.ToArray();
+                                await writer.WriteAsync(bt, 0, bt.Length);
+                            }
+                        }
+                    }
+                    InvokeWriteFile(zip);
+                    int nowPos = (int)ms.Position;
+                    res = new byte[ms.Length];
+                    ms.Position = 0;
+                    await ms.ReadAsync(res, 0, res.Length);
+                    ms.Position = nowPos;
+                }
+                return File(res, "application/octet-stream", "xml.zip");
             }
         }
 
