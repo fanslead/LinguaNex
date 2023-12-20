@@ -20,8 +20,8 @@ namespace LinguaNex.Translates.Baidu
             var response = await Client.ExecuteTranslateVipTranslateAsync(new SKIT.FlurlHttpClient.Baidu.Translate.Models.TranslateVipTranslateRequest
             {
                 QueryString = sourceString,
-                From = sourceLang,
-                To = targetLang
+                From = ConvertLangCode(sourceLang),
+                To = ConvertLangCode(targetLang)
             });
             if (response.IsSuccessful())
             {
@@ -34,7 +34,7 @@ namespace LinguaNex.Translates.Baidu
         {
             return langCode switch
             {
-                "zh" or "zh-Hans" => "zh",
+                "zh-Hans" => "zh",
                 "zh-Hant" => "zht",
                 "en" => "en",
                 "ja" => "jp",
