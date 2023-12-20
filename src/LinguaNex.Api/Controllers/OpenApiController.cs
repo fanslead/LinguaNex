@@ -1,4 +1,5 @@
-﻿using LinguaNex.Dtos;
+﻿using LinguaNex.Const;
+using LinguaNex.Dtos;
 using LinguaNex.OpenApi;
 using Microsoft.AspNetCore.Mvc;
 using System.IO.Compression;
@@ -6,12 +7,22 @@ using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using Wheel.Controllers;
+using Wheel.Core.Dto;
 namespace LinguaNex.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class OpenApiController(IOpenApiAppService openApiAppService) : LinguaNexControllerBase
     {
+        /// <summary>
+        /// 获取支持的地区码
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("SupportedCultures")]
+        public R<List<SupportedCulture>> GetNeutralCultures()
+        {
+            return Success(SupportedCulture.All());
+        }
         /// <summary>
         /// 获取资源
         /// </summary>
@@ -49,7 +60,7 @@ namespace LinguaNex.Controllers
                         ZipArchiveEntry entry = zip.CreateEntry($"{resource.CultureName}.json");
                         using (Stream sw = entry.Open())
                         {
-                            sw.Write(resourceBytes, 0, resourceBytes.Length);
+                            await sw.WriteAsync(resourceBytes, 0, resourceBytes.Length);
                         }
                     }
                     InvokeWriteFile(zip);
@@ -61,15 +72,101 @@ namespace LinguaNex.Controllers
                 }
                 return File(res, "application/octet-stream", "json.zip");
             }
-
-            void InvokeWriteFile(ZipArchive zipArchive)
+        }
+        /// <summary>
+        /// 导出toml文件
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="cultureName"></param>
+        /// <returns></returns>
+        [HttpGet("Resources/toml/{projectId}")]
+        public async Task<IActionResult> ExportToml(string projectId, string? cultureName)
+        {
+            var result = await openApiAppService.GetResources(projectId, cultureName, string.IsNullOrWhiteSpace(cultureName));
+            byte[] res;
+            using (MemoryStream ms = new MemoryStream())
             {
-                foreach (MethodInfo method in zipArchive.GetType().GetRuntimeMethods())
+                using (ZipArchive zip = new ZipArchive(ms, ZipArchiveMode.Create, true))
                 {
-                    if (method.Name == "WriteFile")
+                    foreach (var resource in result.Data)
                     {
-                        method.Invoke(zipArchive, new object[0]);
+                        using(var resourceStream = new MemoryStream())
+                        {
+                            var sw = new StreamWriter(resourceStream);
+                            foreach (var r in resource.Resources)
+                            {
+                                sw.WriteLine($"{r.Key}={r.Value}");
+                            }
+                            await sw.FlushAsync();
+                            ZipArchiveEntry entry = zip.CreateEntry($"{resource.CultureName}.toml");
+                            using(var writer = entry.Open())
+                            {
+                                var bt = resourceStream.ToArray();
+                                await writer.WriteAsync(bt, 0, bt.Length);
+                            }
+                        }
                     }
+                    InvokeWriteFile(zip);
+                    int nowPos = (int)ms.Position;
+                    res = new byte[ms.Length];
+                    ms.Position = 0;
+                    ms.Read(res, 0, res.Length);
+                    ms.Position = nowPos;
+                }
+                return File(res, "application/octet-stream", "toml.zip");
+            }
+        }
+        /// <summary>
+        /// 导出properties文件
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="cultureName"></param>
+        /// <returns></returns>
+        [HttpGet("Resources/Properties/{projectId}")]
+        public async Task<IActionResult> ExportProperties(string projectId, string? cultureName)
+        {
+            var result = await openApiAppService.GetResources(projectId, cultureName, string.IsNullOrWhiteSpace(cultureName));
+            byte[] res;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                using (ZipArchive zip = new ZipArchive(ms, ZipArchiveMode.Create, true))
+                {
+                    foreach (var resource in result.Data)
+                    {
+                        using(var resourceStream = new MemoryStream())
+                        {
+                            var sw = new StreamWriter(resourceStream);
+                            foreach (var r in resource.Resources)
+                            {
+                                sw.WriteLine($"{r.Key}={r.Value}");
+                            }
+                            await sw.FlushAsync();
+                            ZipArchiveEntry entry = zip.CreateEntry($"messages_{resource.CultureName}.properties");
+                            using(var writer = entry.Open())
+                            {
+                                var bt = resourceStream.ToArray();
+                                await writer.WriteAsync(bt, 0, bt.Length);
+                            }
+                        }
+                    }
+                    InvokeWriteFile(zip);
+                    int nowPos = (int)ms.Position;
+                    res = new byte[ms.Length];
+                    ms.Position = 0;
+                    ms.Read(res, 0, res.Length);
+                    ms.Position = nowPos;
+                }
+                return File(res, "application/octet-stream", "properties.zip");
+            }
+        }
+
+        void InvokeWriteFile(ZipArchive zipArchive)
+        {
+            foreach (MethodInfo method in zipArchive.GetType().GetRuntimeMethods())
+            {
+                if (method.Name == "WriteFile")
+                {
+                    method.Invoke(zipArchive, new object[0]);
                 }
             }
         }
