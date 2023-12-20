@@ -141,7 +141,7 @@ namespace LinguaNex.Controllers
                                 await sw.WriteLineAsync($"{r.Key}={r.Value}");
                             }
                             await sw.FlushAsync();
-                            ZipArchiveEntry entry = zip.CreateEntry($"messages_{resource.CultureName}.properties");
+                            ZipArchiveEntry entry = zip.CreateEntry($"messages_{resource.CultureName.Replace("-", "_")}.properties");
                             using(var writer = entry.Open())
                             {
                                 var bt = resourceStream.ToArray();
