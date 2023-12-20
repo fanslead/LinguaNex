@@ -9,6 +9,31 @@
 - Redis
 - RabbitMQ(可选)
 
+## OpenApi接入
+请求地址：/api/OpenApi/Resources/{ProjectId}?cultureName=&all=
+
+- ProjectId表示项目ID
+- cultureName 可选参数，不传则默认当前请求环境语言资源。
+- all 可选参数，默认false，cultureName为空时，true则返回所有语言资源
+  
+响应结构如下：
+```
+[
+  {
+    "cultureName": "zh-Hans",
+    "resources": {
+      "Hello": "你好"
+    }
+  },
+  {
+    "cultureName": "en",
+    "resources": {
+      "Hello": "Hello"
+    }
+  }
+]
+```
+
 ## RoadMap
 - [x] Project项目管理API
 - [x] Project项目关联API
