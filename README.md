@@ -19,6 +19,8 @@
 - [ ] 集成三方翻译API
 - [ ] 集成AI翻译
 - [x] 导出JSON多语言文件
+- [x] 导出Toml多语言文件
+- [x] 导出messages.properties多语言文件
 - [x] .NET SDK
 - [ ] JS SDK
 - [ ] JAVA SDK
