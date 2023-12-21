@@ -33,7 +33,31 @@
   }
 ]
 ```
+## SignalR接入(c#例子)
+``` c#
+var connection = new HubConnectionBuilder()
+    .WithUrl($"{linguaNexApiUrl}/hubs/LinguaNex?project={project}", Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets)
+    .AddJsonProtocol()
+    .WithAutomaticReconnect()
+    .Build();
 
+connection.On<LinguaNexResources>("CreateOrUpdateResource", obj => 
+{
+    if (_resourcesCache.TryGetValue(obj.CultureName, out var value))
+    {
+        foreach (var resource in obj.Resources)
+        {
+            value[resource.Key] = resource.Value;
+        }
+        _resourcesCache[obj.CultureName] = value;
+    }else
+    {
+        _resourcesCache[obj.CultureName] = new ConcurrentDictionary<string, string>(obj.Resources);
+    }
+});
+
+connection.StartAsync();
+```
 ## RoadMap
 - [x] Project项目管理API
 - [x] Project项目关联API
