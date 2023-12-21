@@ -15,6 +15,7 @@ namespace LinguaNex.Extensions.Localization.Json.Internal
         private ConcurrentDictionary<string, ConcurrentDictionary<string, string>> _resourcesCache = new ConcurrentDictionary<string, ConcurrentDictionary<string, string>>();
 
         private readonly HttpClient _httpClient;
+        private HubConnection connection;
 
         public LinguaNexResourceManager(string linguaNexApiUrl, string project, bool useWebSocket)
         {
@@ -122,8 +123,16 @@ namespace LinguaNex.Extensions.Localization.Json.Internal
         {
             if (_resourcesCache.TryGetValue(cultureName, out var _))
                 return;
-            var response = await _httpClient.GetStringAsync($"api/OpenApi/Resources/{Project}?cultureName={cultureName}&all={all}");
-            var resources = JsonSerializer.Deserialize<List<LinguaNexResources>>(response);
+            List<LinguaNexResources> resources;
+            if (UseWebSocket)
+            {
+                resources = await connection.InvokeAsync<List<LinguaNexResources>>("GetResources", Project, cultureName, all);
+            }
+            else
+            {
+                var response = await _httpClient.GetStringAsync($"api/OpenApi/Resources/{Project}?cultureName={cultureName}&all={all}");
+                resources = JsonSerializer.Deserialize<List<LinguaNexResources>>(response);
+            }
             foreach (var resource in resources)
             {
                 _resourcesCache.TryAdd(resource.CultureName, new ConcurrentDictionary<string, string>(resource.Resources));
@@ -132,7 +141,7 @@ namespace LinguaNex.Extensions.Localization.Json.Internal
 
         private void InitWebocket(string linguaNexApiUrl, string project)
         {
-            var connection = new HubConnectionBuilder()
+            connection = new HubConnectionBuilder()
                 .WithUrl($"{linguaNexApiUrl}/hubs/LinguaNex?project={project}", Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets)
                 .AddJsonProtocol()
                 .WithAutomaticReconnect()
@@ -152,7 +161,6 @@ namespace LinguaNex.Extensions.Localization.Json.Internal
                     _resourcesCache[obj.CultureName] = new ConcurrentDictionary<string, string>(obj.Resources);
                 }
             });
-
             connection.StartAsync();
         }
     }
