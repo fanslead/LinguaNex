@@ -147,6 +147,9 @@ namespace LinguaNex.Extensions.Localization.Json.Internal
                         value[resource.Key] = resource.Value;
                     }
                     _resourcesCache[obj.CultureName] = value;
+                }else
+                {
+                    _resourcesCache[obj.CultureName] = new ConcurrentDictionary<string, string>(obj.Resources);
                 }
             });
 
