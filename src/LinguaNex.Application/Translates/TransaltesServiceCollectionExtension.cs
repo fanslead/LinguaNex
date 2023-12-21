@@ -1,5 +1,7 @@
-﻿using LinguaNex.Translates.Baidu;
+﻿using LinguaNex.Translates.AI;
+using LinguaNex.Translates.Baidu;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.SemanticKernel;
 using SKIT.FlurlHttpClient.Baidu.Translate;
 using System;
 using System.Collections.Generic;
@@ -19,6 +21,17 @@ namespace LinguaNex.Translates
             services.AddSingleton(new BaiduTranslateClient(options));
 
             services.AddKeyedSingleton<ITranslate, BaiduTranslate>("Baidu");
+
+            return services;
+        }
+        public static IServiceCollection AddAiTransalte(this IServiceCollection services)
+        {
+            //services.AddAzureOpenAIChatCompletion();
+            //services.AddAzureOpenAITextGeneration();
+            //services.AddOpenAIChatCompletion();
+            //services.AddOpenAITextGeneration();
+            //services.AddSingleton(sp => Kernel.CreateBuilder().Build());
+            //services.AddKeyedSingleton<ITranslate, AiTranslate>("Ai")
 
             return services;
         }
