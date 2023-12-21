@@ -57,6 +57,9 @@ connection.On<LinguaNexResources>("CreateOrUpdateResource", obj =>
 });
 
 connection.StartAsync();
+
+//拉取资源 参数跟OpenApi接口一致
+connection.InvokeAsync<List<LinguaNexResources>>("GetResources", projectId, cultureName,all);
 ```
 ## RoadMap
 - [x] Project项目管理API
