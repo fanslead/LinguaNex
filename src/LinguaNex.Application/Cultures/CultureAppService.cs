@@ -24,6 +24,9 @@ namespace LinguaNex.Cultures
             if(!await projectsRepository.AnyAsync(a => a.Id == dto.ProjectId))
                 throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.ProjectId);
 
+            if(await cultureRepository.AnyAsync(a => a.Name == dto.Name && a.ProjectId == dto.ProjectId))
+                throw new BusinessException(ErrorCode.Exist, ErrorCode.Exist).WithMessageDataData(dto.Name);
+
             var entity = Mapper.Map<Culture>(dto);
             entity.Id = SnowflakeIdGenerator.Create().ToString();
             entity = await cultureRepository.InsertAsync(entity, true);
