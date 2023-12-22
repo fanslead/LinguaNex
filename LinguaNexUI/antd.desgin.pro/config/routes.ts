@@ -25,8 +25,16 @@ export default [
   {
     name: 'projects',
     icon: 'smile',
+    menuRender: false,
     path: '/Projects',
     component: './Projects',
+  },
+  {
+    name: 'CultureRecouece',
+    icon: 'smile',
+    menuRender: false,
+    path: '/CultureRecouece',
+    component: './CultureRecouece',
   },
   {
     path: '/',
