@@ -97,8 +97,8 @@ builder.Services.AddCapDistributedEventBus(x =>
 
     x.UseSqlite(builder.Configuration.GetConnectionString("Default"));
 
-    x.UseRabbitMQ(o => o.ConnectionFactoryOptions = (factory) => factory.Uri = new Uri(builder.Configuration["ConnectionStrings:RabbitMq"]));
-    //x.UseRedis(builder.Configuration["ConnectionStrings:Redis"]);
+    //x.UseRabbitMQ(o => o.ConnectionFactoryOptions = (factory) => factory.Uri = new Uri(builder.Configuration["ConnectionStrings:RabbitMq"]));
+    x.UseRedis(builder.Configuration["ConnectionStrings:Redis"]);
 });
 
 builder.Services.AddMemoryCache();
