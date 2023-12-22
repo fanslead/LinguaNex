@@ -23,6 +23,7 @@ export async function getInitialState(): Promise<{
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
 }> {
   const fetchUserInfo = async () => {
+    return fakeUser;
     try {
       const msg = await queryCurrentUser({
         skipErrorHandler: true,
@@ -36,7 +37,7 @@ export async function getInitialState(): Promise<{
   // 如果不是登录页面，执行
   const { location } = history;
   if (location.pathname !== loginPath) {
-    const currentUser = await fetchUserInfo();
+    const currentUser = fakeUser;
     return {
       fetchUserInfo,
       currentUser,
@@ -48,7 +49,27 @@ export async function getInitialState(): Promise<{
     settings: defaultSettings as Partial<LayoutSettings>,
   };
 }
-
+const fakeUser : API.CurrentUser = {
+  name: 'FunShow',
+  avatar: 'https://pic.cnblogs.com/avatar/1313665/20180107191710.png',
+  userid: '00000001',
+  email: '136590076@qq.com',
+  signature: 'Funshow',
+  title: 'Funshow',
+  group: 'Funshow',
+  tags: [
+    { key: '0', label: '很有想法的' }
+  ],
+  notifyCount: 0,
+  unreadCount: 0,
+  country: 'China',
+  geographic: {
+    province: { label: '浙江省', key: '330000' },
+    city: { label: '杭州市', key: '330100' },
+  },
+  address: '啊哈哈哈哈',
+  phone: '0752-268888888',
+}
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   return {
