@@ -2,6 +2,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Card, List, Typography, Modal, Table, Space, Form, Input, Checkbox } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useRequest } from 'umi';
+import { history, Link } from '@umijs/max';
 import { getProjects, postProjects, putProjectsEnableId, getProjectsCanAssociationProjects, postProjectsProjectAssociation, deleteProjectsProjectAssociation } from '@/services/LinguaNex/projects';
 import styles from './style.less';
 import { useState, useRef, useImperativeHandle } from 'react';
@@ -10,7 +11,6 @@ import { ColumnsType } from 'antd/es/table';
 const { Paragraph } = Typography;
 
 const CardList = () => {
-  
   const [cardData, setCardData] = useState<API.ProjectDto[]>();
   const { data, loading } = useRequest(() => {
     fetchCardData()
@@ -169,7 +169,7 @@ const CardList = () => {
                     className={styles.card}
                     actions={[
                     <Button key="option1" type="text" onClick={() => showModal(item.id)} >关联项目</Button>, 
-                    <Button key="option2" type="text">查看</Button>, 
+                    <Button key="option2" type="text" onClick={() => history.push('/CultureRecouece/'+item.id)}>查看</Button>, 
                     <Button key="option3" type="text" onClick={() => putProjectsEnable(item.id as string)} danger={item.enalbe}>{item.enalbe?'禁用':'启用'}</Button>
                   ]}
                   >

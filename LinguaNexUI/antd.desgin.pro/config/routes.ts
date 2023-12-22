@@ -33,7 +33,7 @@ export default [
     name: 'CultureRecouece',
     icon: 'smile',
     menuRender: false,
-    path: '/CultureRecouece',
+    path: '/CultureRecouece/:id',
     component: './CultureRecouece',
   },
   {
