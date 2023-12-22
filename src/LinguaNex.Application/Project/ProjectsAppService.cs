@@ -58,7 +58,7 @@ namespace LinguaNex.Project
             var projectAssociations = await projectsAssociationRepository.GetListAsync(a => a.MainProjectId == projectId, propertySelectors: a => a.AssociationProject);
             result.HasAssociationProjects = Mapper.Map<List<ProjectDto>>(projectAssociations.Select(a => a.AssociationProject).ToList());
             var ids = projectAssociations.Select(a => a.AssociationProjectId).ToList();
-            var entities = await projectsRepository.GetListAsync(a => a.Id != projectId && ids.Contains(a.Id));
+            var entities = await projectsRepository.GetListAsync(a => a.Id != projectId && !ids.Contains(a.Id));
 
             result.CanAssociationProjects = Mapper.Map<List<ProjectDto>>(entities);
             return Success(result);
