@@ -149,7 +149,7 @@ export default defineConfig({
     },
     {
       requestLibPath: "import { request } from '@umijs/max'",
-      schemaPath: 'http://localhost:5054/swagger/v1/swagger.json',
+      schemaPath: 'http://47.119.20.111/swagger/v1/swagger.json',
       projectName: 'LinguaNex',
     },
   ],
