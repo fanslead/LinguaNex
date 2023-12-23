@@ -254,8 +254,8 @@ const CardList = () => {
         okText="确认"
         cancelText="取消"
       >
-        <Table title={() => "HasAssociationProjects"} columns={hasAssociationProjectsColumns} dataSource={hasAssociationProjectsData} />
-        <Table  title={() => "CanAssociationProjects"} columns={canAssociationProjectsColumns} dataSource={canAssociationProjectsData} />
+        <Table pagination={false} title={() => "HasAssociationProjects"} columns={hasAssociationProjectsColumns} dataSource={hasAssociationProjectsData} />
+        <Table pagination={false}  title={() => "CanAssociationProjects"} columns={canAssociationProjectsColumns} dataSource={canAssociationProjectsData} />
       </Modal>
       <Modal
         title="新增项目"
