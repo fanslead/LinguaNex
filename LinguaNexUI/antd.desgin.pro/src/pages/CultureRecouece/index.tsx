@@ -6,15 +6,20 @@ import { List } from 'antd';
 import { useRequest, useParams } from 'umi';
 import { PlusOutlined } from '@ant-design/icons';
 import { getCulture, getCultureSupportedCultures, postCulture } from '@/services/LinguaNex/culture';
-import { getResourcesList } from '@/services/LinguaNex/resources';
+import { deleteResourcesId, getResourcesList, postResources, putResources } from '@/services/LinguaNex/resources';
 import { history, Link, matchPath } from '@umijs/max';
 import { ColumnsType } from 'antd/es/table';
 
 const CultureRecouece = () => {
   
   const [openCultureModal, setOpenCreateModal] = useState(false);
+  const [openResourceModal, setOpenCreateResourceModal] = useState(false);
+  const [putResourceModal, setPutCreateResourceModal] = useState(false);
   const [createCultureForm] = Form.useForm();
+  const [createResourceForm] = Form.useForm();
+  const [putResourceForm] = Form.useForm();
   const [culturesData, setCulturesData] = useState<API.CultureDto[]>();
+  const [currentCultureId, setCurrentCultureId] = useState<string>();
   const [SupportedCulturesData, setSupportedCulturesData] = useState<API.SupportedCulture[]>();
 
   const { data, loading } = useRequest(() => {
@@ -22,10 +27,29 @@ const CultureRecouece = () => {
     fetcCulturesData()
   });
   
+  const showOpenCreateResourceModalModal = () =>{
+    setOpenCreateResourceModal(true);
+  }
+  const hideCreateResourceModalModal = () => {
+    createResourceForm.resetFields();
+    setOpenCreateResourceModal(false);
+  };
+  
+  const showPutCreateResourceModalModal = (item: API.ResourceDto) =>{
+    putResourceForm.setFieldValue('id', item.id)
+    putResourceForm.setFieldValue('value', item.value)
+    setPutCreateResourceModal(true);
+  }
+  const hidePutResourceModalModal = () => {
+    putResourceForm.resetFields();
+    setPutCreateResourceModal(false);
+  };
+  
   const showOpenCreateModalModal = () =>{
     setOpenCreateModal(true);
   }
   const hideCreateModalModal = () => {
+    createCultureForm.resetFields();
     setOpenCreateModal(false);
   };
   const createCulture = async (params: any) => {
@@ -37,6 +61,35 @@ const CultureRecouece = () => {
     })
     createCultureForm.resetFields();
     hideCreateModalModal();
+    fetcCulturesData();
+  }
+  const deleteResources =  async (id: string) => {
+    await deleteResourcesId({
+      id: id
+    })
+    await fetcCulturesData();
+  }
+  const createResource = async (params: any) => {
+    
+    const match = matchPath({ path: "/CultureRecouece/:id" }, history.location.pathname)
+    await postResources({
+      key: params.key,
+      value: params.value,
+      projectId: match?.params.id,
+      cultureId: currentCultureId
+    })
+    createCultureForm.resetFields();
+    hideCreateResourceModalModal();
+    fetcCulturesData();
+  }
+  
+  const putResource = async (params: any) => {
+    await putResources({
+      value: params.value,
+      id: params.id
+    })
+    putResourceForm.resetFields();
+    hidePutResourceModalModal();
     fetcCulturesData();
   }
   const fetcCulturesData = async () =>{
@@ -61,6 +114,7 @@ const CultureRecouece = () => {
       if(!currentCulture){
         currentCulture = (await fetchSupportedCultures())?.find(a=>a.name === culture.name)
       }
+      setCurrentCultureId(culture?.id)
       setTableTitleData(currentCulture?.displayName + ' ' + currentCulture?.englishName + ' ' + currentCulture?.name)
       fetcResourceData(culture?.id)
     }
@@ -121,7 +175,8 @@ const CultureRecouece = () => {
       width: '20%',
       render: (_, record) => (
         <Space size="middle">
-          <a >修改</a>
+          <a onClick={() => showPutCreateResourceModalModal(record)}>修改</a>
+          <a onClick={() => deleteResources(record.id as string)}> 删除</a>
         </Space>
       ),
     },
@@ -158,7 +213,80 @@ const CultureRecouece = () => {
           <Button type="primary" htmlType="submit">
             创建
           </Button>
-          <Button type="default" onClick={() => setOpenCreateModal(false)}>
+          <Button type="default" onClick={() => hideCreateModalModal()}>
+            关闭
+          </Button>
+        </Form.Item>
+      </Form>
+    </Modal>
+    <Modal
+        title="新增资源"
+        open={openResourceModal}
+        footer={null}
+        closable={false}
+      >
+      <Form
+        form={createResourceForm}
+        onFinish={createResource}
+      >
+        <Form.Item<string>
+          label="Key"
+          name="key"
+          rules={[{ required: true, message: 'Please input key!' }]}
+        >
+          <Input
+          />
+        </Form.Item>
+        <Form.Item<string>
+          label="Value"
+          name="value"
+          rules={[{ required: true, message: 'Please input value!' }]}
+        >
+          <Input
+          />
+        </Form.Item>
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Button type="primary" htmlType="submit">
+            添加
+          </Button>
+          <Button type="default" onClick={() => hideCreateResourceModalModal()}>
+            关闭
+          </Button>
+        </Form.Item>
+      </Form>
+    </Modal>
+    
+    <Modal
+        title="修改资源"
+        open={putResourceModal}
+        footer={null}
+        closable={false}
+      >
+      <Form
+        form={putResourceForm}
+        onFinish={putResource}
+      >
+        <Form.Item<string>
+          label="Id"
+          name="id"
+          hidden={true}
+        >
+          <Input
+          />
+        </Form.Item>
+        <Form.Item<string>
+          label="Value"
+          name="value"
+          rules={[{ required: true, message: 'Please input value!' }]}
+        >
+          <Input
+          />
+        </Form.Item>
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Button type="primary" htmlType="submit">
+            修改
+          </Button>
+          <Button type="default" onClick={() => hidePutResourceModalModal()}>
             关闭
           </Button>
         </Form.Item>
@@ -193,8 +321,8 @@ const CultureRecouece = () => {
         </Card>
       </Col>
       <Col flex={9}>
-        <Card className={styles.CultureRecoueceRow}>
-          <Table title={() => tableTitleData} columns={resourceColumns} dataSource={resourceData}
+        <Card className={styles.CultureRecoueceRow} title={tableTitleData} extra={<a onClick={() => showOpenCreateResourceModalModal()}>新增</a>} >
+          <Table columns={resourceColumns} dataSource={resourceData}
           />
         </Card>
       </Col>
