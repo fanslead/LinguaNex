@@ -6,7 +6,7 @@ import { List } from 'antd';
 import { useRequest, useParams } from 'umi';
 import { PlusOutlined } from '@ant-design/icons';
 import { getCulture, getCultureSupportedCultures, postCulture } from '@/services/LinguaNex/culture';
-import { deleteResourcesId, getResourcesList, postResources, putResources } from '@/services/LinguaNex/resources';
+import { deleteResourcesId, getResourcesList, postResources, putResources, getResourcesAllCultureId } from '@/services/LinguaNex/resources';
 import { history, Link, matchPath } from '@umijs/max';
 import { ColumnsType } from 'antd/es/table';
 
@@ -121,8 +121,8 @@ const CultureRecouece = () => {
   }
 
   const fetcResourceData = async (cultureId: string | undefined) =>{
-    var resource = await getResourcesList({
-      CultureId: cultureId
+    var resource = await getResourcesAllCultureId({
+      cultureId: cultureId as string
     });
     setResourceData(resource.data);
   }
@@ -323,6 +323,7 @@ const CultureRecouece = () => {
       <Col flex={9}>
         <Card className={styles.CultureRecoueceRow} title={tableTitleData} extra={<a onClick={() => showOpenCreateResourceModalModal()}>新增</a>} >
           <Table columns={resourceColumns} dataSource={resourceData}
+          pagination={false}
           />
         </Card>
       </Col>
