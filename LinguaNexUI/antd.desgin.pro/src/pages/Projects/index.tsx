@@ -1,5 +1,5 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Card, List, Typography, Modal, Table, Space, Form, Input, Checkbox } from 'antd';
+import { DownOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Card, List, Typography, Modal, Table, Space, Form, Input, Checkbox, Dropdown, MenuProps, Breadcrumb } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useRequest } from 'umi';
 import { history, Link } from '@umijs/max';
@@ -7,6 +7,7 @@ import { getProjects, postProjects, putProjectsEnableId, getProjectsCanAssociati
 import styles from './style.less';
 import { useState, useRef, useImperativeHandle } from 'react';
 import { ColumnsType } from 'antd/es/table';
+import { getOpenApiResourcesJsonProjectId, getOpenApiResourcesTomlProjectId, getOpenApiResourcesXmlProjectId } from '@/services/LinguaNex/openApi';
 
 const { Paragraph } = Typography;
 
@@ -20,8 +21,7 @@ const CardList = () => {
       PageIndex: 1,
       PageSize: 1000
     });
-    console.log(cardData.data)
-    setCardData([{}].concat(cardData.data))
+    setCardData([{}].concat(cardData.data as any))
   }
 
   const content = (
@@ -144,6 +144,45 @@ const CardList = () => {
     },
   ];
 
+  const handleMenuClick = (e: any, project: string) => {
+    switch(e.key){
+      case '1': getOpenApiResourcesJsonProjectId({projectId:project})
+        break;
+      case '2': getOpenApiResourcesXmlProjectId({projectId:project})
+        break;
+      case '3': getOpenApiResourcesTomlProjectId({projectId:project})
+        break;
+      case '4': getOpenApiResourcesJsonProjectId({projectId:project})
+        break;
+    }
+  };
+  
+  const items: MenuProps['items'] = [
+    {
+      label: 'json',
+      key: '1',
+      icon: <UserOutlined />,
+    },
+    {
+      label: 'xml',
+      key: '2',
+      icon: <UserOutlined />,
+    },
+    {
+      label: 'toml',
+      key: '3',
+      icon: <UserOutlined />
+    },
+    {
+      label: 'properties',
+      key: '4',
+      icon: <UserOutlined />
+    },
+  ];
+  
+  const menuProps = {
+    
+  };
   return (
     <PageContainer content={content} extraContent={extraContent}>
       <div className={styles.cardList}>
@@ -168,6 +207,17 @@ const CardList = () => {
                     hoverable
                     className={styles.card}
                     actions={[
+                    <Dropdown menu={{
+                      items,
+                      onClick: (e) => handleMenuClick(e, item.id)
+                      }}>
+                      <Button key="option0" type="text">
+                        <Space>
+                          下载
+                          <DownOutlined />
+                        </Space>
+                      </Button>
+                    </Dropdown>,
                     <Button key="option1" type="text" onClick={() => showModal(item.id)} >关联项目</Button>, 
                     <Button key="option2" type="text" onClick={() => history.push('/CultureRecouece/'+item.id)}>查看</Button>, 
                     <Button key="option3" type="text" onClick={() => putProjectsEnable(item.id as string)} danger={item.enalbe}>{item.enalbe?'禁用':'启用'}</Button>

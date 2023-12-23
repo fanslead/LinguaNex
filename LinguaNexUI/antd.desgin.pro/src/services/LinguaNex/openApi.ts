@@ -25,13 +25,15 @@ export async function getOpenApiResourcesJsonProjectId(
   options?: { [key: string]: any },
 ) {
   const { projectId: param0, ...queryParams } = params;
-  return request<any>(`/api/OpenApi/Resources/Json/${param0}`, {
-    method: 'GET',
-    params: {
-      ...queryParams,
-    },
-    ...(options || {}),
-  });
+  window.open(`/api/OpenApi/Resources/Json/${param0}`, '_blank')
+  // return request<any>(`/api/OpenApi/Resources/Json/${param0}`, {
+  //   method: 'GET',
+  //   params: {
+  //     ...queryParams,
+  //   },
+  //   responseType: 'blob',
+  //   ...(options || {}),
+  // })
 }
 
 /** 导出properties文件 GET /api/OpenApi/Resources/Properties/${param0} */
@@ -41,13 +43,14 @@ export async function getOpenApiResourcesPropertiesProjectId(
   options?: { [key: string]: any },
 ) {
   const { projectId: param0, ...queryParams } = params;
-  return request<any>(`/api/OpenApi/Resources/Properties/${param0}`, {
-    method: 'GET',
-    params: {
-      ...queryParams,
-    },
-    ...(options || {}),
-  });
+  window.open(`/api/OpenApi/Resources/Properties/${param0}`, '_blank')
+  // return request<any>(`/api/OpenApi/Resources/Properties/${param0}`, {
+  //   method: 'GET',
+  //   params: {
+  //     ...queryParams,
+  //   },
+  //   ...(options || {}),
+  // });
 }
 
 /** 导出toml文件 GET /api/OpenApi/Resources/toml/${param0} */
@@ -57,13 +60,15 @@ export async function getOpenApiResourcesTomlProjectId(
   options?: { [key: string]: any },
 ) {
   const { projectId: param0, ...queryParams } = params;
-  return request<any>(`/api/OpenApi/Resources/toml/${param0}`, {
-    method: 'GET',
-    params: {
-      ...queryParams,
-    },
-    ...(options || {}),
-  });
+  
+  window.open(`/api/OpenApi/Resources/toml/${param0}`, '_blank')
+  // return request<any>(`/api/OpenApi/Resources/toml/${param0}`, {
+  //   method: 'GET',
+  //   params: {
+  //     ...queryParams,
+  //   },
+  //   ...(options || {}),
+  // });
 }
 
 /** 导出xml文件 GET /api/OpenApi/Resources/xml/${param0} */
@@ -73,13 +78,14 @@ export async function getOpenApiResourcesXmlProjectId(
   options?: { [key: string]: any },
 ) {
   const { projectId: param0, ...queryParams } = params;
-  return request<any>(`/api/OpenApi/Resources/xml/${param0}`, {
-    method: 'GET',
-    params: {
-      ...queryParams,
-    },
-    ...(options || {}),
-  });
+  window.open(`/api/OpenApi/Resources/xml/${param0}`, '_blank')
+  // return request<any>(`/api/OpenApi/Resources/xml/${param0}`, {
+  //   method: 'GET',
+  //   params: {
+  //     ...queryParams,
+  //   },
+  //   ...(options || {}),
+  // });
 }
 
 /** 获取支持的地区码 GET /api/OpenApi/SupportedCultures */
