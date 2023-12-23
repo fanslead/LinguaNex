@@ -61,6 +61,18 @@ connection.StartAsync();
 //拉取资源 参数跟OpenApi接口一致
 connection.InvokeAsync<List<LinguaNexResources>>("GetResources", projectId, cultureName,all);
 ```
+
+## 效果图
+![image](https://github.com/fanslead/LinguaNex/assets/22066473/8f38e6dd-63ee-4d78-9434-ef9f302a1630)
+
+![image](https://github.com/fanslead/LinguaNex/assets/22066473/55238455-c0a3-483d-bf0d-fd3307b07683)
+
+![image](https://github.com/fanslead/LinguaNex/assets/22066473/c6271834-d961-4b79-a25a-c9aff58482ab)
+
+![image](https://github.com/fanslead/LinguaNex/assets/22066473/ad488c11-bd0e-4809-b9ff-c98d1ba69207)
+
+
+
 ## RoadMap
 - [x] Project项目管理API
 - [x] Project项目关联API
