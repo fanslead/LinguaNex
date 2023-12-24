@@ -14,6 +14,9 @@ namespace LinguaNex.Translates
                 case Emuns.TranslateProviderEnum.Baidu:
                     translate = ServiceProvider.GetRequiredKeyedService<ITranslate>("Baidu");
                     break;
+                case Emuns.TranslateProviderEnum.YouDao:
+                    translate = ServiceProvider.GetRequiredKeyedService<ITranslate>("YouDao");
+                    break;
                 default:
                     break;
             }

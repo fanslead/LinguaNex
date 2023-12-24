@@ -2,6 +2,7 @@
 {
     public enum TranslateProviderEnum
     {
-        Baidu
+        Baidu,
+        YouDao
     }
 }
