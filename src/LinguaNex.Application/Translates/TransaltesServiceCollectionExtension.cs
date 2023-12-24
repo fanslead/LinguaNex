@@ -1,5 +1,6 @@
 ﻿using LinguaNex.Translates.AI;
 using LinguaNex.Translates.Baidu;
+using LinguaNex.Translates.YouDao;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.SemanticKernel;
 using SKIT.FlurlHttpClient.Baidu.Translate;
@@ -32,6 +33,17 @@ namespace LinguaNex.Translates
             //services.AddOpenAITextGeneration();
             //services.AddSingleton(sp => Kernel.CreateBuilder().Build());
             //services.AddKeyedSingleton<ITranslate, AiTranslate>("Ai")
+
+            return services;
+        }
+        public static IServiceCollection AddYouDaoTransalte(this IServiceCollection services, Action<YouDaoTranslateClientOptions> action)
+        {
+            if (action == null) throw new ArgumentNullException("action");
+            var options = new YouDaoTranslateClientOptions();
+            action.Invoke(options);
+            services.AddSingleton(new YouDaoTranslateClient(options));
+
+            services.AddKeyedSingleton<ITranslate, YouDaoTranslate>("YouDao");
 
             return services;
         }
