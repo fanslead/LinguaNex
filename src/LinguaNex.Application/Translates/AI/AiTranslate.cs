@@ -1,4 +1,5 @@
-﻿using Microsoft.SemanticKernel;
+﻿using LinguaNex.Const;
+using Microsoft.SemanticKernel;
 
 namespace LinguaNex.Translates.AI
 {
@@ -9,7 +10,7 @@ namespace LinguaNex.Translates.AI
         public async Task<string> Translate(string sourceString, string sourceLang, string targetLang)
         {
             //todo optimize:
-            var result = await kernel.InvokePromptAsync(string.Format(TranslatePrompt, targetLang, sourceString));
+            var result = await kernel.InvokePromptAsync(string.Format(TranslatePrompt, SupportedCulture.ChineseLanguages[targetLang], sourceString));
             return result.GetValue<string>();
         }
     }

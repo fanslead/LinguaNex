@@ -6,6 +6,14 @@
         public string DisplayName { get; set; }
         public string EnglishName { get; set; }
 
+        private static Dictionary<string, string> _chineseLanguages = All().ToDictionary(a => a.Name, a => a.DisplayName);
+        private static Dictionary<string, string> _englishLanguages = All().ToDictionary(a => a.Name, a => a.EnglishName);
+
+        public static Dictionary<string, string> ChineseLanguages => _chineseLanguages;
+        public static Dictionary<string, string> EnglishLanguages => _englishLanguages;
+
+
+
         public static List<SupportedCulture> All()
         {
             return new List<SupportedCulture> {
