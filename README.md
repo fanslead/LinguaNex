@@ -1,13 +1,23 @@
 # LinguaNex
 多语言连接中心
-本项目主打一个一处配置多语言，多处使用的想法。
+本项目主打一个一处配置多语言，多处使用的想法。让项目方便快捷实现国际化（多语言）。
 
 可配关联项目，主项目关联其他项目即可获取其他项目的多语言资源，相同Key则优先取主项目中的资源（即覆盖）。
+
+批量导入已存在项目多语言资源。
+
+### 应用场景
+通过API/SDK拉取多语言资源加载，可选WebSocket对接实现即时更新多语言资源。
+- API后端项目响应内容，如错误码对应的Message国际化多语言处理。
+- Web项目国际化多语言集成，可导出多语言文件编译，或对接API/SDK即时获取加载数据。
+- APP项目Web基本一致。
+- 骚操作：实现一个短Key完成长文章多语言显示。
 
 ## 运行环境
 - .NET 8
 - Redis
 - RabbitMQ(可选)
+- EF Core SQLLite（可自行替换数据库）
 
 ## OpenApi接入
 请求地址：/api/OpenApi/Resources/{ProjectId}?cultureName=&all=
@@ -71,8 +81,6 @@ connection.InvokeAsync<List<LinguaNexResources>>("GetResources", projectId, cult
 
 ![image](https://github.com/fanslead/LinguaNex/assets/22066473/ad488c11-bd0e-4809-b9ff-c98d1ba69207)
 
-
-
 ## RoadMap
 - [x] Project项目管理API
 - [x] Project项目关联API
@@ -80,12 +88,15 @@ connection.InvokeAsync<List<LinguaNexResources>>("GetResources", projectId, cult
 - [x] Resouce多语言资源管理API
 - [x] OpenApi获取多语言资源
 - [x] SignalR获取多语言资源与实时推送更新多语言资源
+- [ ] 自动同步资源到不同Culture
+- [ ] 自动翻译资源到不同Culture
 - [ ] 集成三方翻译API
 - [ ] 集成AI翻译
 - [x] 导出JSON多语言文件
 - [x] 导出Toml多语言文件
 - [x] 导出messages.properties多语言文件
 - [x] 导出xml多语言文件
+- [ ] 批量导入多语言配置
 - [x] .NET SDK
 - [ ] JS SDK
 - [ ] JAVA SDK
