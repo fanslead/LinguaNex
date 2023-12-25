@@ -5,12 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LinguaNex.Cultures.Dtos
+namespace LinguaNex.EventDatas
 {
-    public class CreateCultureDto
+    public class CultrueSyncResourceAndTranslateEto
     {
-        public required string Name { get; set; }
-        public virtual required string ProjectId { get; set; }
+        public string Id { get; set; }
         public bool SyncResource { get; set; } = false;
         public bool Translate { get; set; } = false;
         public TranslateProviderEnum? TranslateProvider { get; set; }

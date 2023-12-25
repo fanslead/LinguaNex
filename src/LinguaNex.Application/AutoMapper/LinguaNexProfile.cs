@@ -12,9 +12,9 @@ namespace LinguaNex.AutoMapper
         {
             CreateMap<CreateProjectDto, Projects>(MemberList.Source);
             CreateMap<Projects, ProjectDto>();
-            CreateMap<CreateCultureDto, Culture>(MemberList.Source);
+            CreateMap<CreateCultureDto, Culture>(MemberList.None);
             CreateMap<Culture, CultureDto>();
-            CreateMap<CreateResourceDto, Resource>(MemberList.Source);
+            CreateMap<CreateResourceDto, Resource>(MemberList.None);
             CreateMap<Resource, ResourceDto>();
         }
     }

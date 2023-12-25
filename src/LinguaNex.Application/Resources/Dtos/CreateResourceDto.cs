@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LinguaNex.Emuns;
 
 namespace LinguaNex.Resources.Dtos
 {
@@ -12,5 +8,9 @@ namespace LinguaNex.Resources.Dtos
         public string Value { get; set; }
         public string CultureId { get; set; }
         public string ProjectId { get; set; }
+
+        public bool SyncCulture { get; set; } = false;
+        public bool Translate { get; set; } = false;
+        public TranslateProviderEnum? TranslateProvider { get; set; }
     }
 }
