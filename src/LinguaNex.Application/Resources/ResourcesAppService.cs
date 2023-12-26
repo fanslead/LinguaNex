@@ -84,8 +84,8 @@ namespace LinguaNex.Resources
                 throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.ProjectId);
             if (!await cultureRepository.AnyAsync(a => a.Id == dto.CultureId))
                 throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.CultureId);
-            if (await resourceRepository.AnyAsync(a => a.Id == dto.ProjectId && a.Id == dto.CultureId && a.Key == dto.Key))
-                throw new BusinessException(ErrorCode.NotExist, ErrorCode.Exist).WithMessageDataData(dto.Key);
+            if (await resourceRepository.AnyAsync(a => a.ProjectId == dto.ProjectId && a.Id == dto.CultureId && a.Key == dto.Key))
+                throw new BusinessException(ErrorCode.Exist, ErrorCode.Exist).WithMessageDataData(dto.Key);
 
             var entity = Mapper.Map<Resource>(dto);
             entity.Id = SnowflakeIdGenerator.Create().ToString();
