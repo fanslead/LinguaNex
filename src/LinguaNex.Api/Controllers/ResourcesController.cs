@@ -1,4 +1,5 @@
-﻿using LinguaNex.Resources;
+﻿using LinguaNex.Cultures.Dtos;
+using LinguaNex.Resources;
 using LinguaNex.Resources.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
@@ -15,6 +16,17 @@ namespace LinguaNex.Controllers
     [ApiController]
     public class ResourcesController(IResourcesAppService resourcesAppService) : LinguaNexControllerBase
     {
+        /// <summary>
+        /// Json文件批量导入
+        /// </summary>
+        /// <param name="cultureId"></param>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        [HttpPost("File/{cultureId}")]
+        public Task<R> BatchCreateByJsonFileAsync(string cultureId, [FromForm]BatchCreateByJsonFileDto dto)
+        {
+            return resourcesAppService.BatchCreateByJsonFileAsync(cultureId, dto);
+        }
         /// <summary>
         /// 添加
         /// </summary>

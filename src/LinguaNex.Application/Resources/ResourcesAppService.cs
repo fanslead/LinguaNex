@@ -1,4 +1,5 @@
-﻿using LinguaNex.Const;
+﻿using IdGen;
+using LinguaNex.Const;
 using LinguaNex.Domain;
 using LinguaNex.Entities;
 using LinguaNex.EventDatas;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Wheel.Core.Dto;
 using Wheel.Core.Exceptions;
@@ -46,7 +48,36 @@ namespace LinguaNex.Resources
                 );
             return Page(datas, total);
         }
+        public async Task<R> BatchCreateByJsonFileAsync(string cultureId, BatchCreateByJsonFileDto dto)
+        {
+            if(Path.GetExtension(dto.File.FileName)!=".json")
+                throw new BusinessException(ErrorCode.NotSupported, ErrorCode.NotSupported).WithMessageDataData(Path.GetExtension(dto.File.FileName));
 
+            var culture = await cultureRepository.FindAsync(cultureId);
+            if(culture == null)
+                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(cultureId);
+            
+            using(var stream = dto.File.OpenReadStream())
+            {
+                var dic = new Dictionary<string, string>();
+                await JsonSerializer.SerializeAsync(stream, dic);
+                if(dic.Count > 0)
+                {
+                    var resources = dic.Select(a => new Resource
+                    {
+                        Id = SnowflakeIdGenerator.Create().ToString(),
+                        ProjectId = culture.ProjectId,
+                        CultureId = culture.Id,
+                        Key = a.Key,
+                        Value = a.Value
+                    }).ToList();
+                    await resourceRepository.InsertManyAsync(resources, true);
+                }
+                
+            }
+
+            return Success();
+        }
         public async Task<R<ResourceDto>> CreateAsync(CreateResourceDto dto)
         {
             if (!await projectsRepository.AnyAsync(a => a.Id == dto.ProjectId))
