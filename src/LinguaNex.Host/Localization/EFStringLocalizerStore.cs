@@ -18,7 +18,7 @@ namespace Wheel.Localization
 
         public string GetString(string name)
         {
-            var resource = resourceRepository.FindAsync(r => r.ProjectId == "C96755D0-C22C-4DAD-9620-AF64C4C3D9D7" && r.Culture.Name == CultureInfo.CurrentCulture.Name).ConfigureAwait(false).GetAwaiter().GetResult();
+            var resource = resourceRepository.FindAsync(r => r.ProjectId == "C96755D0-C22C-4DAD-9620-AF64C4C3D9D7" && r.Culture.Name == CultureInfo.CurrentCulture.Name && r.Key == name).ConfigureAwait(false).GetAwaiter().GetResult();
             return resource?.Value;
         }
     }
