@@ -59,8 +59,7 @@ namespace LinguaNex.Resources
             
             using(var stream = dto.File.OpenReadStream())
             {
-                var dic = new Dictionary<string, string>();
-                await JsonSerializer.SerializeAsync(stream, dic);
+                var dic = await JsonSerializer.DeserializeAsync<Dictionary<string, string>>(stream);
                 if(dic.Count > 0)
                 {
                     var resources = dic.Select(a => new Resource
