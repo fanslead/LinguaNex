@@ -9,8 +9,8 @@ namespace LinguaNex.Resources.Dtos
         public string CultureId { get; set; }
         public string ProjectId { get; set; }
 
-        public bool SyncCulture { get; set; } = false;
-        public bool Translate { get; set; } = false;
+        public bool? SyncCulture { get; set; } = false;
+        public bool? Translate { get; set; } = false;
         public TranslateProviderEnum? TranslateProvider { get; set; }
     }
 }
