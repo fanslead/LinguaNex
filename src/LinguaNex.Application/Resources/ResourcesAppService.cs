@@ -70,6 +70,8 @@ namespace LinguaNex.Resources
                         Key = a.Key,
                         Value = a.Value
                     }).ToList();
+                    var existKeys = resources.Select(a => a.Key).ToList();
+                    await resourceRepository.DeleteAsync(a => existKeys.Contains(a.Key), true);
                     await resourceRepository.InsertManyAsync(resources, true);
                 }
                 
