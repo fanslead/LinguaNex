@@ -6,7 +6,11 @@
 
 批量导入已存在项目多语言资源。
 
-- 测试环境 http://47.119.20.111/Projects
+测试环境
+
+http://47.119.20.111/Projects
+
+http://47.119.20.111/swagger/index.html
 ### 应用场景
 通过API/SDK拉取多语言资源加载，可选WebSocket对接实现即时更新多语言资源。
 - API后端项目响应内容，如错误码对应的Message国际化多语言处理。
