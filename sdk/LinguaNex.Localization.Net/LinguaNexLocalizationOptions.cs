@@ -1,4 +1,4 @@
-﻿namespace LinguaNex.Extensions.Localization.Json
+﻿namespace LinguaNex.Extensions.Localization
 {
     public class LinguaNexLocalizationOptions
     {

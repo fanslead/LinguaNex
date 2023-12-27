@@ -2,7 +2,7 @@
 using System;
 using System.Globalization;
 
-namespace LinguaNex.Extensions.Localization.Json.Internal
+namespace LinguaNex.Extensions.Localization.Internal
 {
     internal static class LinguaNexStringLocalizerLoggerExtensions
     {

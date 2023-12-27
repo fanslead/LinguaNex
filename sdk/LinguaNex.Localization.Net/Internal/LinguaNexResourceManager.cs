@@ -9,7 +9,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace LinguaNex.Extensions.Localization.Json.Internal
+namespace LinguaNex.Extensions.Localization.Internal
 {
     public class LinguaNexResourceManager
     {

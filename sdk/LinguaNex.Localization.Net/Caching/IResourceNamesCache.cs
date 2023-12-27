@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace LinguaNex.Extensions.Localization.Json.Caching
+namespace LinguaNex.Extensions.Localization.Caching
 {
     public interface IResourceNamesCache
     {

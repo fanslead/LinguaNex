@@ -1,4 +1,4 @@
-﻿using LinguaNex.Extensions.Localization.Json.Internal;
+﻿using LinguaNex.Extensions.Localization.Internal;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using System;
@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Resources;
 
-namespace LinguaNex.Extensions.Localization.Json
+namespace LinguaNex.Extensions.Localization
 {
-    using LinguaNex.Extensions.Localization.Json.Caching;
+    using LinguaNex.Extensions.Localization.Caching;
 
     public class LinguaNexStringLocalizer : IStringLocalizer
     {

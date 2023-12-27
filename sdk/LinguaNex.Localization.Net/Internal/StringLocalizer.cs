@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace LinguaNex.Extensions.Localization.Json.Internal
+namespace LinguaNex.Extensions.Localization.Internal
 {
     internal class StringLocalizer : IStringLocalizer
     {

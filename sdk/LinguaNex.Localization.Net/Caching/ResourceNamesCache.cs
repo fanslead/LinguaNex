@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
-namespace LinguaNex.Extensions.Localization.Json.Caching
+namespace LinguaNex.Extensions.Localization.Caching
 {
     public class ResourceNamesCache : IResourceNamesCache
     {
