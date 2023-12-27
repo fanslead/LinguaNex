@@ -1,5 +1,5 @@
-﻿using LinguaNex.Extensions.Localization.Json;
-using LinguaNex.Extensions.Localization.Json.Internal;
+﻿using LinguaNex.Extensions.Localization;
+using LinguaNex.Extensions.Localization.Internal;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
 using System;

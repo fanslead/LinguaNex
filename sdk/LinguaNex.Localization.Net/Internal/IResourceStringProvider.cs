@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 
-namespace LinguaNex.Extensions.Localization.Json.Internal
+namespace LinguaNex.Extensions.Localization.Internal
 {
     public interface IResourceStringProvider
     {
