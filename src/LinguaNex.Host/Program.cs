@@ -1,34 +1,31 @@
-using Serilog.Events;
-using Serilog;
-using Autofac.Extensions.DependencyInjection;
 using Autofac;
-using LinguaNex;
-using Microsoft.AspNetCore.Http.Features;
+using Autofac.Extensions.DependencyInjection;
 using IdGen.DependencyInjection;
+using LinguaNex;
 using LinguaNex.AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using LinguaNex.EntityFrameworkCore;
-using Microsoft.AspNetCore.DataProtection;
-using StackExchange.Redis;
-using System.Text.Json.Serialization;
-using Wheel.Json;
-using Wheel.Controllers;
-using Wheel;
-using System.Reflection;
-using Microsoft.AspNetCore.HttpOverrides;
 using LinguaNex.Const;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.Extensions.Localization;
-using static System.Net.Mime.MediaTypeNames;
-using Wheel.Core.Exceptions;
-using Wheel.Core.Dto;
-using Microsoft.Extensions.DependencyInjection;
-using LinguaNex.Hubs;
-using Wheel.Localization;
-using System.Text.Encodings.Web;
-using System.Text.Unicode;
-using Microsoft.Extensions.Options;
 using LinguaNex.DataSeeders;
+using LinguaNex.EntityFrameworkCore;
+using LinguaNex.Hubs;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
+using Serilog;
+using Serilog.Events;
+using StackExchange.Redis;
+using System.Reflection;
+using System.Text.Encodings.Web;
+using System.Text.Json.Serialization;
+using System.Text.Unicode;
+using Wheel;
+using Wheel.Controllers;
+using Wheel.Core.Dto;
+using Wheel.Core.Exceptions;
+using Wheel.Json;
+using static System.Net.Mime.MediaTypeNames;
 
 var builder = WebApplication.CreateBuilder(args);
 // Kestrel
@@ -63,7 +60,12 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 });
 
 // Localizer
-builder.Services.AddEFStringLocalizer(typeof(EFStringLocalizerStore));
+builder.Services.AddLinguaNexLocalization(options =>
+{
+    options.LinguaNexApiUrl = builder.Configuration["LinguaNex:ApiUrl"];
+    options.Project = builder.Configuration["LinguaNex:Project"];
+    options.UseWebSocket = true;
+});
 builder.Services.AddLocalization();
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
@@ -97,8 +99,8 @@ builder.Services.AddCapDistributedEventBus(x =>
 
     x.UseSqlite(builder.Configuration.GetConnectionString("Default"));
 
-    //x.UseRabbitMQ(o => o.ConnectionFactoryOptions = (factory) => factory.Uri = new Uri(builder.Configuration["ConnectionStrings:RabbitMq"]));
-    x.UseRedis(builder.Configuration["ConnectionStrings:Redis"]);
+    x.UseRabbitMQ(o => o.ConnectionFactoryOptions = (factory) => factory.Uri = new Uri(builder.Configuration["ConnectionStrings:RabbitMq"]));
+    //x.UseRedis(builder.Configuration["ConnectionStrings:Redis"]);
 });
 
 builder.Services.AddMemoryCache();

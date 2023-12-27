@@ -1,12 +1,9 @@
 ﻿using LinguaNex.Emuns;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Wheel.EventBus;
 
 namespace LinguaNex.EventDatas
 {
+    [EventName("CultrueSyncResourceAndTranslateEto")]
     public class CultrueSyncResourceAndTranslateEto
     {
         public string Id { get; set; }

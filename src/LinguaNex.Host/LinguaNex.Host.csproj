@@ -39,10 +39,10 @@
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="6.5.0" />
 		<PackageReference Include="Wheel.Json" Version="1.0.1" />
-		<PackageReference Include="Wheel.Localization" Version="1.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\sdk\LinguaNex.Localization.Net\LinguaNex.Localization.Net.csproj" />
 		<ProjectReference Include="..\LinguaNex.Api\LinguaNex.Api.csproj" />
 	</ItemGroup>
 

@@ -135,7 +135,18 @@ namespace LinguaNex.Extensions.Localization.Internal
             }
             foreach (var resource in resources)
             {
-                _resourcesCache.TryAdd(resource.CultureName, new ConcurrentDictionary<string, string>(resource.Resources));
+                if (_resourcesCache.TryGetValue(resource.CultureName, out var value))
+                {
+                    foreach (var r in resource.Resources)
+                    {
+                        value[r.Key] = r.Value;
+                    }
+                    _resourcesCache[resource.CultureName] = value;
+                }
+                else
+                {
+                    _resourcesCache[resource.CultureName] = new ConcurrentDictionary<string, string>(resource.Resources);
+                }
             }
         }
 
