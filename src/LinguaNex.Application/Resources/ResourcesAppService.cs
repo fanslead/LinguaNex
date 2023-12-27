@@ -91,9 +91,9 @@ namespace LinguaNex.Resources
             entity.Id = SnowflakeIdGenerator.Create().ToString();
             entity = await resourceRepository.InsertAsync(entity, true);
             await DistributedEventBus.PublishAsync(new CreateOrUpdateResourceEto { Id = entity.Id });
-            if(dto.SyncCulture || dto.Translate)
+            if(dto.SyncCulture.Value || dto.Translate.Value)
             {
-                await DistributedEventBus.PublishAsync(new ResourceSyncCultureAndTranslateEto { Translate = dto.Translate, SyncCulture = dto.SyncCulture, Id = entity.Id, TranslateProvider = dto.TranslateProvider });
+                await DistributedEventBus.PublishAsync(new ResourceSyncCultureAndTranslateEto { Translate = dto.Translate.Value, SyncCulture = dto.SyncCulture.Value, Id = entity.Id, TranslateProvider = dto.TranslateProvider });
             }
             return Success(Mapper.Map<ResourceDto>(entity));
         }
