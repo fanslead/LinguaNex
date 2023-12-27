@@ -4,11 +4,12 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace LinguaNex.Extensions.Localization.Internal
+namespace LinguaNex.Extensions.Localization.Json.Internal
 {
     public class LinguaNexResourceManager
     {
@@ -118,10 +119,10 @@ namespace LinguaNex.Extensions.Localization.Internal
                 ? value
                 : null;
         }
-
+        private static List<string> cultureHasFirstLoad = new List<string>();
         private async Task LoadResources(string? cultureName, bool all = false)
         {
-            if (_resourcesCache.TryGetValue(cultureName, out var _))
+            if (_resourcesCache.TryGetValue(cultureName, out var _) && cultureHasFirstLoad.Any(a => a == cultureName))
                 return;
             List<LinguaNexResources> resources;
             if (UseWebSocket)
@@ -148,6 +149,7 @@ namespace LinguaNex.Extensions.Localization.Internal
                     _resourcesCache[resource.CultureName] = new ConcurrentDictionary<string, string>(resource.Resources);
                 }
             }
+            cultureHasFirstLoad.Add(cultureName);
         }
 
         private void InitWebocket(string linguaNexApiUrl, string project)

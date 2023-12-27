@@ -2,7 +2,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace LinguaNex.Extensions.Localization
+namespace LinguaNex.Extensions.Localization.Json
 {
     public static class StringLocalizerExtensions
     {

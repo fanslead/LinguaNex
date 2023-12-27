@@ -1,9 +1,9 @@
-﻿using LinguaNex.Extensions.Localization.Caching;
+﻿using LinguaNex.Extensions.Localization.Json.Caching;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Resources;
 
-namespace LinguaNex.Extensions.Localization.Internal
+namespace LinguaNex.Extensions.Localization.Json.Internal
 {
     public class LinguaNexStringProvider : IResourceStringProvider
     {
