@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Wheel.Core.Dto;
 using Wheel.Core.Exceptions;
@@ -59,24 +60,15 @@ namespace LinguaNex.Resources
             
             using(var stream = dto.File.OpenReadStream())
             {
-                var dic = await JsonSerializer.DeserializeAsync<Dictionary<string, string>>(stream);
-                if(dic.Count > 0)
+                var doc = await JsonDocument.ParseAsync(stream);
+                var resources = TraverseJson(doc.RootElement, "", culture.Id, culture.ProjectId);
+                if(resources.Count() > 0)
                 {
-                    var resources = dic.Select(a => new Resource
-                    {
-                        Id = SnowflakeIdGenerator.Create().ToString(),
-                        ProjectId = culture.ProjectId,
-                        CultureId = culture.Id,
-                        Key = a.Key,
-                        Value = a.Value
-                    }).ToList();
                     var existKeys = resources.Select(a => a.Key).ToList();
                     await resourceRepository.DeleteAsync(a => existKeys.Contains(a.Key), true);
                     await resourceRepository.InsertManyAsync(resources, true);
                 }
-                
             }
-
             return Success();
         }
         public async Task<R<ResourceDto>> CreateAsync(CreateResourceDto dto)
@@ -114,6 +106,36 @@ namespace LinguaNex.Resources
         {
             await resourceRepository.DeleteAsync(id, true);
             return Success();
+        }
+        private List<Resource> TraverseJson(JsonElement element, string parent, string cultureId, string projectId)
+        {
+            List<Resource> resources = new();
+            switch (element.ValueKind)
+            {
+                case JsonValueKind.Object:
+                    foreach (JsonProperty property in element.EnumerateObject())
+                    {
+                        if (property.Value.ValueKind == JsonValueKind.Object)
+                        {
+                            resources.AddRange(TraverseJson(property.Value, $"{parent}{property.Name}.", cultureId, projectId));
+                        }
+                        else
+                        {
+                            resources.Add(new Resource
+                            {
+                                Id = SnowflakeIdGenerator.Create().ToString(),
+                                ProjectId = projectId,
+                                CultureId = cultureId,
+                                Key = $"{parent}{property.Name}",
+                                Value = property.Value.GetString()
+                            });
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return resources;
         }
     }
 }
