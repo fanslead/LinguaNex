@@ -7,5 +7,6 @@ namespace LinguaNex.EventDatas
     {
         public string CultureId { get; set; }
         public string FirstResourceId { get; set; }
+        public bool? Translate { get; set; }
     }
 }

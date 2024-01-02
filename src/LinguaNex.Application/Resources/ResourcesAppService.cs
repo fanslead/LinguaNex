@@ -49,7 +49,7 @@ namespace LinguaNex.Resources
                 );
             return Page(datas, total);
         }
-        public async Task<R> BatchCreateByJsonFileAsync(string cultureId, BatchCreateByJsonFileDto dto)
+        public async Task<R> BatchCreateByJsonFileAsync(string cultureId, bool? translate, BatchCreateByJsonFileDto dto)
         {
             if(Path.GetExtension(dto.File.FileName)!=".json")
                 throw new BusinessException(ErrorCode.NotSupported, ErrorCode.NotSupported).WithMessageDataData(Path.GetExtension(dto.File.FileName));
@@ -67,7 +67,7 @@ namespace LinguaNex.Resources
                     var existKeys = resources.Select(a => a.Key).ToList();
                     await resourceRepository.DeleteAsync(a => existKeys.Contains(a.Key), true);
                     await resourceRepository.InsertManyAsync(resources, true);
-                    await DistributedEventBus.PublishAsync(new BatchCreateResourceEto { CultureId = cultureId, FirstResourceId = resources.First().Id });
+                    await DistributedEventBus.PublishAsync(new BatchCreateResourceEto { CultureId = cultureId, FirstResourceId = resources.First().Id, Translate = translate });
                 }
             }
             return Success();

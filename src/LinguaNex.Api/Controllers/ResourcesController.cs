@@ -23,9 +23,9 @@ namespace LinguaNex.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost("File/{cultureId}")]
-        public Task<R> BatchCreateByJsonFileAsync(string cultureId, [FromForm]BatchCreateByJsonFileDto dto)
+        public Task<R> BatchCreateByJsonFileAsync(string cultureId, [FromQuery]bool? translate, [FromForm]BatchCreateByJsonFileDto dto)
         {
-            return resourcesAppService.BatchCreateByJsonFileAsync(cultureId, dto);
+            return resourcesAppService.BatchCreateByJsonFileAsync(cultureId, translate, dto);
         }
         /// <summary>
         /// 添加
