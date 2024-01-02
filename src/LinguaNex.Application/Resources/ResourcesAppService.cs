@@ -67,6 +67,7 @@ namespace LinguaNex.Resources
                     var existKeys = resources.Select(a => a.Key).ToList();
                     await resourceRepository.DeleteAsync(a => existKeys.Contains(a.Key), true);
                     await resourceRepository.InsertManyAsync(resources, true);
+                    await DistributedEventBus.PublishAsync(new BatchCreateResourceEto { CultureId = cultureId });
                 }
             }
             return Success();
