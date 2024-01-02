@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Card, Col, Form, Input, Modal, Row, Select, Space, Table, Upload, UploadProps } from 'antd';
+import { Button, Card, Checkbox, Col, Form, Input, Modal, Row, Select, Space, Table, Upload, UploadProps } from 'antd';
 import { PageContainer } from '@ant-design/pro-components';
 import styles from './style.less';
 import { List } from 'antd';
@@ -57,7 +57,9 @@ const CultureRecouece = () => {
     const match = matchPath({ path: "/CultureRecouece/:id" }, history.location.pathname)
     await postCulture({
       name: params.name,
-      projectId: match?.params.id
+      projectId: match?.params.id,
+      syncResource: params.syncResource,
+      translate: params.translate
     })
     createCultureForm.resetFields();
     hideCreateModalModal();
@@ -76,7 +78,10 @@ const CultureRecouece = () => {
       key: params.key,
       value: params.value,
       projectId: match?.params.id,
-      cultureId: currentCultureId
+      cultureId: currentCultureId,
+      syncCulture: params.syncCulture,
+      translate: params.translate,
+      translateProvider: params.translateProvider
     })
     createCultureForm.resetFields();
     hideCreateResourceModalModal();
@@ -222,10 +227,28 @@ const CultureRecouece = () => {
             options={selectOptions()}
           />
         </Form.Item>
+        
+        <Form.Item<boolean>
+          label="SyncResource"
+          name="syncResource"
+          valuePropName="checked"
+          initialValue={true}
+        >
+          <Checkbox/>
+        </Form.Item>
+        <Form.Item<boolean>
+          label="Translate"
+          name="translate"
+          valuePropName="checked"
+          initialValue={true}
+        >
+          <Checkbox/>
+        </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
             创建
           </Button>
+          &nbsp;&nbsp;
           <Button type="default" onClick={() => hideCreateModalModal()}>
             关闭
           </Button>
@@ -258,10 +281,42 @@ const CultureRecouece = () => {
           <Input
           />
         </Form.Item>
+        <Form.Item<boolean>
+          label="SyncCulture"
+          name="syncCulture"
+          valuePropName="checked"
+          initialValue={true}
+        >
+          <Checkbox/>
+        </Form.Item>
+        <Form.Item<boolean>
+          label="Translate"
+          name="translate"
+          valuePropName="checked"
+          initialValue={true}
+        >
+          <Checkbox/>
+        </Form.Item>
+        <Form.Item<number>
+          label="TranslateProvider"
+          name="translateProvider"
+          initialValue={0}
+        >
+          <Select
+            showSearch
+            placeholder="Select a translate provider"
+            optionFilterProp="children"
+            options={[
+              { value: 0, label: '百度翻译' },
+              { value: 1, label: '有道翻译' }
+            ]}
+          />
+        </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
             添加
           </Button>
+          &nbsp;&nbsp;
           <Button type="default" onClick={() => hideCreateResourceModalModal()}>
             关闭
           </Button>
@@ -299,6 +354,7 @@ const CultureRecouece = () => {
           <Button type="primary" htmlType="submit">
             修改
           </Button>
+          &nbsp;&nbsp;
           <Button type="default" onClick={() => hidePutResourceModalModal()}>
             关闭
           </Button>

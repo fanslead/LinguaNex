@@ -9,6 +9,9 @@ declare namespace API {
   type CreateCultureDto = {
     name?: string;
     projectId?: string;
+    syncResource?: boolean;
+    translate?: boolean;
+    translateProvider?: TranslateProviderEnum;
   };
 
   type CreateProjectAssociationDto = {
@@ -26,6 +29,9 @@ declare namespace API {
     value?: string;
     cultureId?: string;
     projectId?: string;
+    syncCulture?: boolean;
+    translate?: boolean;
+    translateProvider?: TranslateProviderEnum;
   };
 
   type CultureDto = {
@@ -138,6 +144,10 @@ declare namespace API {
     total?: string;
   };
 
+  type postResourcesFileCultureIdParams = {
+    cultureId: string;
+  };
+
   type ProjectDto = {
     id?: string;
     name?: string;
@@ -213,6 +223,8 @@ declare namespace API {
     displayName?: string;
     englishName?: string;
   };
+
+  type TranslateProviderEnum = 0 | 1;
 
   type UpdateResourceDto = {
     id?: string;
