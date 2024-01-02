@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Card, Col, Form, Input, Modal, Row, Select, Space, Table } from 'antd';
+import { Button, Card, Col, Form, Input, Modal, Row, Select, Space, Table, Upload, UploadProps } from 'antd';
 import { PageContainer } from '@ant-design/pro-components';
 import styles from './style.less';
 import { List } from 'antd';
@@ -181,7 +181,14 @@ const CultureRecouece = () => {
       ),
     },
   ];
-
+  const getUploadUrl = () => {
+    return "/api/Resources/File/" + currentCultureId
+  }
+  const props: UploadProps ={
+    name: 'file',
+    action: getUploadUrl(),
+    accept: ".json"
+  }
   return (
   <PageContainer>
     <Modal
@@ -321,7 +328,7 @@ const CultureRecouece = () => {
         </Card>
       </Col>
       <Col flex={9}>
-        <Card className={styles.CultureRecoueceRow} title={tableTitleData} extra={<a onClick={() => showOpenCreateResourceModalModal()}>新增</a>} >
+        <Card className={styles.CultureRecoueceRow} title={tableTitleData} extra={<div><Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}><Col className="gutter-row" span={11}><Upload {...props} ><Button type="primary">上传文件</Button></Upload></Col><Col className="gutter-row" span={10}><Button type="primary" onClick={() => showOpenCreateResourceModalModal()}>新增</Button></Col></Row></div>} >
           <Table columns={resourceColumns} dataSource={resourceData}
           pagination={false}
           />
