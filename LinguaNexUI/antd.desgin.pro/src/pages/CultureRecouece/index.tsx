@@ -187,7 +187,13 @@ const CultureRecouece = () => {
   const props: UploadProps ={
     name: 'file',
     action: getUploadUrl(),
-    accept: ".json"
+    accept: ".json",
+    showUploadList: false,
+    onChange: (info) => {
+      if(info.file.status === 'done'){
+        fetcResourceData(currentCultureId)
+      }
+    }
   }
   return (
   <PageContainer>
