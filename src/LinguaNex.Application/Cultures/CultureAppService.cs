@@ -2,6 +2,7 @@
 using LinguaNex.Cultures.Dtos;
 using LinguaNex.Domain;
 using LinguaNex.Entities;
+using LinguaNex.EventDatas;
 using LinguaNex.Project.Dtos;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,16 @@ namespace LinguaNex.Cultures
             var entity = Mapper.Map<Culture>(dto);
             entity.Id = SnowflakeIdGenerator.Create().ToString();
             entity = await cultureRepository.InsertAsync(entity, true);
+            if (dto.SyncResource.Value)
+            {
+                await DistributedEventBus.PublishAsync(new CultrueSyncResourceAndTranslateEto
+                {
+                    Id = entity.Id,
+                    SyncResource = dto.SyncResource.Value,
+                    Translate = dto.Translate.Value,
+                    TranslateProvider = dto.TranslateProvider
+                });
+            }
             return Success(Mapper.Map<CultureDto>(entity));
         }
 
