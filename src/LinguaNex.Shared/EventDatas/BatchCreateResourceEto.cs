@@ -6,5 +6,6 @@ namespace LinguaNex.EventDatas
     public class BatchCreateResourceEto
     {
         public string CultureId { get; set; }
+        public string FirstResourceId { get; set; }
     }
 }
