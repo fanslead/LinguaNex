@@ -30,7 +30,7 @@ namespace LinguaNex.Handlers
                 if (eventData.SyncResource)
                 {
                     var resourceList = new List<Resource>();
-                    var syncCultrue = await cultureRepository.FindAsync(s => s.Name == "en");
+                    var syncCultrue = await cultureRepository.FindAsync(s => s.Name == "en" && s.ProjectId == cultrue.ProjectId);
                     //var syncCultrue = await cultureRepository.FindAsync(cultureRepository.BuildPredicate(
                     //    (true, s=>s.Resources != null)
                     //    ));
@@ -52,7 +52,7 @@ namespace LinguaNex.Handlers
                                 var value = await translateAppService.Translate(new Translates.Dto.TranslateRequestDto() { SourceLang = syncCultrue.Name, SourceString = resource.Value, TargetLang = cultrue.Name, TranslateProvider = eventData.TranslateProvider ?? Emuns.TranslateProviderEnum.Baidu });
                                 resourceItem.Value = value;
                             }
-                            resourceList.Add(resource);
+                            resourceList.Add(resourceItem);
                         }
                     }
 

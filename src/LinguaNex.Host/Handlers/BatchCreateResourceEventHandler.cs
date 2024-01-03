@@ -17,17 +17,15 @@ namespace LinguaNex.Handlers
         {
             try
             {
-
-
                 var cultrue = await cultureRepository.FindAsync(s => s.Id == eventData.CultureId);
                 if (cultrue == null)
                 {
                     throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData($"CultureId:{eventData.CultureId}");
                 }
-                var syncResourceList = await resourceRepository.GetListAsync(s => s.Id >= eventData.FirstResourceId);
+                var syncResourceList = await resourceRepository.GetListAsync(s => s.Id >= eventData.FirstResourceId && s.CultureId == cultrue.Id);
                 if (syncResourceList != null && syncResourceList.Any())
                 {
-                    var cultrueList = await cultureRepository.GetListAsync(s => true);
+                    var cultrueList = await cultureRepository.GetListAsync(s => s.ProjectId == cultrue.ProjectId && s.Id != cultrue.Id);
                     if (cultrueList != null && cultrueList.Any())
                     {
                         var resourceList = new List<Resource>();

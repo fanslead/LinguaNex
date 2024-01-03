@@ -28,7 +28,7 @@ namespace LinguaNex.Handlers
                 {
                     throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData($"Culture:{resource.CultureId}");
                 }
-                var cultrueList = await cultureRepository.GetListAsync(s => true);
+                var cultrueList = await cultureRepository.GetListAsync(s => s.ProjectId == cultrue.ProjectId && s.Id != cultrue.Id);
                 if (cultrueList != null && cultrueList.Any())
                 {
                     var resourceList = new List<Resource>();
