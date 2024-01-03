@@ -59,7 +59,8 @@ const CultureRecouece = () => {
       name: params.name,
       projectId: match?.params.id,
       syncResource: params.syncResource,
-      translate: params.translate
+      translate: params.translate,
+      translateProvider: params.translateProvider
     })
     createCultureForm.resetFields();
     hideCreateModalModal();
@@ -243,6 +244,21 @@ const CultureRecouece = () => {
           initialValue={true}
         >
           <Checkbox/>
+        </Form.Item>
+        <Form.Item<number>
+          label="TranslateProvider"
+          name="translateProvider"
+          initialValue={0}
+        >
+          <Select
+            showSearch
+            placeholder="Select a translate provider"
+            optionFilterProp="children"
+            options={[
+              { value: 0, label: '百度翻译' },
+              { value: 1, label: '有道翻译' }
+            ]}
+          />
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
