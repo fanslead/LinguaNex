@@ -93,9 +93,9 @@ connection.InvokeAsync<List<LinguaNexResources>>("GetResources", projectId, cult
 - [x] Resouce多语言资源管理API
 - [x] OpenApi获取多语言资源
 - [x] SignalR获取多语言资源与实时推送更新多语言资源
-- [ ] 自动同步资源到不同Culture
-- [ ] 自动翻译资源到不同Culture
-- [ ] 集成三方翻译API
+- [x] 自动同步资源到不同Culture
+- [x] 自动翻译资源到不同Culture
+- [x] 集成三方翻译API
 - [ ] 集成AI翻译
 - [x] 导出JSON多语言文件
 - [x] 导出Toml多语言文件
