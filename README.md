@@ -107,4 +107,4 @@ connection.InvokeAsync<List<LinguaNexResources>>("GetResources", projectId, cult
 - [ ] JAVA SDK
 - [ ] GO SDK
 - [ ] PY SDK
-- [ ] UI管理界面
+- [x] UI管理界面
