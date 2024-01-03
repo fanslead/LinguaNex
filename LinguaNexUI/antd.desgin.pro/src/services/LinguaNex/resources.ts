@@ -54,6 +54,46 @@ export async function getResourcesAllCultureId(
   });
 }
 
+/** Json文件批量导入 POST /api/Resources/File/${param0} */
+export async function postResourcesFileCultureId(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.postResourcesFileCultureIdParams,
+  body: {},
+  File?: File,
+  options?: { [key: string]: any },
+) {
+  const { cultureId: param0, ...queryParams } = params;
+  const formData = new FormData();
+
+  if (File) {
+    formData.append('File', File);
+  }
+
+  Object.keys(body).forEach((ele) => {
+    const item = (body as any)[ele];
+
+    if (item !== undefined && item !== null) {
+      if (typeof item === 'object' && !(item instanceof File)) {
+        if (item instanceof Array) {
+          item.forEach((f) => formData.append(ele, f || ''));
+        } else {
+          formData.append(ele, JSON.stringify(item));
+        }
+      } else {
+        formData.append(ele, item);
+      }
+    }
+  });
+
+  return request<API.R>(`/api/Resources/File/${param0}`, {
+    method: 'POST',
+    params: { ...queryParams },
+    data: formData,
+    requestType: 'form',
+    ...(options || {}),
+  });
+}
+
 /** 根据地区分页获取多语言资源 GET /api/Resources/list */
 export async function getResourcesList(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
