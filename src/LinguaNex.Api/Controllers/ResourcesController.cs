@@ -23,7 +23,7 @@ namespace LinguaNex.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost("File/{cultureId}")]
-        public Task<R> BatchCreateByJsonFileAsync(string cultureId, [FromQuery]bool? translate, [FromForm]BatchCreateByJsonFileDto dto)
+        public Task<R> BatchCreateByJsonFileAsync(long cultureId, [FromQuery]bool? translate, [FromForm]BatchCreateByJsonFileDto dto)
         {
             return resourcesAppService.BatchCreateByJsonFileAsync(cultureId, translate, dto);
         }
@@ -43,7 +43,7 @@ namespace LinguaNex.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public Task<R> DeleteAsync(string id)
+        public Task<R> DeleteAsync(long id)
         {
             return resourcesAppService.DeleteAsync(id);
         }
@@ -53,7 +53,7 @@ namespace LinguaNex.Controllers
         /// <param name="cultureId"></param>
         /// <returns></returns>
         [HttpGet("all/{cultureId}")]
-        public Task<R<List<ResourceDto>>> GetAllResourceByCulture(string cultureId)
+        public Task<R<List<ResourceDto>>> GetAllResourceByCulture(long cultureId)
         {
             return resourcesAppService.GetAllResourceByCulture(cultureId);
         }

@@ -8,7 +8,7 @@ namespace LinguaNex.Resources.Dtos
 {
     public class UpdateResourceDto
     {
-        public string Id { get; set; }
+        public long Id { get; set; }
         public string Value { get; set; }
     }
 }

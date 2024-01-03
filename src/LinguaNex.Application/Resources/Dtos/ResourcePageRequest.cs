@@ -4,6 +4,6 @@ namespace LinguaNex.Resources.Dtos
 {
     public class ResourcePageRequest : PageRequest
     {
-        public string CultureId { get; set; }
+        public long CultureId { get; set; }
     }
 }
