@@ -78,13 +78,15 @@ connection.InvokeAsync<List<LinguaNexResources>>("GetResources", projectId, cult
 ```
 
 ## 效果图
-![image](https://github.com/fanslead/LinguaNex/assets/22066473/8f38e6dd-63ee-4d78-9434-ef9f302a1630)
+![image](https://github.com/fanslead/LinguaNex/assets/22066473/5f59075e-7058-4c8e-83fc-b1d434d28af4)
 
-![image](https://github.com/fanslead/LinguaNex/assets/22066473/55238455-c0a3-483d-bf0d-fd3307b07683)
+![image](https://github.com/fanslead/LinguaNex/assets/22066473/492f515f-76a1-4b49-a601-914ae147e14c)
 
-![image](https://github.com/fanslead/LinguaNex/assets/22066473/c6271834-d961-4b79-a25a-c9aff58482ab)
+![image](https://github.com/fanslead/LinguaNex/assets/22066473/5a729175-3f4f-4061-b77c-42e8727d95ee)
 
-![image](https://github.com/fanslead/LinguaNex/assets/22066473/ad488c11-bd0e-4809-b9ff-c98d1ba69207)
+![image](https://github.com/fanslead/LinguaNex/assets/22066473/a205a732-787d-48d9-a154-18f815e07b89)
+
+![image](https://github.com/fanslead/LinguaNex/assets/22066473/99b13aba-f0b3-4b25-befc-775716fa6936)
 
 ## RoadMap
 - [x] Project项目管理API
