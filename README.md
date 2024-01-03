@@ -103,7 +103,7 @@ connection.InvokeAsync<List<LinguaNexResources>>("GetResources", projectId, cult
 - [x] 导出Toml多语言文件
 - [x] 导出messages.properties多语言文件
 - [x] 导出xml多语言文件
-- [ ] 批量导入多语言配置
+- [x] 批量导入多语言配置(JSON)
 - [x] .NET SDK
 - [ ] JS SDK
 - [ ] JAVA SDK
