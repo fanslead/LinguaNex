@@ -22,9 +22,9 @@ namespace LinguaNex.Migrations
 
             modelBuilder.Entity("LinguaNex.Entities.Culture", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(36)
-                        .HasColumnType("TEXT");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -80,13 +80,12 @@ namespace LinguaNex.Migrations
 
             modelBuilder.Entity("LinguaNex.Entities.Resource", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(36)
-                        .HasColumnType("TEXT");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("CultureId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<long>("CultureId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Key")
                         .IsRequired()

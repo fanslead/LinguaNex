@@ -27,7 +27,8 @@ namespace LinguaNex.Migrations
                 name: "Culture",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", maxLength: 36, nullable: false),
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
                     ProjectId = table.Column<string>(type: "TEXT", nullable: false)
                 },
@@ -70,10 +71,11 @@ namespace LinguaNex.Migrations
                 name: "Resource",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", maxLength: 36, nullable: false),
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Key = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
                     Value = table.Column<string>(type: "TEXT", maxLength: 16384, nullable: false),
-                    CultureId = table.Column<string>(type: "TEXT", nullable: false),
+                    CultureId = table.Column<long>(type: "INTEGER", nullable: false),
                     ProjectId = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>

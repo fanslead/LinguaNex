@@ -1,11 +1,4 @@
-﻿using SKIT.FlurlHttpClient.Baidu.Translate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LinguaNex.Translates.YouDao
+﻿namespace LinguaNex.Translates.YouDao
 {
     public class YouDaoTranslateClientOptions
     {
@@ -19,12 +12,12 @@ namespace LinguaNex.Translates.YouDao
         public string Endpoint { get; set; } = "https://openapi.youdao.com/api";
 
         /// <summary>
-        /// 获取或设置百度翻译 AppId。
+        /// 获取或设置有道翻译 AppId。
         /// </summary>
         public string AppId { get; set; } = default!;
 
         /// <summary>
-        /// 获取或设置百度翻译 AppSecret。
+        /// 获取或设置有道翻译 AppSecret。
         /// </summary>
         public string AppSecret { get; set; } = default!;
     }

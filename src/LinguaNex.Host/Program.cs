@@ -7,6 +7,7 @@ using LinguaNex.Const;
 using LinguaNex.DataSeeders;
 using LinguaNex.EntityFrameworkCore;
 using LinguaNex.Hubs;
+using LinguaNex.Translates;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.Features;
@@ -85,6 +86,16 @@ builder.Services.AddIdGen(0);
 
 var connectionString = builder.Configuration.GetConnectionString("Default") ?? throw new InvalidOperationException("Connection string 'Default' not found.");
 
+builder.Services.AddBaiduTransalte(options =>
+{
+    options.AppId = builder.Configuration["Translates:Baidu:AppId"];
+    options.AppSecret = builder.Configuration["Translates:Baidu:AppSecret"];
+});
+builder.Services.AddYouDaoTransalte(options =>
+{
+    options.AppId = builder.Configuration["Translates:YouDao:AppId"];
+    options.AppSecret = builder.Configuration["Translates:YouDao:AppSecret"];
+});
 
 builder.Services.AddDbContext<LinguaNexDbContext>(options =>
     options.UseSqlite(connectionString)

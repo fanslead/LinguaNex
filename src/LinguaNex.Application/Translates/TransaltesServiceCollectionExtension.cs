@@ -21,7 +21,7 @@ namespace LinguaNex.Translates
             action.Invoke(options);
             services.AddSingleton(new BaiduTranslateClient(options));
 
-            services.AddKeyedSingleton<ITranslate, BaiduTranslate>("Baidu");
+            services.AddSingleton<ITranslate, BaiduTranslate>();
 
             return services;
         }
@@ -43,7 +43,7 @@ namespace LinguaNex.Translates
             action.Invoke(options);
             services.AddSingleton(new YouDaoTranslateClient(options));
 
-            services.AddKeyedSingleton<ITranslate, YouDaoTranslate>("YouDao");
+            services.AddSingleton<ITranslate, YouDaoTranslate>();
 
             return services;
         }

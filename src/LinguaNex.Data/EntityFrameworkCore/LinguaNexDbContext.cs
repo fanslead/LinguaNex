@@ -33,7 +33,6 @@ namespace LinguaNex.EntityFrameworkCore
             modelBuilder.Entity<Culture>(e =>
             {
                 e.HasKey(a => a.Id);
-                e.Property(a => a.Id).HasMaxLength(36);
                 e.Property(a => a.Name).HasMaxLength(64);
                 e.HasOne(a => a.Project);
                 e.HasMany(a => a.Resources);
@@ -41,7 +40,6 @@ namespace LinguaNex.EntityFrameworkCore
             modelBuilder.Entity<Resource>(e =>
             {
                 e.HasKey(a => a.Id);
-                e.Property(a => a.Id).HasMaxLength(36);
                 e.HasOne(a => a.Project);
                 e.HasOne(a => a.Culture);
                 e.Property(a => a.Key).HasMaxLength(256);
