@@ -19,7 +19,7 @@ namespace LinguaNex.Translates.Baidu
             var response = await Client.ExecuteTranslateVipTranslateAsync(new SKIT.FlurlHttpClient.Baidu.Translate.Models.TranslateVipTranslateRequest
             {
                 QueryString = sourceString,
-                From = ConvertLangCode(sourceLang),
+                From = "auto",//ConvertLangCode(sourceLang),
                 To = ConvertLangCode(targetLang)
             });
             if (response.IsSuccessful())

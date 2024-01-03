@@ -48,7 +48,7 @@ namespace LinguaNex.Handlers
                                     if (eventData.Translate ?? true) //翻译
                                     {
                                         var value = await translateAppService.Translate(new Translates.Dto.TranslateRequestDto() { SourceLang = cultrue.Name, SourceString = resource.Value, TargetLang = item.Name, TranslateProvider = eventData.TranslateProvider ?? Emuns.TranslateProviderEnum.Baidu });
-                                        resource.Value = value;
+                                        resourceItem.Value = value;
                                     }
                                     resourceList.Add(resourceItem);
                                 }
