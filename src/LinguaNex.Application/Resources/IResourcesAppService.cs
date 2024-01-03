@@ -11,14 +11,14 @@ namespace LinguaNex.Resources
 {
     public interface IResourcesAppService : ITransientDependency
     {
-        Task<R<List<ResourceDto>>> GetAllResourceByCulture(string cultureId);
+        Task<R<List<ResourceDto>>> GetAllResourceByCulture(long cultureId);
 
         Task<Page<ResourceDto>> GetResourcePageByCulture(ResourcePageRequest request);
-        Task<R> BatchCreateByJsonFileAsync(string cultureId, bool? translate, BatchCreateByJsonFileDto dto);
+        Task<R> BatchCreateByJsonFileAsync(long cultureId, bool? translate, BatchCreateByJsonFileDto dto);
         Task<R<ResourceDto>> CreateAsync(CreateResourceDto dto);
 
         Task<R<ResourceDto>> UpdateAsync(UpdateResourceDto dto);
 
-        Task<R> DeleteAsync(string id);
+        Task<R> DeleteAsync(long id);
     }
 }

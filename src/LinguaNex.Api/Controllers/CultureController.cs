@@ -35,7 +35,7 @@ namespace LinguaNex.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public Task<R> DeleteAsync(string id)
+        public Task<R> DeleteAsync(long id)
         {
             return cultureAppService.DeleteAsync(id);
         }

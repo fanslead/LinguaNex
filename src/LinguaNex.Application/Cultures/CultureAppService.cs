@@ -15,7 +15,7 @@ using Wheel.Services;
 
 namespace LinguaNex.Cultures
 {
-    public class CultureAppService(IBasicRepository<Culture, string> cultureRepository, IBasicRepository<Projects, string> projectsRepository) : LinguaNexServiceBase, ICultureAppService
+    public class CultureAppService(IBasicRepository<Culture, long> cultureRepository, IBasicRepository<Projects, string> projectsRepository) : LinguaNexServiceBase, ICultureAppService
     {
         public async Task<R<CultureDto>> CreateAsync(CreateCultureDto dto)
         {
@@ -23,13 +23,13 @@ namespace LinguaNex.Cultures
                 throw new BusinessException(ErrorCode.NotSupported, ErrorCode.NotSupported).WithMessageDataData(dto.Name);
 
             if(!await projectsRepository.AnyAsync(a => a.Id == dto.ProjectId))
-                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.ProjectId);
+                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.ProjectId.ToString());
 
             if(await cultureRepository.AnyAsync(a => a.Name == dto.Name && a.ProjectId == dto.ProjectId))
                 throw new BusinessException(ErrorCode.Exist, ErrorCode.Exist).WithMessageDataData(dto.Name);
 
             var entity = Mapper.Map<Culture>(dto);
-            entity.Id = SnowflakeIdGenerator.Create().ToString();
+            entity.Id = SnowflakeIdGenerator.Create();
             entity = await cultureRepository.InsertAsync(entity, true);
             if (dto.SyncResource.Value)
             {
@@ -50,7 +50,7 @@ namespace LinguaNex.Cultures
             return Page(Mapper.Map<List<CultureDto>>(entities), total);
         }
 
-        public async Task<R> DeleteAsync(string id)
+        public async Task<R> DeleteAsync(long id)
         {
             await cultureRepository.DeleteAsync(a => a.Id == id, true);
             return Success();

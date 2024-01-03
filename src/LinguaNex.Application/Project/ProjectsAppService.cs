@@ -7,7 +7,7 @@ using Wheel.Services;
 
 namespace LinguaNex.Project
 {
-    public class ProjectsAppService(IBasicRepository<Projects, string> projectsRepository, IBasicRepository<ProjectAssociation> projectsAssociationRepository, IBasicRepository<Culture, string> cultureRepository) : LinguaNexServiceBase, IProjectsAppService
+    public class ProjectsAppService(IBasicRepository<Projects, string> projectsRepository, IBasicRepository<ProjectAssociation> projectsAssociationRepository, IBasicRepository<Culture, long> cultureRepository) : LinguaNexServiceBase, IProjectsAppService
     {
         public async Task<R<ProjectDto>> FindAsync(string id)
         {
@@ -27,10 +27,10 @@ namespace LinguaNex.Project
             entity = await projectsRepository.InsertAsync(entity, true);
 
             await cultureRepository.InsertAsync(new Culture { 
-                Id = SnowflakeIdGenerator.Create().ToString(), Name = "zh-Hans", ProjectId = entity.Id
+                Id = SnowflakeIdGenerator.Create(), Name = "zh-Hans", ProjectId = entity.Id
             }, true);
             await cultureRepository.InsertAsync(new Culture { 
-                Id = SnowflakeIdGenerator.Create().ToString(), Name = "en", ProjectId = entity.Id
+                Id = SnowflakeIdGenerator.Create(), Name = "en", ProjectId = entity.Id
             }, true);
             return Success(Mapper.Map<ProjectDto>(entity));
         }

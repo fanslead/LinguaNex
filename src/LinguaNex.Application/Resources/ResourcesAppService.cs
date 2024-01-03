@@ -17,9 +17,9 @@ using Wheel.Services;
 
 namespace LinguaNex.Resources
 {
-    public class ResourcesAppService(IBasicRepository<Resource, string> resourceRepository, IBasicRepository<Culture, string> cultureRepository, IBasicRepository<Projects, string> projectsRepository) : LinguaNexServiceBase, IResourcesAppService
+    public class ResourcesAppService(IBasicRepository<Resource, long> resourceRepository, IBasicRepository<Culture, long> cultureRepository, IBasicRepository<Projects, long> projectsRepository) : LinguaNexServiceBase, IResourcesAppService
     {
-        public async Task<R<List<ResourceDto>>> GetAllResourceByCulture(string cultureId)
+        public async Task<R<List<ResourceDto>>> GetAllResourceByCulture(long cultureId)
         {
             var datas = await resourceRepository.SelectListAsync(a => a.CultureId == cultureId, 
                 a=> new ResourceDto 
@@ -49,14 +49,14 @@ namespace LinguaNex.Resources
                 );
             return Page(datas, total);
         }
-        public async Task<R> BatchCreateByJsonFileAsync(string cultureId, bool? translate, BatchCreateByJsonFileDto dto)
+        public async Task<R> BatchCreateByJsonFileAsync(long cultureId, bool? translate, BatchCreateByJsonFileDto dto)
         {
             if(Path.GetExtension(dto.File.FileName)!=".json")
                 throw new BusinessException(ErrorCode.NotSupported, ErrorCode.NotSupported).WithMessageDataData(Path.GetExtension(dto.File.FileName));
 
             var culture = await cultureRepository.FindAsync(cultureId);
             if(culture == null)
-                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(cultureId);
+                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(cultureId.ToString());
             
             using(var stream = dto.File.OpenReadStream())
             {
@@ -75,14 +75,14 @@ namespace LinguaNex.Resources
         public async Task<R<ResourceDto>> CreateAsync(CreateResourceDto dto)
         {
             if (!await projectsRepository.AnyAsync(a => a.Id == dto.ProjectId))
-                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.ProjectId);
+                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.ProjectId.ToString());
             if (!await cultureRepository.AnyAsync(a => a.Id == dto.CultureId))
-                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.CultureId);
+                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.CultureId.ToString());
             if (await resourceRepository.AnyAsync(a => a.ProjectId == dto.ProjectId && a.CultureId == dto.CultureId && a.Key == dto.Key))
                 throw new BusinessException(ErrorCode.Exist, ErrorCode.Exist).WithMessageDataData(dto.Key);
 
             var entity = Mapper.Map<Resource>(dto);
-            entity.Id = SnowflakeIdGenerator.Create().ToString();
+            entity.Id = SnowflakeIdGenerator.Create();
             entity = await resourceRepository.InsertAsync(entity, true);
             await DistributedEventBus.PublishAsync(new CreateOrUpdateResourceEto { Id = entity.Id });
             if(dto.SyncCulture.Value)
@@ -95,7 +95,7 @@ namespace LinguaNex.Resources
         {
             var entity = await resourceRepository.FindAsync(dto.Id);
             if (entity == null)
-                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.Id);
+                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.Id.ToString());
 
             entity.Value = dto.Value;
             entity = await resourceRepository.UpdateAsync(entity, true);
@@ -103,12 +103,12 @@ namespace LinguaNex.Resources
             return Success(Mapper.Map<ResourceDto>(entity));
         }
 
-        public async Task<R> DeleteAsync(string id)
+        public async Task<R> DeleteAsync(long id)
         {
             await resourceRepository.DeleteAsync(id, true);
             return Success();
         }
-        private List<Resource> TraverseJson(JsonElement element, string parent, string cultureId, string projectId)
+        private List<Resource> TraverseJson(JsonElement element, string parent, long cultureId, string projectId)
         {
             List<Resource> resources = new();
             switch (element.ValueKind)
@@ -124,7 +124,7 @@ namespace LinguaNex.Resources
                         {
                             resources.Add(new Resource
                             {
-                                Id = SnowflakeIdGenerator.Create().ToString(),
+                                Id = SnowflakeIdGenerator.Create(),
                                 ProjectId = projectId,
                                 CultureId = cultureId,
                                 Key = $"{parent}{property.Name}",

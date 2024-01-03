@@ -11,13 +11,13 @@ using Wheel.Services;
 
 namespace LinguaNex.OpenApi
 {
-    public class OpenApiAppService(IBasicRepository<Culture, string> cultureRepository, IBasicRepository<Projects, string> projectsRepository, IBasicRepository<ProjectAssociation> projectAssociationRepository) : LinguaNexServiceBase, IOpenApiAppService
+    public class OpenApiAppService(IBasicRepository<Culture, long> cultureRepository, IBasicRepository<Projects, string> projectsRepository, IBasicRepository<ProjectAssociation> projectAssociationRepository) : LinguaNexServiceBase, IOpenApiAppService
     {
         public async Task<R<List<ResourcesDto>>> GetResources(string projectId, string? cultureName, bool all)
         {
             var project = await projectsRepository.FindAsync(projectId);
             if(project == null)
-                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(project.Id);
+                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(project.Id.ToString());
             if(!project.Enalbe)
                 throw new BusinessException(ErrorCode.NotEnable, ErrorCode.NotEnable).WithMessageDataData(project.Name);
 

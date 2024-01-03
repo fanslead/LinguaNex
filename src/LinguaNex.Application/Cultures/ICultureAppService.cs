@@ -15,6 +15,6 @@ namespace LinguaNex.Cultures
 
         Task<Page<CultureDto>> PageListAsync(CulturePageRequest request);
 
-        Task<R> DeleteAsync(string id);
+        Task<R> DeleteAsync(long id);
     }
 }

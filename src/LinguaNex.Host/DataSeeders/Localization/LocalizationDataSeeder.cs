@@ -14,8 +14,8 @@ namespace LinguaNex.DataSeeders.Localization
             }
             if (!(await cultureRepository.AnyAsync(cancellationToken)))
             {
-                await cultureRepository.InsertAsync(new Culture() { Id = "1186495029787492344", Name = "zh-Hans", ProjectId = "C96755D0-C22C-4DAD-9620-AF64C4C3D9D7" }, true);
-                await cultureRepository.InsertAsync(new Culture() { Id = "1186495029787492345", Name = "en", ProjectId = "C96755D0-C22C-4DAD-9620-AF64C4C3D9D7" }, true);
+                await cultureRepository.InsertAsync(new Culture() { Id = 1186495029787492344, Name = "zh-Hans", ProjectId = "C96755D0-C22C-4DAD-9620-AF64C4C3D9D7" }, true);
+                await cultureRepository.InsertAsync(new Culture() { Id = 1186495029787492345, Name = "en", ProjectId = "C96755D0-C22C-4DAD-9620-AF64C4C3D9D7" }, true);
             }
         }
     }
