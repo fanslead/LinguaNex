@@ -11,10 +11,11 @@ using Wheel.Utilities;
 
 namespace LinguaNex.Handlers
 {
-    public class BatchCreateResourceEventHandler(IBasicRepository<Culture, string> cultureRepository, IBasicRepository<Resource, string> resourceRepository, ITranslateAppService translateAppService, IServiceProvider serviceProvider) : IDistributedEventHandler<BatchCreateResourceEto>, ITransientDependency
+    public class BatchCreateResourceEventHandler(ILogger<BatchCreateResourceEventHandler> logger,IBasicRepository<Culture, string> cultureRepository, IBasicRepository<Resource, string> resourceRepository, ITranslateAppService translateAppService, IServiceProvider serviceProvider) : IDistributedEventHandler<BatchCreateResourceEto>, ITransientDependency
     {
         public async Task Handle(BatchCreateResourceEto eventData, CancellationToken cancellationToken = default)
         {
+            logger.LogInformation($"BatchCreateResourceEventHandler Data: {eventData.ToJson()}");
             try
             {
                 var cultrue = await cultureRepository.FindAsync(s => s.Id == eventData.CultureId);

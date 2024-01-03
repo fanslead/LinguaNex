@@ -11,13 +11,13 @@ using Wheel.EventBus.Distributed;
 
 namespace LinguaNex.Handlers
 {
-    public class CreateOrUpdateResourceEventHandler(IBasicRepository<Resource, long> resourceRepository, IBasicRepository<ProjectAssociation> projectAssociationRepository, IHubContext<LinguaNexHub> hubContext) : IDistributedEventHandler<CreateOrUpdateResourceEto>, ITransientDependency
+    public class CreateOrUpdateResourceEventHandler(ILogger<CreateOrUpdateResourceEventHandler> logger,IBasicRepository<Resource, long> resourceRepository, IBasicRepository<ProjectAssociation> projectAssociationRepository, IHubContext<LinguaNexHub> hubContext) : IDistributedEventHandler<CreateOrUpdateResourceEto>, ITransientDependency
     {
         public async Task Handle(CreateOrUpdateResourceEto eventData, CancellationToken cancellationToken = default)
         {
+            logger.LogInformation($"CreateOrUpdateResourceEventHandler Data: {eventData.ToJson()}");
             try
             {
-
                 var resource = await resourceRepository.FindAsync(a => a.Id == eventData.Id, cancellationToken, a => a.Culture);
                 if (resource != null)
                 {

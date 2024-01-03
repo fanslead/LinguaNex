@@ -1,13 +1,8 @@
 ﻿using LinguaNex.Const;
 using LinguaNex.Domain;
-using LinguaNex.Dtos;
 using LinguaNex.Entities;
 using LinguaNex.EventDatas;
-using LinguaNex.Hubs;
 using LinguaNex.Translates;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.DependencyInjection;
-using Minio.DataModel;
 using Wheel.Core.Exceptions;
 using Wheel.DependencyInjection;
 using Wheel.EventBus.Distributed;
@@ -15,10 +10,11 @@ using Wheel.Utilities;
 
 namespace LinguaNex.Handlers
 {
-    public class CultrueSyncResourceAndTranslateEventHandler(IBasicRepository<Culture, long> cultureRepository, IBasicRepository<Resource, long> resourceRepository, ITranslateAppService translateAppService, IServiceProvider serviceProvider) : IDistributedEventHandler<CultrueSyncResourceAndTranslateEto>, ITransientDependency
+    public class CultrueSyncResourceAndTranslateEventHandler(ILogger<CultrueSyncResourceAndTranslateEventHandler> logger, IBasicRepository<Culture, long> cultureRepository, IBasicRepository<Resource, long> resourceRepository, ITranslateAppService translateAppService, IServiceProvider serviceProvider) : IDistributedEventHandler<CultrueSyncResourceAndTranslateEto>, ITransientDependency
     {
         public async Task Handle(CultrueSyncResourceAndTranslateEto eventData, CancellationToken cancellationToken = default)
         {
+            logger.LogInformation($"CultrueSyncResourceAndTranslateEventHandler Data: {eventData.ToJson()}");
             try
             {
                 //当前新增的cultrue

@@ -1,5 +1,4 @@
-﻿using Humanizer;
-using LinguaNex.Const;
+﻿using LinguaNex.Const;
 using LinguaNex.Domain;
 using LinguaNex.Entities;
 using LinguaNex.EventDatas;
@@ -11,10 +10,11 @@ using Wheel.Utilities;
 
 namespace LinguaNex.Handlers
 {
-    public class ResourceSyncCultureAndTranslateEventHandler(IBasicRepository<Resource, string> resourceRepository, IBasicRepository<Culture, string> cultureRepository, ITranslateAppService translateAppService, IServiceProvider serviceProvider) : IDistributedEventHandler<ResourceSyncCultureAndTranslateEto>, ITransientDependency
+    public class ResourceSyncCultureAndTranslateEventHandler(ILogger<ResourceSyncCultureAndTranslateEventHandler> logger, IBasicRepository<Resource, string> resourceRepository, IBasicRepository<Culture, string> cultureRepository, ITranslateAppService translateAppService, IServiceProvider serviceProvider) : IDistributedEventHandler<ResourceSyncCultureAndTranslateEto>, ITransientDependency
     {
         public async Task Handle(ResourceSyncCultureAndTranslateEto eventData, CancellationToken cancellationToken = default)
         {
+            logger.LogInformation($"ResourceSyncCultureAndTranslateEventHandler Data: {eventData.ToJson()}");
             try
             {
                 var resource = await resourceRepository.FindAsync(s => s.Id == eventData.Id);
