@@ -12,7 +12,7 @@ namespace LinguaNex.Resources
     public interface IResourcesAppService : ITransientDependency
     {
         Task<R<List<ResourceDto>>> GetAllResourceByCulture(long cultureId);
-        Task<R<List<CultureResourceAllInOneDto>>> GetAllResourceByProject(string projectId);
+        Task<R<List<Dictionary<string, string>>>> GetAllResourceByProject(string projectId);
         Task<Page<ResourceDto>> GetResourcePageByCulture(ResourcePageRequest request);
         Task<R> BatchCreateByJsonFileAsync(long cultureId, bool? translate, BatchCreateByJsonFileDto dto);
         Task<R<ResourceDto>> CreateAsync(CreateResourceDto dto);

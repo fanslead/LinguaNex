@@ -33,10 +33,17 @@ namespace LinguaNex.Resources
             return Success(datas);
         }
 
-        public async Task<R<List<CultureResourceAllInOneDto>>> GetAllResourceByProject(string projectId)
+        public async Task<R<List<Dictionary<string, string>>>> GetAllResourceByProject(string projectId)
         {
             var datas = await resourceRepository.GetListAsync(a => a.ProjectId == projectId, propertySelectors: a=>a.Culture);
-            return Success(datas.GroupBy(a=>a.Key).Select(a=> new CultureResourceAllInOneDto { Key = a.Key, Resources = a.ToDictionary(a=>a.Culture.Name, a=>a.Value)}).ToList());
+            var goupData = datas.GroupBy(a => a.Key);
+            var dicData = goupData.Select(a =>
+            {
+                var dic = a.ToDictionary(a => a.Culture.Name, a => a.Value);
+                dic.Add("key", a.Key);
+                return dic;
+            }).ToList();
+            return Success(dicData);
         }
 
         public async Task<Page<ResourceDto>> GetResourcePageByCulture(ResourcePageRequest request)
