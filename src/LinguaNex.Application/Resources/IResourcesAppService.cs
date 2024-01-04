@@ -18,7 +18,7 @@ namespace LinguaNex.Resources
         Task<R<ResourceDto>> CreateAsync(CreateResourceDto dto);
 
         Task<R<ResourceDto>> UpdateAsync(UpdateResourceDto dto);
-        Task<R<ResourceDto>> UpdateByCultureAndKeyAsync(UpdateResourceByCultureAndKeyDto dto)
+        Task<R<ResourceDto>> UpdateByCultureAndKeyAsync(UpdateResourceByCultureAndKeyDto dto);
 
         Task<R> DeleteAsync(long id);
     }
