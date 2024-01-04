@@ -1,11 +1,12 @@
 ﻿using LinguaNex.Const;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SKIT.FlurlHttpClient.Baidu.Translate;
 using Wheel.Core.Exceptions;
 
 namespace LinguaNex.Translates.Baidu
 {
-    public class BaiduTranslate(BaiduTranslateClient Client) : ITranslate
+    public class BaiduTranslate(ILogger<BaiduTranslate> logger,BaiduTranslateClient Client) : ITranslate
     {
         /// <summary>
         /// 百度翻译
@@ -26,7 +27,8 @@ namespace LinguaNex.Translates.Baidu
             {
                 return response.ResultList.First().Destination;
             }
-            throw new BusinessException(ErrorCode.TranslateError, ErrorCode.TranslateError).WithMessageDataData(response.ErrorCode.ToString(), response.ErrorMessage);
+            logger.LogError($"BaiduTranslate error: {response.ErrorCode}-{response.ErrorMessage}");
+            return sourceString;
         }
 
         private string ConvertLangCode(string langCode)
