@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using System.Security.Cryptography;
 using System.Collections.Generic;
+using LinguaNex.Translates.YouDao.Dtos;
 
 namespace LinguaNex.Translates.YouDao.Utilities
 {
@@ -80,5 +81,17 @@ namespace LinguaNex.Translates.YouDao.Utilities
             int len = q.Length;
             return len <= 20 ? q : q.Substring(0, 10) + len + q.Substring(len - 10, 10);
         }
+
+
+        public static Dictionary<string, string[]> CreateRequestParams(YouDaoTranslateRequestDto dto)
+        {
+            return new Dictionary<string, string[]>() {
+                { "q", new string[]{dto.QueryString}},
+                {"from", new string[]{dto.From}},
+                {"to", new string[]{dto.To}},
+                //{"vocabId", new string[]{vocabId}}
+            };
+        }
+
     }
 }

@@ -38,7 +38,7 @@ namespace LinguaNex.Translates.YouDao.Dtos
         /// 当前UTC时间戳(秒)
         /// </summary>
         [JsonProperty("curtime")]
-        [JsonPropertyName("q")]
+        [JsonPropertyName("curtime")]
         public string? CurTime { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace LinguaNex.Translates.YouDao
             var response = await client.YouDaoTranslate(new YouDaoTranslateRequestDto
             {
                 QueryString = sourceString,
-                From = "auto",//ConvertLangCode(sourceLang),
+                From = ConvertLangCode(sourceLang),
                 To = ConvertLangCode(targetLang)
             });
             if (response.ErrorCode == "0")

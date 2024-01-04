@@ -47,4 +47,10 @@
 		<ProjectReference Include="..\LinguaNex.Api\LinguaNex.Api.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Content Update="appsettings.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+
 </Project>
