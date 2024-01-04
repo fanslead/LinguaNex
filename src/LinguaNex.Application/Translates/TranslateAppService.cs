@@ -3,6 +3,8 @@ using LinguaNex.Translates.Dto;
 using LinguaNex.Translates.YouDao;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 using Wheel.Services;
 
 namespace LinguaNex.Translates
@@ -11,7 +13,10 @@ namespace LinguaNex.Translates
     {
         public async Task<string> Translate(TranslateRequestDto dto)
         {
-            Logger.LogInformation($"Translate data: {dto.ToJson()}");
+            Logger.LogInformation($"Translate data: {dto.ToJson(new System.Text.Json.JsonSerializerOptions
+            {
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
+            })}");
             var translates = ServiceProvider.GetServices<ITranslate>();
             ITranslate translate = null;
             switch (dto.TranslateProvider)
