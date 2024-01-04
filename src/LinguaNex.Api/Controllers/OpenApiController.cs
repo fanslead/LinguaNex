@@ -204,6 +204,51 @@ namespace LinguaNex.Controllers
                 return File(res, "application/octet-stream", "xml.zip");
             }
         }
+        /// <summary>
+        /// 导出ts文件
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="cultureName"></param>
+        /// <returns></returns>
+        [HttpGet("Resources/ts/{projectId}")]
+        public async Task<IActionResult> ExportTs(string projectId, string? cultureName)
+        {
+            var result = await openApiAppService.GetResources(projectId, cultureName, string.IsNullOrWhiteSpace(cultureName));
+            byte[] res;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                using (ZipArchive zip = new ZipArchive(ms, ZipArchiveMode.Create, true))
+                {
+                    foreach (var resource in result.Data)
+                    {
+                        using(var resourceStream = new MemoryStream())
+                        {
+                            var sw = new StreamWriter(resourceStream);
+                            await sw.WriteLineAsync("export default {");
+                            foreach (var r in resource.Resources)
+                            {
+                                sw.WriteLine($"  '{r.Key}': '{r.Value}',");
+                            }
+                            await sw.WriteLineAsync("};");
+                            await sw.FlushAsync();
+                            ZipArchiveEntry entry = zip.CreateEntry($"{resource.CultureName}.ts");
+                            using(var writer = entry.Open())
+                            {
+                                var bt = resourceStream.ToArray();
+                                await writer.WriteAsync(bt, 0, bt.Length);
+                            }
+                        }
+                    }
+                    InvokeWriteFile(zip);
+                    int nowPos = (int)ms.Position;
+                    res = new byte[ms.Length];
+                    ms.Position = 0;
+                    await ms.ReadAsync(res, 0, res.Length);
+                    ms.Position = nowPos;
+                }
+                return File(res, "application/octet-stream", "ts.zip");
+            }
+        }
 
         void InvokeWriteFile(ZipArchive zipArchive)
         {

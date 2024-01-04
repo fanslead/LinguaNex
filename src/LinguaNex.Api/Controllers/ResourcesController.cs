@@ -1,4 +1,5 @@
 ﻿using LinguaNex.Cultures.Dtos;
+using LinguaNex.Entities;
 using LinguaNex.Resources;
 using LinguaNex.Resources.Dtos;
 using Microsoft.AspNetCore.Mvc;
@@ -58,6 +59,16 @@ namespace LinguaNex.Controllers
             return resourcesAppService.GetAllResourceByCulture(cultureId);
         }
         /// <summary>
+        /// 根据项目获取所有多语言资源
+        /// </summary>
+        /// <param name="cultureId"></param>
+        /// <returns></returns>
+        [HttpGet("all/project/{projectId}")]
+        public Task<R<CultureResourceAllInOneDto>> GetAllResourceByProject(string projectId)
+        {
+            return resourcesAppService.GetAllResourceByProject(projectId);
+        }
+        /// <summary>
         /// 根据地区分页获取多语言资源
         /// </summary>
         /// <param name="request"></param>
@@ -77,7 +88,16 @@ namespace LinguaNex.Controllers
         {
             return resourcesAppService.UpdateAsync(dto);
         }
-
+        /// <summary>
+        /// 通过地区和Key匹配更新
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        [HttpPut("ByCultureAndKey")]
+        public Task<R<ResourceDto>> UpdateByCultureAndKeyAsync(UpdateResourceByCultureAndKeyDto dto)
+        {
+            return resourcesAppService.UpdateByCultureAndKeyAsync(dto);
+        }
         /// <summary>
         /// 测试多语言
         /// </summary>

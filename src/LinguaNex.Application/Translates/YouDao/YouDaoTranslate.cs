@@ -1,16 +1,9 @@
-﻿using LinguaNex.Const;
-using LinguaNex.Translates.YouDao.Dtos;
-using LinguaNex.Translates.YouDao.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Wheel.Core.Exceptions;
+﻿using LinguaNex.Translates.YouDao.Dtos;
+using Microsoft.Extensions.Logging;
 
 namespace LinguaNex.Translates.YouDao
 {
-    public class YouDaoTranslate(YouDaoTranslateClient client) : ITranslate
+    public class YouDaoTranslate(ILogger<YouDaoTranslate> logger, YouDaoTranslateClient client) : ITranslate
     {
         /// <summary>
         /// 有道翻译
@@ -31,7 +24,8 @@ namespace LinguaNex.Translates.YouDao
             {
                 return response.Translation?.First();
             }
-            throw new BusinessException(ErrorCode.TranslateError, ErrorCode.TranslateError).WithMessageDataData(response.ErrorCode, response.ErrorCode);
+            logger.LogError($"YouDaoTranslate error: {response.ErrorCode}");
+            return sourceString;
         }
 
         private string ConvertLangCode(string langCode)

@@ -33,6 +33,24 @@ namespace LinguaNex.Resources
             return Success(datas);
         }
 
+        public async Task<R<CultureResourceAllInOneDto>> GetAllResourceByProject(string projectId)
+        {
+            var datas = await resourceRepository.GetListAsync(a => a.ProjectId == projectId, propertySelectors: a=>a.Culture);
+            var goupData = datas.GroupBy(a => a.Key);
+            var dicData = goupData.Select(a =>
+            {
+                var dic = a.ToDictionary(a => a.Culture.Name, a => a.Value);
+                dic.Add("key", a.Key);
+                return dic;
+            }).ToList();
+            var columns = new List<AntdColumn>
+            {
+                new AntdColumn { DataIndex = "key", Title = "Key", ShortTitle = "Key" }
+            };
+            columns.AddRange(datas.GroupBy(a => a.Culture.Name).Select(a => new AntdColumn { DataIndex = a.Key, Title = SupportedCulture.ChineseLanguages[a.Key], ShortTitle = SupportedCulture.EnglishLanguages[a.Key] }));
+            return Success(new CultureResourceAllInOneDto { Columns = columns, Resources = dicData});
+        }
+
         public async Task<Page<ResourceDto>> GetResourcePageByCulture(ResourcePageRequest request)
         {
             var (datas, total)= await resourceRepository.SelectPageListAsync(a => a.CultureId == request.CultureId, 
@@ -96,6 +114,17 @@ namespace LinguaNex.Resources
             var entity = await resourceRepository.FindAsync(dto.Id);
             if (entity == null)
                 throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.Id.ToString());
+
+            entity.Value = dto.Value;
+            entity = await resourceRepository.UpdateAsync(entity, true);
+            await DistributedEventBus.PublishAsync(new CreateOrUpdateResourceEto { Id = entity.Id });
+            return Success(Mapper.Map<ResourceDto>(entity));
+        }
+        public async Task<R<ResourceDto>> UpdateByCultureAndKeyAsync(UpdateResourceByCultureAndKeyDto dto)
+        {
+            var entity = await resourceRepository.FindAsync(a=>a.Key == dto.Key && a.Culture.Name == dto.Culture);
+            if (entity == null)
+                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.Key.ToString());
 
             entity.Value = dto.Value;
             entity = await resourceRepository.UpdateAsync(entity, true);
