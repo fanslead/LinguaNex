@@ -43,6 +43,9 @@ namespace LinguaNex.Translates.Baidu
                 "ar" => "ara",
                 "fr" => "fra",
                 "es" => "spa",
+                "am" => "amh",
+                "ba" => "bak",
+                "eo" => "epo",
                 _ => langCode
             };
         }
