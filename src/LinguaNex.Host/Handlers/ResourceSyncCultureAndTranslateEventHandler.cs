@@ -61,7 +61,7 @@ namespace LinguaNex.Handlers
             }
             catch (Exception ex)
             {
-                throw new BusinessException(ErrorCode.InternalError, ErrorCode.InternalError).WithMessageDataData(ex.Message);
+                throw new BusinessException(ErrorCode.InternalError, ErrorCode.InternalError).WithMessageDataData(ex.StackTrace);
             }
         }
     }
