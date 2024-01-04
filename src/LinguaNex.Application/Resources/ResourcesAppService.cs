@@ -33,6 +33,12 @@ namespace LinguaNex.Resources
             return Success(datas);
         }
 
+        public async Task<R<List<CultureResourceAllInOneDto>>> GetAllResourceByProject(string projectId)
+        {
+            var datas = await resourceRepository.GetListAsync(a => a.ProjectId == projectId, propertySelectors: a=>a.Culture);
+            return Success(datas.GroupBy(a=>a.Key).Select(a=> new CultureResourceAllInOneDto { Key = a.Key, Resources = a.ToDictionary(a=>a.Culture.Name, a=>a.Value)}).ToList());
+        }
+
         public async Task<Page<ResourceDto>> GetResourcePageByCulture(ResourcePageRequest request)
         {
             var (datas, total)= await resourceRepository.SelectPageListAsync(a => a.CultureId == request.CultureId, 
@@ -96,6 +102,17 @@ namespace LinguaNex.Resources
             var entity = await resourceRepository.FindAsync(dto.Id);
             if (entity == null)
                 throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.Id.ToString());
+
+            entity.Value = dto.Value;
+            entity = await resourceRepository.UpdateAsync(entity, true);
+            await DistributedEventBus.PublishAsync(new CreateOrUpdateResourceEto { Id = entity.Id });
+            return Success(Mapper.Map<ResourceDto>(entity));
+        }
+        public async Task<R<ResourceDto>> UpdateByCultureAndKeyAsync(UpdateResourceByCultureAndKeyDto dto)
+        {
+            var entity = await resourceRepository.FindAsync(a=>a.Key == dto.Key && a.Culture.Name == dto.Culture);
+            if (entity == null)
+                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.Key.ToString());
 
             entity.Value = dto.Value;
             entity = await resourceRepository.UpdateAsync(entity, true);
