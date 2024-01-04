@@ -95,7 +95,7 @@ builder.Services.AddYouDaoTransalte(options =>
 {
     options.AppId = builder.Configuration["Translates:YouDao:AppId"];
     options.AppSecret = builder.Configuration["Translates:YouDao:AppSecret"];
-    options.Endpoint = builder.Configuration["Translates:YouDao:EndPoint"];
+    //options.Endpoint = builder.Configuration["Translates:YouDao:EndPoint"];
 });
 
 builder.Services.AddDbContext<LinguaNexDbContext>(options =>
