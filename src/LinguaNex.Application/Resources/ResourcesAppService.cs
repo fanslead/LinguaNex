@@ -47,7 +47,7 @@ namespace LinguaNex.Resources
             {
                 new AntdColumn { DataIndex = "key", Title = "Key", ShortTitle = "Key" }
             };
-            columns.AddRange(datas.GroupBy(a => a.Culture.Name).Select(a => new AntdColumn { DataIndex = a.Key, Title = SupportedCulture.ChineseLanguages[a.Key],ShortTitle = SupportedCulture.EnglishLanguages[a.Key] }))
+            columns.AddRange(datas.GroupBy(a => a.Culture.Name).Select(a => new AntdColumn { DataIndex = a.Key, Title = SupportedCulture.ChineseLanguages[a.Key], ShortTitle = SupportedCulture.EnglishLanguages[a.Key] }));
             return Success(new CultureResourceAllInOneDto { Columns = columns, Resources = dicData});
         }
 
