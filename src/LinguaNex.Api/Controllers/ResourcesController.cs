@@ -64,7 +64,7 @@ namespace LinguaNex.Controllers
         /// <param name="cultureId"></param>
         /// <returns></returns>
         [HttpGet("all/project/{projectId}")]
-        public Task<R<List<Dictionary<string, string>>>> GetAllResourceByProject(string projectId)
+        public Task<R<CultureResourceAllInOneDto>> GetAllResourceByProject(string projectId)
         {
             return resourcesAppService.GetAllResourceByProject(projectId);
         }

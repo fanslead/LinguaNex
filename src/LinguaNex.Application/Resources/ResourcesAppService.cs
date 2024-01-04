@@ -33,7 +33,7 @@ namespace LinguaNex.Resources
             return Success(datas);
         }
 
-        public async Task<R<List<Dictionary<string, string>>>> GetAllResourceByProject(string projectId)
+        public async Task<R<CultureResourceAllInOneDto>> GetAllResourceByProject(string projectId)
         {
             var datas = await resourceRepository.GetListAsync(a => a.ProjectId == projectId, propertySelectors: a=>a.Culture);
             var goupData = datas.GroupBy(a => a.Key);
@@ -43,7 +43,12 @@ namespace LinguaNex.Resources
                 dic.Add("key", a.Key);
                 return dic;
             }).ToList();
-            return Success(dicData);
+            var columns = new List<AntdColumn>
+            {
+                new AntdColumn { DataIndex = "key", Title = "Key", ShortTitle = "Key" }
+            };
+            columns.AddRange(datas.GroupBy(a => a.Culture.Name).Select(a => new AntdColumn { DataIndex = a.Key, Title = SupportedCulture.ChineseLanguages[a.Key],ShortTitle = SupportedCulture.EnglishLanguages[a.Key] }))
+            return Success(new CultureResourceAllInOneDto { Columns = columns, Resources = dicData});
         }
 
         public async Task<Page<ResourceDto>> GetResourcePageByCulture(ResourcePageRequest request)
