@@ -227,7 +227,7 @@ namespace LinguaNex.Controllers
                             await sw.WriteLineAsync("export default {");
                             foreach (var r in resource.Resources)
                             {
-                                sw.WriteLine($"'{r.Key}': '{r.Value}',");
+                                sw.WriteLine($"  '{r.Key}': '{r.Value}',");
                             }
                             await sw.WriteLineAsync("};");
                             await sw.FlushAsync();

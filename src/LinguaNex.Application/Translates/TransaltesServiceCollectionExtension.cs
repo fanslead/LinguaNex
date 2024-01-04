@@ -19,7 +19,8 @@ namespace LinguaNex.Translates
             if(action == null) throw new ArgumentNullException("action");
             var options = new BaiduTranslateClientOptions();
             action.Invoke(options);
-            services.AddSingleton(new BaiduTranslateClient(options));
+            services.AddSingleton(options);
+            services.AddSingleton(sp => new BaiduTranslateClient(sp.GetRequiredService<BaiduTranslateClientOptions>()));
 
             services.AddSingleton<ITranslate, BaiduTranslate>();
 
@@ -41,7 +42,8 @@ namespace LinguaNex.Translates
             if (action == null) throw new ArgumentNullException("action");
             var options = new YouDaoTranslateClientOptions();
             action.Invoke(options);
-            services.AddSingleton(new YouDaoTranslateClient(options));
+            services.AddSingleton(options);
+            services.AddSingleton<YouDaoTranslateClient>();
 
             services.AddSingleton<ITranslate, YouDaoTranslate>();
 
