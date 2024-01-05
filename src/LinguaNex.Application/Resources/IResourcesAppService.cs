@@ -14,6 +14,8 @@ namespace LinguaNex.Resources
         Task<R<List<ResourceDto>>> GetAllResourceByCulture(long cultureId);
         Task<R<CultureResourceAllInOneDto>> GetAllResourceByProject(string projectId);
         Task<Page<ResourceDto>> GetResourcePageByCulture(ResourcePageRequest request);
+        Task<Page<Dictionary<string, string>>> GetResourcePageByProject(ResourcePageRequest request);
+        Task<R<List<AntdColumn>>> GetResourcePageByProjectTableColumns(string projectId);
         Task<R> BatchCreateByJsonFileAsync(long cultureId, bool? translate, BatchCreateByJsonFileDto dto);
         Task<R<ResourceDto>> CreateAsync(CreateResourceDto dto);
 

@@ -78,6 +78,27 @@ namespace LinguaNex.Controllers
         {
             return resourcesAppService.GetResourcePageByCulture(request); 
         }
+
+        /// <summary>
+        /// 根据项目分页获取多语言资源
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpGet("list/project")]
+        public Task<Page<Dictionary<string, string>>> GetResourcePageByProject([FromQuery] ResourcePageRequest request)
+        {
+            return resourcesAppService.GetResourcePageByProject(request); 
+        }
+        /// <summary>
+        /// 根据项目分页获取多语言资源表格列数据
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
+        [HttpGet("list/columns/{projectId}")]
+        public Task<R<List<AntdColumn>>> GetResourcePageByProjectTableColumns(string projectId)
+        {
+            return resourcesAppService.GetResourcePageByProjectTableColumns(projectId); 
+        }
         /// <summary>
         /// 更新
         /// </summary>

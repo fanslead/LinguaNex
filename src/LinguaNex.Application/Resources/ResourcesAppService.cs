@@ -4,6 +4,7 @@ using LinguaNex.Domain;
 using LinguaNex.Entities;
 using LinguaNex.EventDatas;
 using LinguaNex.Resources.Dtos;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,6 +68,37 @@ namespace LinguaNex.Resources
                 );
             return Page(datas, total);
         }
+
+        public async Task<Page<Dictionary<string, string>>> GetResourcePageByProject(ResourcePageRequest request)
+        {
+            var query = resourceRepository.GetQueryableWithIncludes(a => a.Culture).Where(a => a.ProjectId == request.ProjectId);
+            if (!request.Key.IsNullOrWhiteSpace())
+            {
+                query = query.Where(a => request.Key.Contains(a.Key));
+            }
+            var groupQuery = query.GroupBy(a => a.Key);
+            var total = await groupQuery.CountAsync();
+            var datas = (await groupQuery.ToListAsync()).Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).Select(a =>
+            {
+                var dic = a.ToDictionary(a => a.Culture.Name, a => a.Value);
+                dic.Add("key", a.Key);
+                return dic;
+            }).ToList();
+            return Page(datas, total);
+        }
+        public async Task<R<List<AntdColumn>>> GetResourcePageByProjectTableColumns(string projectId)
+        {
+            var cultures = await cultureRepository.GetListAsync(a => a.ProjectId == projectId);
+
+            var columns = new List<AntdColumn>
+            {
+                new AntdColumn { DataIndex = "key", Title = "Key", ShortTitle = "Key" }
+            };
+            columns.AddRange(cultures.Select(a => new AntdColumn { DataIndex = a.Name, Title = SupportedCulture.ChineseLanguages[a.Name], ShortTitle = SupportedCulture.EnglishLanguages[a.Name] }));
+
+            return Success(columns);
+        }
+
         public async Task<R> BatchCreateByJsonFileAsync(long cultureId, bool? translate, BatchCreateByJsonFileDto dto)
         {
             if(Path.GetExtension(dto.File.FileName)!=".json")
