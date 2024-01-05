@@ -52,7 +52,7 @@ namespace LinguaNex.Controllers
                 {
                     foreach (var resource in result.Data)
                     {
-                        var resourceBytes = resource.ToJson(new System.Text.Json.JsonSerializerOptions
+                        var resourceBytes = resource.Resources.ToJson(new System.Text.Json.JsonSerializerOptions
                         {
                             Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
                         }).GetBytes();
