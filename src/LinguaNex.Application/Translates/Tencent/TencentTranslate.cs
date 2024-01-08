@@ -47,7 +47,6 @@ namespace LinguaNex.Translates.Tencent
                 "es" => "es",
                 "am" => "amh",
                 "ba" => "bak",
-                "eo" => "epo",
                 _ => langCode
             };
         }
