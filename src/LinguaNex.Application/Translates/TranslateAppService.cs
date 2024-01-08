@@ -40,7 +40,7 @@ namespace LinguaNex.Translates
             }
 
             var result = await translate.Translate(dto.SourceString, dto.SourceLang, dto.TargetLang);
-
+            await Task.Delay(200);
             Logger.LogInformation($"Translate result: {result}");
             return result;
         }
