@@ -5,6 +5,7 @@ using LinguaNex.Translates.Baidu;
 using LinguaNex.Translates.Tencent;
 using LinguaNex.Translates.YouDao;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.SemanticKernel;
 using SKIT.FlurlHttpClient.Baidu.Translate;
 using System;
@@ -29,14 +30,18 @@ namespace LinguaNex.Translates
 
             return services;
         }
-        public static IServiceCollection AddAiTransalte(this IServiceCollection services)
+        public static IServiceCollection AddAiTransalte(this IServiceCollection services, Action<IKernelBuilder> action)
         {
-            //services.AddAzureOpenAIChatCompletion();
-            //services.AddAzureOpenAITextGeneration();
-            //services.AddOpenAIChatCompletion();
-            //services.AddOpenAITextGeneration();
-            //services.AddSingleton(sp => Kernel.CreateBuilder().Build());
-            //services.AddKeyedSingleton<ITranslate, AiTranslate>("Ai")
+            if (action == null) throw new ArgumentNullException("action");
+            var builder = Kernel.CreateBuilder();
+
+            action.Invoke(builder);
+
+            var kernel = builder.Build();
+
+            services.AddSingleton(kernel);
+
+            services.AddKeyedSingleton<ITranslate, AiTranslate>("Ai");
 
             return services;
         }
