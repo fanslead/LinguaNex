@@ -1,9 +1,11 @@
-﻿using IdGen;
+﻿using Humanizer;
+using IdGen;
 using LinguaNex.Const;
 using LinguaNex.Domain;
 using LinguaNex.Entities;
 using LinguaNex.EventDatas;
 using LinguaNex.Resources.Dtos;
+using LinguaNex.Translates;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,7 +20,7 @@ using Wheel.Services;
 
 namespace LinguaNex.Resources
 {
-    public class ResourcesAppService(IBasicRepository<Resource, long> resourceRepository, IBasicRepository<Culture, long> cultureRepository, IBasicRepository<Projects, long> projectsRepository) : LinguaNexServiceBase, IResourcesAppService
+    public class ResourcesAppService(IBasicRepository<Resource, long> resourceRepository, IBasicRepository<Culture, long> cultureRepository, IBasicRepository<Projects, long> projectsRepository, ITranslateAppService translateAppService) : LinguaNexServiceBase, IResourcesAppService
     {
         public async Task<R<List<ResourceDto>>> GetAllResourceByCulture(long cultureId)
         {
@@ -163,7 +165,40 @@ namespace LinguaNex.Resources
             await DistributedEventBus.PublishAsync(new CreateOrUpdateResourceEto { Id = entity.Id });
             return Success(Mapper.Map<ResourceDto>(entity));
         }
+        public async Task<R> BatchCreateWithoutTransate(BatchCreateWithoutTransateDto dto)
+        {
+            if (!await projectsRepository.AnyAsync(a => a.Id == dto.ProjectId))
+                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.ProjectId.ToString());
 
+            var entities = dto.Resouces.Select(a => new Resource
+            {
+                Id = SnowflakeIdGenerator.Create(),
+                Key = dto.Key,
+                Value = a.Value,
+                ProjectId = dto.ProjectId,
+                CultureId = a.CultureId, 
+            }).ToList();
+            await resourceRepository.InsertManyAsync(entities, true);
+            return Success();
+        }
+        public async Task<R<Dictionary<string, string>>> TransateMultipleLanguages(TransateMultipleLanguagesDto dto)
+        {
+            var langDic = new Dictionary<string, string>();
+            langDic.TryAdd(dto.SourceLanguage, dto.Value);
+            var cultures = await cultureRepository.GetListAsync(a => a.ProjectId == dto.ProjectId && a.Name != dto.SourceLanguage);
+            foreach (var culture in cultures)
+            {
+                var translateResult = await translateAppService.Translate(new Translates.Dto.TranslateRequestDto
+                {
+                    SourceLang = dto.SourceLanguage,
+                    SourceString = dto.Value,
+                    TargetLang = culture.Name,
+                    TranslateProvider = dto.TranslateProvider
+                });
+                langDic.TryAdd(culture.Name, translateResult);
+            }
+            return Success(langDic);
+        }
         public async Task<R> DeleteAsync(long id)
         {
             var resource = await resourceRepository.FindAsync(id);

@@ -129,5 +129,25 @@ namespace LinguaNex.Controllers
         {
             return Success(L[testStr].ToString());
         }
+        /// <summary>
+        /// 批量创建Resource，不翻译
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        [HttpPost("BatchCreateWithoutTransate")]
+        public Task<R> BatchCreateWithoutTransate(BatchCreateWithoutTransateDto dto)
+        {
+            return resourcesAppService.BatchCreateWithoutTransate(dto);
+        }
+        /// <summary>
+        /// 翻译项目所包含的地区的语言
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        [HttpPost("TransateMultipleLanguages")]
+        public Task<R<Dictionary<string, string>>> TransateMultipleLanguages(TransateMultipleLanguagesDto dto)
+        {
+            return resourcesAppService.TransateMultipleLanguages(dto);
+        }
     }
 }
