@@ -97,6 +97,16 @@ builder.Services.AddYouDaoTransalte(options =>
     options.AppSecret = builder.Configuration["Translates:YouDao:AppSecret"];
     //options.Endpoint = builder.Configuration["Translates:YouDao:EndPoint"];
 });
+builder.Services.AddTencentTransalte(options =>
+{
+    options.AppId = builder.Configuration["Translates:Tencent:AppId"];
+    options.AppSecret = builder.Configuration["Translates:Tencent:AppSecret"];
+});
+builder.Services.AddAliyunTransalte(options =>
+{
+    options.AppId = builder.Configuration["Translates:Aliyun:AppId"];
+    options.AppSecret = builder.Configuration["Translates:Aliyun:AppSecret"];
+});
 
 builder.Services.AddDbContext<LinguaNexDbContext>(options =>
     options.UseSqlite(connectionString)
@@ -111,8 +121,8 @@ builder.Services.AddCapDistributedEventBus(x =>
 
     x.UseSqlite(builder.Configuration.GetConnectionString("Default"));
 
-    x.UseRabbitMQ(o => o.ConnectionFactoryOptions = (factory) => factory.Uri = new Uri(builder.Configuration["ConnectionStrings:RabbitMq"]));
-    //x.UseRedis(builder.Configuration["ConnectionStrings:Redis"]);
+    //x.UseRabbitMQ(o => o.ConnectionFactoryOptions = (factory) => factory.Uri = new Uri(builder.Configuration["ConnectionStrings:RabbitMq"]));
+    x.UseRedis(builder.Configuration["ConnectionStrings:Redis"]);
 });
 
 builder.Services.AddMemoryCache();

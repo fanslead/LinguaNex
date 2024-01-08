@@ -1,5 +1,7 @@
-﻿using LinguaNex.Translates.Baidu;
+﻿using LinguaNex.Translates.Aliyun;
+using LinguaNex.Translates.Baidu;
 using LinguaNex.Translates.Dto;
+using LinguaNex.Translates.Tencent;
 using LinguaNex.Translates.YouDao;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -26,6 +28,12 @@ namespace LinguaNex.Translates
                     break;
                 case Emuns.TranslateProviderEnum.YouDao:
                     translate = translates.First(a => a is YouDaoTranslate);//ServiceProvider.GetRequiredKeyedService<ITranslate>("YouDao");
+                    break;
+                case Emuns.TranslateProviderEnum.Tencent:
+                    translate = translates.First(a => a is TencentTranslate);//ServiceProvider.GetRequiredKeyedService<ITranslate>("Tencent");
+                    break;
+                case Emuns.TranslateProviderEnum.Aliyun:
+                    translate = translates.First(a => a is AliyunTranslate);//ServiceProvider.GetRequiredKeyedService<ITranslate>("Tencent");
                     break;
                 default:
                     break;
