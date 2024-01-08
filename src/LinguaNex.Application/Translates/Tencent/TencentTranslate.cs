@@ -42,7 +42,7 @@ namespace LinguaNex.Translates.Tencent
                 "en" => "en",
                 "ja" => "jp",
                 "ko" => "ko",
-                "ar" => "ara",
+                "ar" => "ar",
                 "fr" => "fr",
                 "es" => "es",
                 "am" => "amh",
