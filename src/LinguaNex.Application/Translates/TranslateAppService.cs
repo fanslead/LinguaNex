@@ -1,4 +1,5 @@
-﻿using LinguaNex.Translates.Aliyun;
+﻿using LinguaNex.Translates.AI;
+using LinguaNex.Translates.Aliyun;
 using LinguaNex.Translates.Baidu;
 using LinguaNex.Translates.Dto;
 using LinguaNex.Translates.Tencent;
@@ -33,7 +34,10 @@ namespace LinguaNex.Translates
                     translate = translates.First(a => a is TencentTranslate);//ServiceProvider.GetRequiredKeyedService<ITranslate>("Tencent");
                     break;
                 case Emuns.TranslateProviderEnum.Aliyun:
-                    translate = translates.First(a => a is AliyunTranslate);//ServiceProvider.GetRequiredKeyedService<ITranslate>("Tencent");
+                    translate = translates.First(a => a is AliyunTranslate);//ServiceProvider.GetRequiredKeyedService<ITranslate>("Aliyun");
+                    break;
+                case Emuns.TranslateProviderEnum.Ai:
+                    translate = translates.First(a => a is AiTranslate);//ServiceProvider.GetRequiredKeyedService<ITranslate>("Ai");
                     break;
                 default:
                     break;

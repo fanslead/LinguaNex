@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using Microsoft.SemanticKernel;
 using Serilog;
 using Serilog.Events;
 using StackExchange.Redis;
@@ -107,6 +108,13 @@ builder.Services.AddAliyunTransalte(options =>
     options.AppId = builder.Configuration["Translates:Aliyun:AppId"];
     options.AppSecret = builder.Configuration["Translates:Aliyun:AppSecret"];
 });
+if (!string.IsNullOrWhiteSpace(builder.Configuration["Translates:OpenAi:ModelId"]))
+{
+    builder.Services.AddAiTransalte(kernelBuilder =>
+    {
+        kernelBuilder.AddOpenAIChatCompletion(builder.Configuration["Translates:OpenAi:ModelId"], builder.Configuration["Translates:OpenAi:ApiKey"]);
+    });
+}
 
 builder.Services.AddDbContext<LinguaNexDbContext>(options =>
     options.UseSqlite(connectionString)

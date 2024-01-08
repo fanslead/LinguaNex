@@ -5,6 +5,7 @@
         Baidu,
         YouDao,
         Tencent,
-        Aliyun
+        Aliyun,
+        Ai
     }
 }
