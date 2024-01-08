@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace LinguaNex.Aliyun
 {
-    public class AliyunTranslateClient(ILogger logger,AliyunTranslateClientOptions options)
+    public class AliyunTranslateClient(ILogger<AliyunTranslateClient> logger,AliyunTranslateClientOptions options)
     {
 
         public async Task<string> Translate(AliyunTranslateRequestDto dto)
@@ -16,7 +16,7 @@ namespace LinguaNex.Aliyun
                 var apiInfo = CreateApiInfo();
                 var body = new Dictionary<string, object>() { };
                 body["FormatType"] = "text";
-                body["SourceLanguage"] = "auto";
+                body["SourceLanguage"] = dto.From;
                 body["TargetLanguage"] = dto.To;
                 body["SourceText"] = dto.QueryString;
                 body["Scene"] = "general";
@@ -37,7 +37,8 @@ namespace LinguaNex.Aliyun
                     {
                         return data.Body.Data.Translated;
                     }
-                    return data.Body.Message;
+                    logger.LogError($"{data.Body.Code}：{data.Body.Message}" );
+                    return dto.QueryString;
                 }
             }
             catch (Exception ex)

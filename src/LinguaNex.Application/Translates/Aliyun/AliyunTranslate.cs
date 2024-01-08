@@ -30,16 +30,16 @@ namespace LinguaNex.Translates.Aliyun
             return langCode switch
             {
                 "zh-Hans" => "zh",
-                "zh-Hant" => "zht",
+                "zh-Hant" => "zh-tw",
                 "en" => "en",
-                "ja" => "jp",
-                "ko" => "kor",
-                "ar" => "ara",
+                "ja" => "ja",
+                "ko" => "ko",
+                "ar" => "ar",
                 "fr" => "fra",
-                "es" => "spa",
-                "am" => "amh",
-                "ba" => "bak",
-                "eo" => "epo",
+                "es" => "es",
+                "am" => "am",
+                "ba" => "ba",
+                "eo" => "eo",
                 _ => langCode
             };
         }

@@ -38,13 +38,13 @@ namespace LinguaNex.Translates.Tencent
             return langCode switch
             {
                 "zh-Hans" => "zh",
-                "zh-Hant" => "zht",
+                "zh-Hant" => "zh-TW",
                 "en" => "en",
                 "ja" => "jp",
-                "ko" => "kor",
+                "ko" => "ko",
                 "ar" => "ara",
-                "fr" => "fra",
-                "es" => "spa",
+                "fr" => "fr",
+                "es" => "es",
                 "am" => "amh",
                 "ba" => "bak",
                 "eo" => "epo",

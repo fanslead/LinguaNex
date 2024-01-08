@@ -21,7 +21,7 @@ namespace LinguaNex.Translates.Tencent
             try
             {
                 var client = BuildClient();
-                var result = await client.TextTranslate(new TextTranslateRequest() { Source = "auto", SourceText = dto.QueryString, Target = dto.To, ProjectId = 0, UntranslatedText = "无" });
+                var result = await client.TextTranslate(new TextTranslateRequest() { Source = dto.From, SourceText = dto.QueryString, Target = dto.To, ProjectId = 0, UntranslatedText = "无" });
                 if (result != null)
                 {
                     return result;
