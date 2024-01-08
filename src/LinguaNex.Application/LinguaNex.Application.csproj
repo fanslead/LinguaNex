@@ -9,11 +9,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="AlibabaCloud.SDK.Alimt20181012" Version="2.2.0" />
 		<PackageReference Include="AutoMapper" Version="12.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.0" />
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
 		<PackageReference Include="Microsoft.SemanticKernel" Version="1.0.1" />
 		<PackageReference Include="SKIT.FlurlHttpClient.Baidu.Translate" Version="2.0.0" />
+		<PackageReference Include="TencentCloudSDK.Tmt" Version="3.0.928" />
 		<PackageReference Include="Wheel.Cache" Version="1.0.1" />
 		<PackageReference Include="Wheel.EventBus.Cap" Version="1.0.1" />
 		<PackageReference Include="Wheel.EventBus.Channels" Version="1.0.1" />

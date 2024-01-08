@@ -1,5 +1,8 @@
-﻿using LinguaNex.Translates.AI;
+﻿using LinguaNex.Aliyun;
+using LinguaNex.Translates.AI;
+using LinguaNex.Translates.Aliyun;
 using LinguaNex.Translates.Baidu;
+using LinguaNex.Translates.Tencent;
 using LinguaNex.Translates.YouDao;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.SemanticKernel;
@@ -46,6 +49,30 @@ namespace LinguaNex.Translates
             services.AddSingleton<YouDaoTranslateClient>();
 
             services.AddSingleton<ITranslate, YouDaoTranslate>();
+
+            return services;
+        }
+        public static IServiceCollection AddTencentTransalte(this IServiceCollection services, Action<TencentTranslateClientOptions> action)
+        {
+            if (action == null) throw new ArgumentNullException("action");
+            var options = new TencentTranslateClientOptions();
+            action.Invoke(options);
+            services.AddSingleton(options);
+            services.AddSingleton(sp => new TencentTranslateClient(sp.GetRequiredService<TencentTranslateClientOptions>()));
+
+            services.AddSingleton<ITranslate, TencentTranslate>();
+
+            return services;
+        }
+        public static IServiceCollection AddAliyunTransalte(this IServiceCollection services, Action<AliyunTranslateClientOptions> action)
+        {
+            if (action == null) throw new ArgumentNullException("action");
+            var options = new AliyunTranslateClientOptions();
+            action.Invoke(options);
+            services.AddSingleton(options);
+            services.AddSingleton(sp => new AliyunTranslateClient(sp.GetRequiredService<AliyunTranslateClientOptions>()));
+
+            services.AddSingleton<ITranslate, AliyunTranslate>();
 
             return services;
         }

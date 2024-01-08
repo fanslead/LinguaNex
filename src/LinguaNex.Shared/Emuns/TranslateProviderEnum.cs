@@ -3,6 +3,8 @@
     public enum TranslateProviderEnum
     {
         Baidu,
-        YouDao
+        YouDao,
+        Tencent,
+        Aliyun
     }
 }

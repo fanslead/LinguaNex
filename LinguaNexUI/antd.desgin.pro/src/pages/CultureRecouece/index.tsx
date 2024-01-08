@@ -256,7 +256,9 @@ const CultureRecouece = () => {
             optionFilterProp="children"
             options={[
               { value: 0, label: '百度翻译' },
-              { value: 1, label: '有道翻译' }
+              { value: 1, label: '有道翻译' },
+              { value: 2, label: '腾讯翻译' },
+              { value: 3, label: '阿里翻译' },
             ]}
           />
         </Form.Item>
@@ -324,7 +326,9 @@ const CultureRecouece = () => {
             optionFilterProp="children"
             options={[
               { value: 0, label: '百度翻译' },
-              { value: 1, label: '有道翻译' }
+              { value: 1, label: '有道翻译' },
+              { value: 2, label: '腾讯翻译' },
+              { value: 3, label: '阿里翻译' },
             ]}
           />
         </Form.Item>
