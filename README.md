@@ -6,6 +6,8 @@
 
 批量导入已存在项目多语言资源。
 
+自动翻译，翻译效果根据不同翻译Provider效果不一致。
+
 测试环境
 
 http://47.119.20.111/Projects
@@ -97,7 +99,7 @@ connection.InvokeAsync<List<LinguaNexResources>>("GetResources", projectId, cult
 - [x] SignalR获取多语言资源与实时推送更新多语言资源
 - [x] 自动同步资源到不同Culture
 - [x] 自动翻译资源到不同Culture
-- [x] 集成三方翻译API
+- [x] 集成三方翻译API （目前支持百度，有道，腾讯，阿里机器翻译API）
 - [ ] 集成AI翻译
 - [x] 导出JSON多语言文件
 - [x] 导出Toml多语言文件
