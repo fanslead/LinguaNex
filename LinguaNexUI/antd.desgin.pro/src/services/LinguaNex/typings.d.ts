@@ -93,6 +93,11 @@ declare namespace API {
     cultureName?: string;
   };
 
+  type getOpenApiResourcesTsProjectIdParams = {
+    projectId: string;
+    cultureName?: string;
+  };
+
   type getProjectsCanAssociationProjectsParams = {
     projectId?: string;
   };
@@ -224,7 +229,7 @@ declare namespace API {
     englishName?: string;
   };
 
-  type TranslateProviderEnum = 0 | 1;
+  type TranslateProviderEnum = 0 | 1 | 2 | 3;
 
   type UpdateResourceDto = {
     id?: string;

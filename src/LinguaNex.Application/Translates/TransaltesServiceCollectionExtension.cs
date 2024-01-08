@@ -58,7 +58,7 @@ namespace LinguaNex.Translates
             var options = new TencentTranslateClientOptions();
             action.Invoke(options);
             services.AddSingleton(options);
-            services.AddSingleton(sp => new TencentTranslateClient(sp.GetRequiredService<TencentTranslateClientOptions>()));
+            services.AddSingleton<TencentTranslateClient>();
 
             services.AddSingleton<ITranslate, TencentTranslate>();
 
@@ -70,7 +70,7 @@ namespace LinguaNex.Translates
             var options = new AliyunTranslateClientOptions();
             action.Invoke(options);
             services.AddSingleton(options);
-            services.AddSingleton(sp => new AliyunTranslateClient(sp.GetRequiredService<AliyunTranslateClientOptions>()));
+            services.AddSingleton<AliyunTranslateClient>();
 
             services.AddSingleton<ITranslate, AliyunTranslate>();
 

@@ -14,7 +14,7 @@ using LinguaNex.Translates.Baidu;
 
 namespace LinguaNex.Translates.Tencent
 {
-    public class TencentTranslateClient(TencentTranslateClientOptions options)
+    public class TencentTranslateClient(ILogger<TencentTranslateClient> logger,TencentTranslateClientOptions options)
     {
         public async Task<TextTranslateResponse> Translate(TencentTranslateRequestDto dto)
         {
@@ -29,7 +29,7 @@ namespace LinguaNex.Translates.Tencent
             }
             catch (Exception ex)
             {
-                //logger.LogError($"TencentTranslate error: {ex.Message}");
+                logger.LogError($"TencentTranslate error: {ex.Message}");
             }
             return new TextTranslateResponse() { Source = dto.From, Target = dto.To, TargetText = dto.QueryString };
         }

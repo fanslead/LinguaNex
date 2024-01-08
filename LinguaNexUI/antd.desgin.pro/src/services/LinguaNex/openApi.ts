@@ -88,6 +88,23 @@ export async function getOpenApiResourcesXmlProjectId(
   // });
 }
 
+/** 导出ts文件 GET /api/OpenApi/Resources/ts/${param0} */
+export async function getOpenApiResourcesTsProjectId(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getOpenApiResourcesTsProjectIdParams,
+  options?: { [key: string]: any },
+) {
+  const { projectId: param0, ...queryParams } = params;
+  window.open(`/api/OpenApi/Resources/ts/${param0}`, '_blank')
+  // return request<any>(`/api/OpenApi/Resources/ts/${param0}`, {
+  //   method: 'GET',
+  //   params: {
+  //     ...queryParams,
+  //   },
+  //   ...(options || {}),
+  // });
+}
+
 /** 获取支持的地区码 GET /api/OpenApi/SupportedCultures */
 export async function getOpenApiSupportedCultures(options?: { [key: string]: any }) {
   return request<API.RListSupportedCulture>('/api/OpenApi/SupportedCultures', {

@@ -7,7 +7,7 @@ import { getProjects, postProjects, putProjectsEnableId, getProjectsCanAssociati
 import styles from './style.less';
 import { useState, useRef, useImperativeHandle } from 'react';
 import { ColumnsType } from 'antd/es/table';
-import { getOpenApiResourcesJsonProjectId, getOpenApiResourcesTomlProjectId, getOpenApiResourcesXmlProjectId } from '@/services/LinguaNex/openApi';
+import { getOpenApiResourcesJsonProjectId, getOpenApiResourcesTomlProjectId, getOpenApiResourcesTsProjectId, getOpenApiResourcesXmlProjectId } from '@/services/LinguaNex/openApi';
 
 const { Paragraph } = Typography;
 
@@ -154,6 +154,8 @@ const CardList = () => {
         break;
       case '4': getOpenApiResourcesJsonProjectId({projectId:project})
         break;
+      case '5': getOpenApiResourcesTsProjectId({projectId:project})
+        break;
     }
   };
   
@@ -176,6 +178,11 @@ const CardList = () => {
     {
       label: 'properties',
       key: '4',
+      icon: <UserOutlined />
+    },
+    {
+      label: 'ts',
+      key: '5',
       icon: <UserOutlined />
     },
   ];

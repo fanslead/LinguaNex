@@ -1,10 +1,11 @@
 ﻿using AlibabaCloud.SDK.Alimt20181012.Models;
 using LinguaNex.Translates.Aliyun.Dtos;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace LinguaNex.Aliyun
 {
-    public class AliyunTranslateClient(AliyunTranslateClientOptions options)
+    public class AliyunTranslateClient(ILogger logger,AliyunTranslateClientOptions options)
     {
 
         public async Task<string> Translate(AliyunTranslateRequestDto dto)
@@ -41,7 +42,7 @@ namespace LinguaNex.Aliyun
             }
             catch (Exception ex)
             {
-                return ex.StackTrace;
+                logger.LogError(ex, ex.Message);
             }
             return dto.QueryString;
         }

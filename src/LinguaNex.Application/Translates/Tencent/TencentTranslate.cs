@@ -3,6 +3,8 @@ using LinguaNex.Translates.Tencent.Dtos;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SKIT.FlurlHttpClient.Baidu.Translate;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 using Wheel.Core.Exceptions;
 
 namespace LinguaNex.Translates.Tencent
@@ -24,7 +26,10 @@ namespace LinguaNex.Translates.Tencent
                 From = "auto",//ConvertLangCode(sourceLang),
                 To = ConvertLangCode(targetLang)
             });
-            logger.LogError($"TencentTranslate error: {response}");
+            logger.LogError($"TencentTranslate error: {response.ToJson(new System.Text.Json.JsonSerializerOptions
+            {
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
+            })}");
             return response?.TargetText;
         }
 
