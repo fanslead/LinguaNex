@@ -83,7 +83,7 @@ namespace LinguaNex.Resources
             var total = await groupQuery.CountAsync();
             var datas = (await groupQuery.ToListAsync()).Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).Select(a =>
             {
-                var dic = a.ToDictionary(a => a.Culture.Name, a => new CultureResourceDto { Value = a.Value, CultureId = a.CultureId, Culture = a.Culture.Name });
+                var dic = a.ToDictionary(a => a.Culture.Name, a => new CultureResourceDto { Value = a.Value, CultureId = a.CultureId });
                 dic.Add("key", new CultureResourceDto { Value = a.Key });
                 return dic;
             }).ToList();
