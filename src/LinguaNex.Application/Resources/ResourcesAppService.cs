@@ -187,7 +187,7 @@ namespace LinguaNex.Resources
             if (!await projectsRepository.AnyAsync(a => a.Id == dto.ProjectId))
                 throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.ProjectId.ToString());
             var cultureIds = dto.Resouces.Select(a => a.CultureId).ToList();
-            var entities = await resourceRepository.GetListAsync(a => a.ProjectId == dto.ProjectId && cultureIds.Contains(a.CultureId));
+            var entities = await resourceRepository.GetListAsync(a => a.ProjectId == dto.ProjectId && cultureIds.Contains(a.CultureId) && a.Key == dto.Key);
             var updateDic = dto.Resouces.ToDictionary(a => a.CultureId, a => a.Value);
             foreach (var entity in entities)
             {
