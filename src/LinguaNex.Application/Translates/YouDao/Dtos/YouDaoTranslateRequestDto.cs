@@ -1,17 +1,12 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace LinguaNex.Translates.YouDao.Dtos
 {
     /// <summary>
     /// 有道翻译查询参数
     /// </summary>
-    public class YouDaoTranslateRequestDto: YouDaoTranslateRequestBaseDto
+    public class YouDaoTranslateRequestDto : YouDaoTranslateRequestBaseDto
     {
         /// <summary>
         /// 待翻译文本
@@ -31,5 +26,5 @@ namespace LinguaNex.Translates.YouDao.Dtos
         [JsonProperty("to")]
         [JsonPropertyName("to")]
         public string? To { get; set; }
-    }    
+    }
 }

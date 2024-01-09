@@ -1,8 +1,6 @@
-using System;
-using System.Text;
-using System.Security.Cryptography;
-using System.Collections.Generic;
 using LinguaNex.Translates.YouDao.Dtos;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace LinguaNex.Translates.YouDao.Utilities
 {

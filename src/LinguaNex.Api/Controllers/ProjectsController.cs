@@ -1,12 +1,6 @@
-﻿using IdGen;
-using LinguaNex.Project;
+﻿using LinguaNex.Project;
 using LinguaNex.Project.Dtos;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Wheel.Controllers;
 using Wheel.Core.Dto;
 
@@ -57,7 +51,7 @@ namespace LinguaNex.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpDelete("ProjectAssociation")]
-        public Task<R> DeleteProjectAssociation([FromBody]DeleteProjectAssociationDto dto)
+        public Task<R> DeleteProjectAssociation([FromBody] DeleteProjectAssociationDto dto)
         {
             return projectsAppService.DeleteProjectAssociation(dto);
         }
@@ -78,7 +72,7 @@ namespace LinguaNex.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpGet()]
-        public Task<Page<ProjectDto>> PageListAsync([FromQuery]PageRequest request)
+        public Task<Page<ProjectDto>> PageListAsync([FromQuery] PageRequest request)
         {
             return projectsAppService.PageListAsync(request);
         }

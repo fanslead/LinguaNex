@@ -160,7 +160,7 @@ namespace LinguaNex.Extensions.Localization.Internal
                 .WithAutomaticReconnect()
                 .Build();
 
-            connection.On<LinguaNexResources>("CreateOrUpdateResource", obj => 
+            connection.On<LinguaNexResources>("CreateOrUpdateResource", obj =>
             {
                 if (_resourcesCache.TryGetValue(obj.CultureName, out var value))
                 {
@@ -169,7 +169,8 @@ namespace LinguaNex.Extensions.Localization.Internal
                         value[resource.Key] = resource.Value;
                     }
                     _resourcesCache[obj.CultureName] = value;
-                }else
+                }
+                else
                 {
                     _resourcesCache[obj.CultureName] = new ConcurrentDictionary<string, string>(obj.Resources);
                 }

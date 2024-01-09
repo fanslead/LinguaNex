@@ -25,7 +25,7 @@ namespace LinguaNex.Translates
             switch (dto.TranslateProvider)
             {
                 case Emuns.TranslateProviderEnum.Baidu:
-                    translate = translates.First(a=> a is BaiduTranslate);//ServiceProvider.GetRequiredKeyedService<ITranslate>("Baidu");
+                    translate = translates.First(a => a is BaiduTranslate);//ServiceProvider.GetRequiredKeyedService<ITranslate>("Baidu");
                     break;
                 case Emuns.TranslateProviderEnum.YouDao:
                     translate = translates.First(a => a is YouDaoTranslate);//ServiceProvider.GetRequiredKeyedService<ITranslate>("YouDao");

@@ -5,14 +5,8 @@ using LinguaNex.Translates.Baidu;
 using LinguaNex.Translates.Tencent;
 using LinguaNex.Translates.YouDao;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.SemanticKernel;
 using SKIT.FlurlHttpClient.Baidu.Translate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LinguaNex.Translates
 {
@@ -20,7 +14,7 @@ namespace LinguaNex.Translates
     {
         public static IServiceCollection AddBaiduTransalte(this IServiceCollection services, Action<BaiduTranslateClientOptions> action)
         {
-            if(action == null) throw new ArgumentNullException("action");
+            if (action == null) throw new ArgumentNullException("action");
             var options = new BaiduTranslateClientOptions();
             action.Invoke(options);
             services.AddSingleton(options);

@@ -3,12 +3,6 @@ using LinguaNex.Cultures.Dtos;
 using LinguaNex.Domain;
 using LinguaNex.Entities;
 using LinguaNex.EventDatas;
-using LinguaNex.Project.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Wheel.Core.Dto;
 using Wheel.Core.Exceptions;
 using Wheel.Services;
@@ -22,10 +16,10 @@ namespace LinguaNex.Cultures
             if (!SupportedCulture.All().Any(a => a.Name == dto.Name))
                 throw new BusinessException(ErrorCode.NotSupported, ErrorCode.NotSupported).WithMessageDataData(dto.Name);
 
-            if(!await projectsRepository.AnyAsync(a => a.Id == dto.ProjectId))
+            if (!await projectsRepository.AnyAsync(a => a.Id == dto.ProjectId))
                 throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.ProjectId.ToString());
 
-            if(await cultureRepository.AnyAsync(a => a.Name == dto.Name && a.ProjectId == dto.ProjectId))
+            if (await cultureRepository.AnyAsync(a => a.Name == dto.Name && a.ProjectId == dto.ProjectId))
                 throw new BusinessException(ErrorCode.Exist, ErrorCode.Exist).WithMessageDataData(dto.Name);
 
             var entity = Mapper.Map<Culture>(dto);

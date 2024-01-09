@@ -10,8 +10,6 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Wheel.Core.Dto;
 using Wheel.EventBus.Distributed;
 using Wheel.EventBus.Local;
-using Wheel.Settings;
-using Wheel.Users;
 using Wheel.Utilities;
 
 namespace Wheel.Services

@@ -1,17 +1,15 @@
-﻿using LinguaNex.Const;
-using LinguaNex.Domain;
+﻿using LinguaNex.Domain;
 using LinguaNex.Dtos;
 using LinguaNex.Entities;
 using LinguaNex.EventDatas;
 using LinguaNex.Hubs;
 using Microsoft.AspNetCore.SignalR;
-using Wheel.Core.Exceptions;
 using Wheel.DependencyInjection;
 using Wheel.EventBus.Distributed;
 
 namespace LinguaNex.Handlers
 {
-    public class CreateOrUpdateResourceEventHandler(ILogger<CreateOrUpdateResourceEventHandler> logger,IBasicRepository<Resource, long> resourceRepository, IBasicRepository<ProjectAssociation> projectAssociationRepository, IHubContext<LinguaNexHub> hubContext) : IDistributedEventHandler<CreateOrUpdateResourceEto>, ITransientDependency
+    public class CreateOrUpdateResourceEventHandler(ILogger<CreateOrUpdateResourceEventHandler> logger, IBasicRepository<Resource, long> resourceRepository, IBasicRepository<ProjectAssociation> projectAssociationRepository, IHubContext<LinguaNexHub> hubContext) : IDistributedEventHandler<CreateOrUpdateResourceEto>, ITransientDependency
     {
         public async Task Handle(CreateOrUpdateResourceEto eventData, CancellationToken cancellationToken = default)
         {

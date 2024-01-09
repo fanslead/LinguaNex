@@ -3,7 +3,6 @@ using LinguaNex.Domain;
 using LinguaNex.Entities;
 using LinguaNex.EventDatas;
 using LinguaNex.Translates;
-using Microsoft.Extensions.DependencyInjection;
 using Wheel.Core.Exceptions;
 using Wheel.DependencyInjection;
 using Wheel.EventBus.Distributed;
@@ -11,7 +10,7 @@ using Wheel.Utilities;
 
 namespace LinguaNex.Handlers
 {
-    public class BatchCreateResourceEventHandler(ILogger<BatchCreateResourceEventHandler> logger,IBasicRepository<Culture, string> cultureRepository, IBasicRepository<Resource, string> resourceRepository, ITranslateAppService translateAppService, IServiceProvider serviceProvider) : IDistributedEventHandler<BatchCreateResourceEto>, ITransientDependency
+    public class BatchCreateResourceEventHandler(ILogger<BatchCreateResourceEventHandler> logger, IBasicRepository<Culture, string> cultureRepository, IBasicRepository<Resource, string> resourceRepository, ITranslateAppService translateAppService, IServiceProvider serviceProvider) : IDistributedEventHandler<BatchCreateResourceEto>, ITransientDependency
     {
         public async Task Handle(BatchCreateResourceEto eventData, CancellationToken cancellationToken = default)
         {

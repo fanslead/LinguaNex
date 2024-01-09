@@ -1,10 +1,5 @@
 ﻿using LinguaNex.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LinguaNex.EntityFrameworkCore
 {
@@ -20,7 +15,7 @@ namespace LinguaNex.EntityFrameworkCore
                 e.HasKey(a => a.Id);
                 e.Property(a => a.Id).HasMaxLength(36);
                 e.Property(a => a.Name).HasMaxLength(128);
-                e.HasMany(a=>a.ProjectAssociations).WithOne(a=>a.MainProject);
+                e.HasMany(a => a.ProjectAssociations).WithOne(a => a.MainProject);
             });
             modelBuilder.Entity<ProjectAssociation>(e =>
             {

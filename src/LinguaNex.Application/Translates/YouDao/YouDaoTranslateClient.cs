@@ -1,17 +1,7 @@
-﻿using Flurl;
-using Flurl.Http;
-using LinguaNex.Translates.YouDao.Dtos;
+﻿using LinguaNex.Translates.YouDao.Dtos;
 using LinguaNex.Translates.YouDao.Utilities;
-using Minio.DataModel;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using Wheel.DependencyInjection;
-using static SKIT.FlurlHttpClient.Baidu.Translate.Models.TranslateSdkPictureResponse.Types.Data.Types;
 
 namespace LinguaNex.Translates.YouDao
 {

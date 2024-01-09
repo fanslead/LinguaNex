@@ -1,7 +1,6 @@
 ﻿using LinguaNex.Dtos;
 using LinguaNex.OpenApi;
 using Microsoft.AspNetCore.SignalR;
-using Wheel.Core.Dto;
 
 namespace LinguaNex.Hubs
 {
@@ -9,9 +8,9 @@ namespace LinguaNex.Hubs
     {
         public override async Task OnConnectedAsync()
         {
-            if(Context.GetHttpContext().Request.Query.TryGetValue("project", out var project))
+            if (Context.GetHttpContext().Request.Query.TryGetValue("project", out var project))
             {
-                if(!string.IsNullOrWhiteSpace(project.ToString()))
+                if (!string.IsNullOrWhiteSpace(project.ToString()))
                 {
                     await Groups.AddToGroupAsync(Context.ConnectionId, project.ToString());
                 }

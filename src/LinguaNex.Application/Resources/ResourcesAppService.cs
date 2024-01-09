@@ -1,20 +1,11 @@
-﻿using Humanizer;
-using IdGen;
-using LinguaNex.Const;
+﻿using LinguaNex.Const;
 using LinguaNex.Domain;
 using LinguaNex.Entities;
 using LinguaNex.EventDatas;
 using LinguaNex.Resources.Dtos;
 using LinguaNex.Translates;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Threading.Tasks;
-using System.Xml;
 using Wheel.Core.Dto;
 using Wheel.Core.Exceptions;
 using Wheel.Services;
@@ -25,21 +16,21 @@ namespace LinguaNex.Resources
     {
         public async Task<R<List<ResourceDto>>> GetAllResourceByCulture(long cultureId)
         {
-            var datas = await resourceRepository.SelectListAsync(a => a.CultureId == cultureId, 
-                a=> new ResourceDto 
+            var datas = await resourceRepository.SelectListAsync(a => a.CultureId == cultureId,
+                a => new ResourceDto
                 {
                     Id = a.Id,
                     CultureId = a.CultureId,
                     ProjectId = a.ProjectId,
                     Key = a.Key,
-                    Value =a.Value
+                    Value = a.Value
                 });
             return Success(datas);
         }
 
         public async Task<R<CultureResourceAllInOneDto>> GetAllResourceByProject(string projectId)
         {
-            var datas = await resourceRepository.GetListAsync(a => a.ProjectId == projectId, propertySelectors: a=>a.Culture);
+            var datas = await resourceRepository.GetListAsync(a => a.ProjectId == projectId, propertySelectors: a => a.Culture);
             var goupData = datas.GroupBy(a => a.Key);
             var dicData = goupData.Select(a =>
             {
@@ -52,21 +43,21 @@ namespace LinguaNex.Resources
                 new AntdColumn { DataIndex = "key", Title = "Key", ShortTitle = "Key" }
             };
             columns.AddRange(datas.GroupBy(a => a.Culture.Name).Select(a => new AntdColumn { DataIndex = a.Key, Title = SupportedCulture.ChineseLanguages[a.Key], ShortTitle = SupportedCulture.EnglishLanguages[a.Key] }));
-            return Success(new CultureResourceAllInOneDto { Columns = columns, Resources = dicData});
+            return Success(new CultureResourceAllInOneDto { Columns = columns, Resources = dicData });
         }
 
         public async Task<Page<ResourceDto>> GetResourcePageByCulture(ResourcePageRequest request)
         {
-            var (datas, total)= await resourceRepository.SelectPageListAsync(a => a.CultureId == request.CultureId, 
-                a=> new ResourceDto 
+            var (datas, total) = await resourceRepository.SelectPageListAsync(a => a.CultureId == request.CultureId,
+                a => new ResourceDto
                 {
                     Id = a.Id,
                     CultureId = a.CultureId,
                     ProjectId = a.ProjectId,
                     Key = a.Key,
-                    Value =a.Value
+                    Value = a.Value
                 },
-                (request.PageIndex -1) * request.PageSize,
+                (request.PageIndex - 1) * request.PageSize,
                 request.PageSize
                 );
             return Page(datas, total);
@@ -104,18 +95,18 @@ namespace LinguaNex.Resources
 
         public async Task<R> BatchCreateByJsonFileAsync(long cultureId, bool? translate, BatchCreateByJsonFileDto dto)
         {
-            if(Path.GetExtension(dto.File.FileName)!=".json")
+            if (Path.GetExtension(dto.File.FileName) != ".json")
                 throw new BusinessException(ErrorCode.NotSupported, ErrorCode.NotSupported).WithMessageDataData(Path.GetExtension(dto.File.FileName));
 
             var culture = await cultureRepository.FindAsync(cultureId);
-            if(culture == null)
+            if (culture == null)
                 throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(cultureId.ToString());
-            
-            using(var stream = dto.File.OpenReadStream())
+
+            using (var stream = dto.File.OpenReadStream())
             {
                 var doc = await JsonDocument.ParseAsync(stream);
                 var resources = TraverseJson(doc.RootElement, "", culture.Id, culture.ProjectId);
-                if(resources.Count() > 0)
+                if (resources.Count() > 0)
                 {
                     var existKeys = resources.Select(a => a.Key).ToList();
                     await resourceRepository.DeleteAsync(a => existKeys.Contains(a.Key), true);
@@ -138,7 +129,7 @@ namespace LinguaNex.Resources
             entity.Id = SnowflakeIdGenerator.Create();
             entity = await resourceRepository.InsertAsync(entity, true);
             await DistributedEventBus.PublishAsync(new CreateOrUpdateResourceEto { Id = entity.Id });
-            if(dto.SyncCulture.Value)
+            if (dto.SyncCulture.Value)
             {
                 await DistributedEventBus.PublishAsync(new ResourceSyncCultureAndTranslateEto { Translate = dto.Translate.Value, SyncCulture = dto.SyncCulture.Value, Id = entity.Id, TranslateProvider = dto.TranslateProvider });
             }
@@ -157,7 +148,7 @@ namespace LinguaNex.Resources
         }
         public async Task<R<ResourceDto>> UpdateByCultureAndKeyAsync(UpdateResourceByCultureAndKeyDto dto)
         {
-            var entity = await resourceRepository.FindAsync(a=>a.Key == dto.Key && a.Culture.Name == dto.Culture);
+            var entity = await resourceRepository.FindAsync(a => a.Key == dto.Key && a.Culture.Name == dto.Culture);
             if (entity == null)
                 throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.Key.ToString());
 
@@ -177,7 +168,7 @@ namespace LinguaNex.Resources
                 Key = dto.Key,
                 Value = a.Value,
                 ProjectId = dto.ProjectId,
-                CultureId = a.CultureId, 
+                CultureId = a.CultureId,
             }).ToList();
             await resourceRepository.InsertManyAsync(entities, true);
             return Success();
@@ -217,7 +208,7 @@ namespace LinguaNex.Resources
         public async Task<R> DeleteAsync(long id)
         {
             var resource = await resourceRepository.FindAsync(id);
-            await resourceRepository.DeleteAsync(a=>a.Key == resource.Key && a.ProjectId == resource.ProjectId, true);
+            await resourceRepository.DeleteAsync(a => a.Key == resource.Key && a.ProjectId == resource.ProjectId, true);
             return Success();
         }
         private List<Resource> TraverseJson(JsonElement element, string parent, long cultureId, string projectId)

@@ -90,7 +90,7 @@ namespace LinguaNex.Controllers
                 {
                     foreach (var resource in result.Data)
                     {
-                        using(var resourceStream = new MemoryStream())
+                        using (var resourceStream = new MemoryStream())
                         {
                             var sw = new StreamWriter(resourceStream);
                             foreach (var r in resource.Resources)
@@ -99,7 +99,7 @@ namespace LinguaNex.Controllers
                             }
                             await sw.FlushAsync();
                             ZipArchiveEntry entry = zip.CreateEntry($"{resource.CultureName}.toml");
-                            using(var writer = entry.Open())
+                            using (var writer = entry.Open())
                             {
                                 var bt = resourceStream.ToArray();
                                 await writer.WriteAsync(bt, 0, bt.Length);
@@ -133,7 +133,7 @@ namespace LinguaNex.Controllers
                 {
                     foreach (var resource in result.Data)
                     {
-                        using(var resourceStream = new MemoryStream())
+                        using (var resourceStream = new MemoryStream())
                         {
                             var sw = new StreamWriter(resourceStream);
                             foreach (var r in resource.Resources)
@@ -142,7 +142,7 @@ namespace LinguaNex.Controllers
                             }
                             await sw.FlushAsync();
                             ZipArchiveEntry entry = zip.CreateEntry($"messages_{resource.CultureName.Replace("-", "_")}.properties");
-                            using(var writer = entry.Open())
+                            using (var writer = entry.Open())
                             {
                                 var bt = resourceStream.ToArray();
                                 await writer.WriteAsync(bt, 0, bt.Length);
@@ -176,7 +176,7 @@ namespace LinguaNex.Controllers
                 {
                     foreach (var resource in result.Data)
                     {
-                        using(var resourceStream = new MemoryStream())
+                        using (var resourceStream = new MemoryStream())
                         {
                             var sw = new StreamWriter(resourceStream);
                             await sw.WriteLineAsync("<resources>");
@@ -187,7 +187,7 @@ namespace LinguaNex.Controllers
                             await sw.WriteLineAsync("</resources>");
                             await sw.FlushAsync();
                             ZipArchiveEntry entry = zip.CreateEntry($"strings_{resource.CultureName}.xml");
-                            using(var writer = entry.Open())
+                            using (var writer = entry.Open())
                             {
                                 var bt = resourceStream.ToArray();
                                 await writer.WriteAsync(bt, 0, bt.Length);
@@ -221,7 +221,7 @@ namespace LinguaNex.Controllers
                 {
                     foreach (var resource in result.Data)
                     {
-                        using(var resourceStream = new MemoryStream())
+                        using (var resourceStream = new MemoryStream())
                         {
                             var sw = new StreamWriter(resourceStream);
                             await sw.WriteLineAsync("export default {");
@@ -232,7 +232,7 @@ namespace LinguaNex.Controllers
                             await sw.WriteLineAsync("};");
                             await sw.FlushAsync();
                             ZipArchiveEntry entry = zip.CreateEntry($"{resource.CultureName}.ts");
-                            using(var writer = entry.Open())
+                            using (var writer = entry.Open())
                             {
                                 var bt = resourceStream.ToArray();
                                 await writer.WriteAsync(bt, 0, bt.Length);

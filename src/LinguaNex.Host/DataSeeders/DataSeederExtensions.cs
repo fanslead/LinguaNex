@@ -1,5 +1,4 @@
 ﻿using LinguaNex.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 namespace LinguaNex.DataSeeders
 {
     public static class DataSeederExtensions

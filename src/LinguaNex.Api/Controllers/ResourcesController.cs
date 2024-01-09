@@ -1,9 +1,6 @@
-﻿using LinguaNex.Cultures.Dtos;
-using LinguaNex.Entities;
-using LinguaNex.Resources;
+﻿using LinguaNex.Resources;
 using LinguaNex.Resources.Dtos;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
 using Wheel.Controllers;
 using Wheel.Core.Dto;
 
@@ -24,7 +21,7 @@ namespace LinguaNex.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost("File/{cultureId}")]
-        public Task<R> BatchCreateByJsonFileAsync(long cultureId, [FromQuery]bool? translate, [FromForm]BatchCreateByJsonFileDto dto)
+        public Task<R> BatchCreateByJsonFileAsync(long cultureId, [FromQuery] bool? translate, [FromForm] BatchCreateByJsonFileDto dto)
         {
             return resourcesAppService.BatchCreateByJsonFileAsync(cultureId, translate, dto);
         }
@@ -74,9 +71,9 @@ namespace LinguaNex.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpGet("list")]
-        public Task<Page<ResourceDto>> GetResourcePageByCulture([FromQuery]ResourcePageRequest request)
+        public Task<Page<ResourceDto>> GetResourcePageByCulture([FromQuery] ResourcePageRequest request)
         {
-            return resourcesAppService.GetResourcePageByCulture(request); 
+            return resourcesAppService.GetResourcePageByCulture(request);
         }
 
         /// <summary>
@@ -87,7 +84,7 @@ namespace LinguaNex.Controllers
         [HttpGet("list/project")]
         public Task<Page<Dictionary<string, CultureResourceDto>>> GetResourcePageByProject([FromQuery] ResourcePageRequest request)
         {
-            return resourcesAppService.GetResourcePageByProject(request); 
+            return resourcesAppService.GetResourcePageByProject(request);
         }
         /// <summary>
         /// 根据项目分页获取多语言资源表格列数据
@@ -97,7 +94,7 @@ namespace LinguaNex.Controllers
         [HttpGet("list/columns/{projectId}")]
         public Task<R<List<AntdColumn>>> GetResourcePageByProjectTableColumns(string projectId)
         {
-            return resourcesAppService.GetResourcePageByProjectTableColumns(projectId); 
+            return resourcesAppService.GetResourcePageByProjectTableColumns(projectId);
         }
         /// <summary>
         /// 更新

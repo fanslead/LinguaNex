@@ -1,9 +1,9 @@
 ﻿using Autofac;
+using LinguaNex.Domain;
+using LinguaNex.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 using Wheel.DependencyInjection;
-using LinguaNex.Domain;
-using LinguaNex.EntityFrameworkCore;
 using Module = Autofac.Module;
 
 namespace LinguaNex

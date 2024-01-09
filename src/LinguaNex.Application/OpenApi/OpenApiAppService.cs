@@ -2,9 +2,7 @@
 using LinguaNex.Domain;
 using LinguaNex.Dtos;
 using LinguaNex.Entities;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using Wheel.Core.Dto;
 using Wheel.Core.Exceptions;
 using Wheel.Services;
@@ -16,9 +14,9 @@ namespace LinguaNex.OpenApi
         public async Task<R<List<ResourcesDto>>> GetResources(string projectId, string? cultureName, bool all)
         {
             var project = await projectsRepository.FindAsync(projectId);
-            if(project == null)
+            if (project == null)
                 throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(project.Id.ToString());
-            if(!project.Enalbe)
+            if (!project.Enalbe)
                 throw new BusinessException(ErrorCode.NotEnable, ErrorCode.NotEnable).WithMessageDataData(project.Name);
 
             var datas = await cultureRepository.GetListAsync(
@@ -37,7 +35,7 @@ namespace LinguaNex.OpenApi
 
 
             var pa = await projectAssociationRepository.SelectListAsync(a => a.MainProjectId == project.Id, a => a.AssociationProjectId);
-            if(pa.Count > 0)
+            if (pa.Count > 0)
             {
                 var associationDatas = (await cultureRepository.GetListAsync(
                 cultureRepository.BuildPredicate(
@@ -58,16 +56,16 @@ namespace LinguaNex.OpenApi
                     if (mr != null)
                     {
                         var exceptData = associationData.Resources.Keys.Except(mr.Resources.Keys);
-                        if(exceptData.Count() > 0)
+                        if (exceptData.Count() > 0)
                             mr.Resources = mr.Resources.Union(associationData.Resources.Where(a => exceptData.Contains(a.Key))).ToDictionary(a => a.Key, a => a.Value);
                     }
                     else
                     {
-                        mainResouces.Add(new ResourcesDto { CultureName = associationData.CultureName, Resources = associationData.Resources});
+                        mainResouces.Add(new ResourcesDto { CultureName = associationData.CultureName, Resources = associationData.Resources });
                     }
                 }
             }
-            
+
 
             return Success(mainResouces);
         }

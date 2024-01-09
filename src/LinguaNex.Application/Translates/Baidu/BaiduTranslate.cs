@@ -1,12 +1,9 @@
-﻿using LinguaNex.Const;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Logging;
 using SKIT.FlurlHttpClient.Baidu.Translate;
-using Wheel.Core.Exceptions;
 
 namespace LinguaNex.Translates.Baidu
 {
-    public class BaiduTranslate(ILogger<BaiduTranslate> logger,BaiduTranslateClient Client) : ITranslate
+    public class BaiduTranslate(ILogger<BaiduTranslate> logger, BaiduTranslateClient Client) : ITranslate
     {
         /// <summary>
         /// 百度翻译
