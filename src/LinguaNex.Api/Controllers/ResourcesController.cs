@@ -140,6 +140,16 @@ namespace LinguaNex.Controllers
             return resourcesAppService.BatchCreateWithoutTransate(dto);
         }
         /// <summary>
+        /// 批量更新
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        [HttpPut("BatchUpdate")]
+        public Task<R> BatchUpdate(BatchUpdateResourceDto dto)
+        {
+            return resourcesAppService.BatchUpdate(dto);
+        }
+        /// <summary>
         /// 翻译项目所包含的地区的语言
         /// </summary>
         /// <param name="dto"></param>

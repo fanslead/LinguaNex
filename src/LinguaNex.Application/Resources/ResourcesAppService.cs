@@ -14,6 +14,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
+using System.Xml;
 using Wheel.Core.Dto;
 using Wheel.Core.Exceptions;
 using Wheel.Services;
@@ -179,6 +180,20 @@ namespace LinguaNex.Resources
                 CultureId = a.CultureId, 
             }).ToList();
             await resourceRepository.InsertManyAsync(entities, true);
+            return Success();
+        }
+        public async Task<R> BatchUpdate(BatchUpdateResourceDto dto)
+        {
+            if (!await projectsRepository.AnyAsync(a => a.Id == dto.ProjectId))
+                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.ProjectId.ToString());
+            var cultureIds = dto.Resouces.Select(a => a.CultureId).ToList();
+            var entities = await resourceRepository.GetListAsync(a => a.ProjectId == dto.ProjectId && cultureIds.Contains(a.CultureId));
+            var updateDic = dto.Resouces.ToDictionary(a => a.CultureId, a => a.Value);
+            foreach (var entity in entities)
+            {
+                entity.Value = updateDic[entity.CultureId];
+            }
+            await resourceRepository.UpdateManyAsync(entities, true);
             return Success();
         }
         public async Task<R<Dictionary<string, string>>> TransateMultipleLanguages(TransateMultipleLanguagesDto dto)
