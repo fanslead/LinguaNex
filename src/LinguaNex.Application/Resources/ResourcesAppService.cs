@@ -72,7 +72,7 @@ namespace LinguaNex.Resources
             return Page(datas, total);
         }
 
-        public async Task<Page<Dictionary<string, string>>> GetResourcePageByProject(ResourcePageRequest request)
+        public async Task<Page<Dictionary<string, CultureResourceDto>>> GetResourcePageByProject(ResourcePageRequest request)
         {
             var query = resourceRepository.GetQueryableWithIncludes(a => a.Culture).Where(a => a.ProjectId == request.ProjectId);
             if (!request.Key.IsNullOrWhiteSpace())
@@ -83,8 +83,8 @@ namespace LinguaNex.Resources
             var total = await groupQuery.CountAsync();
             var datas = (await groupQuery.ToListAsync()).Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).Select(a =>
             {
-                var dic = a.ToDictionary(a => a.Culture.Name, a => a.Value);
-                dic.Add("key", a.Key);
+                var dic = a.ToDictionary(a => a.Culture.Name, a => new CultureResourceDto { Value = a.Value, CultureId = a.CultureId, Culture = a.Culture.Name });
+                dic.Add("key", new CultureResourceDto { Value = a.Key });
                 return dic;
             }).ToList();
             return Page(datas, total);

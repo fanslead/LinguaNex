@@ -85,7 +85,7 @@ namespace LinguaNex.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpGet("list/project")]
-        public Task<Page<Dictionary<string, string>>> GetResourcePageByProject([FromQuery] ResourcePageRequest request)
+        public Task<Page<Dictionary<string, CultureResourceDto>>> GetResourcePageByProject([FromQuery] ResourcePageRequest request)
         {
             return resourcesAppService.GetResourcePageByProject(request); 
         }
