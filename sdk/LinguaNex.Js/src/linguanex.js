@@ -9,7 +9,12 @@ function loadApiResources(prject, locale) {
         }
     })
     .then(res => {
-        localesData[locale] = res.data[0].resources
+        if(res.data[0]){
+            localesData[locale] = res.data[0].resources
+        }
+        else{
+            localesData[locale] = {}
+        }
         return locale
     })
     .catch(err => {
@@ -32,7 +37,7 @@ function L(key, locale, defaultStr) {
     if(!locale)
         locale = linguaNexOptions.currentLocale
     const data = localesData[locale];
-    if(data[key])
+    if(data && data[key])
         return data[key];
     return defaultStr || key;
   }
