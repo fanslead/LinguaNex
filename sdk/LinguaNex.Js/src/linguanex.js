@@ -18,8 +18,10 @@ function loadApiResources(prject, locale) {
     ;
   }
 function setLocale(locale){
-    if(!localesData[locale])
+    if(!localesData[locale]){
+        linguaNexOptions.currentLocale = locale;
         return loadApiResources(linguaNexOptions.project, locale, () => {});
+    }
     else{
         linguaNexOptions.currentLocale = locale;
         return new Promise(s => s(null));
@@ -30,7 +32,9 @@ function L(key, locale, defaultStr) {
     if(!locale)
         locale = linguaNexOptions.currentLocale
     const data = localesData[locale];
-    return data[key] || defaultStr || key;
+    if(data[key])
+        return data[key];
+    return defaultStr || key;
   }
 
 function initLinguaNex(options) {
@@ -40,7 +44,7 @@ function initLinguaNex(options) {
     for(let locale in options.locales){
         promises.push(loadApiResources(options.project, options.locales[locale]));
     }
-    Promise.all(promises)
+    return Promise.all(promises)
     .then(results => {
         console.log('Init Finish', results)
     })
