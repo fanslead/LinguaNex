@@ -2,26 +2,28 @@ const localesData = {};
 const axios = require('axios');
 var linguaNexOptions = {};
 // 从API获取国际化资源数据
-function loadApiResources(prject, locale, callback) {
-    axios.get(`${linguaNexOptions.baseUrl}/api/OpenApi/Resources/${prject}`, {
+function loadApiResources(prject, locale) {
+    return axios.get(`${linguaNexOptions.baseUrl}/api/OpenApi/Resources/${prject}`, {
         headers: {
             "Accept-Language": locale
         }
     })
     .then(res => {
         localesData[locale] = res.data[0].resources
-        callback()
+        return locale
     })
     .catch(err => {
-        console.log(err)
+        return new Error(err.message)
     })
     ;
   }
 function setLocale(locale){
     if(!localesData[locale])
-        loadApiResources(linguaNexOptions.project, locale, () => {});
-    else
+        return loadApiResources(linguaNexOptions.project, locale, () => {});
+    else{
         linguaNexOptions.currentLocale = locale;
+        return new Promise(s => s(null));
+    }
 }
 // 获取国际化文本
 function L(key, locale, defaultStr) {
@@ -31,14 +33,20 @@ function L(key, locale, defaultStr) {
     return data[key] || defaultStr || key;
   }
 
-function initLinguaNex(options, callback) {
+function initLinguaNex(options) {
     linguaNexOptions = options;
     linguaNexOptions.currentLocale = options.defaultLocale;
+    const promises = [];
     for(let locale in options.locales){
-        loadApiResources(options.project, options.locales[locale], () => {
-            callback(options.locales[locale])
-        });
+        promises.push(loadApiResources(options.project, options.locales[locale]));
     }
+    Promise.all(promises)
+    .then(results => {
+        console.log('Init Finish', results)
+    })
+    .catch(err => {
+       console.error('Error:', err) 
+    })
 }
 module.exports = {
     initLinguaNex: initLinguaNex,
