@@ -33,7 +33,7 @@ function setLocale(locale){
     }
 }
 function getLocale(locale){
-    if(!localesData[locale]){
+    if(localesData[locale]){
         return localesData[locale];
     }
     else{
