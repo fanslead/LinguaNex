@@ -79,6 +79,27 @@ connection.StartAsync();
 connection.InvokeAsync<List<LinguaNexResources>>("GetResources", projectId, cultureName,all);
 ```
 
+## JS SDK 接入
+```
+const { initLinguaNex, setLocale, getLocale, getAllLocale, L } = linguanex
+initLinguaNex({
+    baseUrl: 'http://47.119.20.111',
+    locales: ["zh-CN", "en"],
+    defaultLocale: 'zh-CN',
+    project: 'C96755D0-C22C-4DAD-9620-AF64C4C3D9D7'
+})
+.then(() => {
+    console.log(L('Hello'));
+    setLocale('aa')
+    .then(() => {
+        console.log(L('Hello'));
+        console.log(getAllLocale());
+    })
+    console.log(getLocale("zh-CN"));
+})
+```
+
+
 ## 效果图
 ![image](https://github.com/fanslead/LinguaNex/assets/22066473/5f59075e-7058-4c8e-83fc-b1d434d28af4)
 
@@ -108,7 +129,7 @@ connection.InvokeAsync<List<LinguaNexResources>>("GetResources", projectId, cult
 - [x] 导出TS多语言文件
 - [x] 批量导入多语言配置(JSON)
 - [x] .NET SDK
-- [ ] JS SDK
+- [x] JS SDK
 - [ ] JAVA SDK
 - [ ] GO SDK
 - [ ] PY SDK
