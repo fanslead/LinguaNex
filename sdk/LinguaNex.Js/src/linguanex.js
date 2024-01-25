@@ -32,6 +32,17 @@ function setLocale(locale){
         return new Promise(s => s(null));
     }
 }
+function getLocale(locale){
+    if(!localesData[locale]){
+        return localesData[locale];
+    }
+    else{
+        return {};
+    }
+}
+function getAllLocale(){
+    return localesData;
+}
 // 获取国际化文本
 function L(key, locale, defaultStr) {
     if(!locale)
@@ -60,5 +71,7 @@ function initLinguaNex(options) {
 module.exports = {
     initLinguaNex: initLinguaNex,
     L: L,
-    setLocale: setLocale
+    setLocale: setLocale,
+    getLocale: getLocale,
+    getAllLocale: getAllLocale
   };
