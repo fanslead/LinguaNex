@@ -108,7 +108,7 @@ connection.InvokeAsync<List<LinguaNexResources>>("GetResources", projectId, cult
 - [x] 导出TS多语言文件
 - [x] 批量导入多语言配置(JSON)
 - [x] .NET SDK
-- [ ] JS SDK
+- [x] JS SDK
 - [ ] JAVA SDK
 - [ ] GO SDK
 - [ ] PY SDK
