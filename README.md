@@ -77,10 +77,22 @@ connection.StartAsync();
 
 //拉取资源 参数跟OpenApi接口一致
 connection.InvokeAsync<List<LinguaNexResources>>("GetResources", projectId, cultureName,all);
+``` java
+## Java SDK 接入
+
+```
+public static void main(String[] args) {
+        ResourceBundleMessageSource source = new RemoteSourceBundle();
+        GlobalProp.initFromYaml(null);
+        Locale locale = new Locale("zh-Hans");
+        BundleTest test = new BundleTest();
+        System.out.println(source.getMessage("40004", null, locale));
+    }
 ```
 
+
 ## JS SDK 接入
-```
+``` js
 const { initLinguaNex, setLocale, getLocale, getAllLocale, L } = linguanex
 initLinguaNex({
     baseUrl: 'http://47.119.20.111',
