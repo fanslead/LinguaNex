@@ -77,10 +77,9 @@ connection.StartAsync();
 
 //拉取资源 参数跟OpenApi接口一致
 connection.InvokeAsync<List<LinguaNexResources>>("GetResources", projectId, cultureName,all);
-``` java
+``` 
 ## Java SDK 接入
-
-```
+``` java
 public static void main(String[] args) {
         ResourceBundleMessageSource source = new RemoteSourceBundle();
         GlobalProp.initFromYaml(null);
