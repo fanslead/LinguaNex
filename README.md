@@ -77,7 +77,19 @@ connection.StartAsync();
 
 //拉取资源 参数跟OpenApi接口一致
 connection.InvokeAsync<List<LinguaNexResources>>("GetResources", projectId, cultureName,all);
-``` 
+```
+## .NET SDK 接入
+``` c#
+builder.Services.AddLinguaNexLocalization(options =>
+{
+    options.LinguaNexApiUrl = builder.Configuration["LinguaNex:ApiUrl"];
+    options.Project = builder.Configuration["LinguaNex:Project"];
+    options.UseWebSocket = true;
+});
+builder.Services.AddLocalization();
+
+app.UseRequestLocalization();
+```
 ## Java SDK 接入
 ``` java
 public static void main(String[] args) {
@@ -141,7 +153,7 @@ initLinguaNex({
 - [x] 批量导入多语言配置(JSON)
 - [x] .NET SDK
 - [x] JS SDK
-- [ ] JAVA SDK
-- [ ] GO SDK
+- [x] JAVA SDK
+- [x] GO SDK
 - [ ] PY SDK
 - [x] UI管理界面
