@@ -20,13 +20,13 @@ namespace LinguaNex.Handlers
                 var resource = await resourceRepository.FindAsync(s => s.Id == eventData.Id);
                 if (resource == null)
                 {
-                    throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData($"Resource:{eventData.Id}");
+                    throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageData($"Resource:{eventData.Id}");
                 }
 
                 var cultrue = await cultureRepository.FindAsync(s => s.Id == resource.CultureId);
                 if (cultrue == null)
                 {
-                    throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData($"Culture:{resource.CultureId}");
+                    throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageData($"Culture:{resource.CultureId}");
                 }
                 var cultrueList = await cultureRepository.GetListAsync(s => s.ProjectId == cultrue.ProjectId && s.Id != cultrue.Id);
                 if (cultrueList != null && cultrueList.Any())

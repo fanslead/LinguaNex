@@ -20,7 +20,7 @@ namespace LinguaNex.Handlers
                 var cultrue = await cultureRepository.FindAsync(s => s.Id == eventData.CultureId);
                 if (cultrue == null)
                 {
-                    throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData($"CultureId:{eventData.CultureId}");
+                    throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageData($"CultureId:{eventData.CultureId}");
                 }
                 var syncResourceList = await resourceRepository.GetListAsync(s => s.Id >= eventData.FirstResourceId && s.CultureId == cultrue.Id);
                 if (syncResourceList != null && syncResourceList.Any())

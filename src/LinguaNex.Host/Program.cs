@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using IdGen.DependencyInjection;
 using LinguaNex;
 using LinguaNex.AutoMapper;
 using LinguaNex.Const;
