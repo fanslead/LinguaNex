@@ -15,9 +15,9 @@ namespace LinguaNex.OpenApi
         {
             var project = await projectsRepository.FindAsync(projectId);
             if (project == null)
-                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(project.Id.ToString());
+                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageData(project.Id.ToString());
             if (!project.Enalbe)
-                throw new BusinessException(ErrorCode.NotEnable, ErrorCode.NotEnable).WithMessageDataData(project.Name);
+                throw new BusinessException(ErrorCode.NotEnable, ErrorCode.NotEnable).WithMessageData(project.Name);
 
             var datas = await cultureRepository.GetListAsync(
                 cultureRepository.BuildPredicate(

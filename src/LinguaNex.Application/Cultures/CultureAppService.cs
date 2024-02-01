@@ -14,13 +14,13 @@ namespace LinguaNex.Cultures
         public async Task<R<CultureDto>> CreateAsync(CreateCultureDto dto)
         {
             if (!SupportedCulture.All().Any(a => a.Name == dto.Name))
-                throw new BusinessException(ErrorCode.NotSupported, ErrorCode.NotSupported).WithMessageDataData(dto.Name);
+                throw new BusinessException(ErrorCode.NotSupported, ErrorCode.NotSupported).WithMessageData(dto.Name);
 
             if (!await projectsRepository.AnyAsync(a => a.Id == dto.ProjectId))
-                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.ProjectId.ToString());
+                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageData(dto.ProjectId.ToString());
 
             if (await cultureRepository.AnyAsync(a => a.Name == dto.Name && a.ProjectId == dto.ProjectId))
-                throw new BusinessException(ErrorCode.Exist, ErrorCode.Exist).WithMessageDataData(dto.Name);
+                throw new BusinessException(ErrorCode.Exist, ErrorCode.Exist).WithMessageData(dto.Name);
 
             var entity = Mapper.Map<Culture>(dto);
             entity.Id = SnowflakeIdGenerator.Create();

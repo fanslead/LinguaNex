@@ -96,11 +96,11 @@ namespace LinguaNex.Resources
         public async Task<R> BatchCreateByJsonFileAsync(long cultureId, bool? translate, BatchCreateByJsonFileDto dto)
         {
             if (Path.GetExtension(dto.File.FileName) != ".json")
-                throw new BusinessException(ErrorCode.NotSupported, ErrorCode.NotSupported).WithMessageDataData(Path.GetExtension(dto.File.FileName));
+                throw new BusinessException(ErrorCode.NotSupported, ErrorCode.NotSupported).WithMessageData(Path.GetExtension(dto.File.FileName));
 
             var culture = await cultureRepository.FindAsync(cultureId);
             if (culture == null)
-                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(cultureId.ToString());
+                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageData(cultureId.ToString());
 
             using (var stream = dto.File.OpenReadStream())
             {
@@ -119,11 +119,11 @@ namespace LinguaNex.Resources
         public async Task<R<ResourceDto>> CreateAsync(CreateResourceDto dto)
         {
             if (!await projectsRepository.AnyAsync(a => a.Id == dto.ProjectId))
-                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.ProjectId.ToString());
+                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageData(dto.ProjectId.ToString());
             if (!await cultureRepository.AnyAsync(a => a.Id == dto.CultureId))
-                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.CultureId.ToString());
+                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageData(dto.CultureId.ToString());
             if (await resourceRepository.AnyAsync(a => a.ProjectId == dto.ProjectId && a.CultureId == dto.CultureId && a.Key == dto.Key))
-                throw new BusinessException(ErrorCode.Exist, ErrorCode.Exist).WithMessageDataData(dto.Key);
+                throw new BusinessException(ErrorCode.Exist, ErrorCode.Exist).WithMessageData(dto.Key);
 
             var entity = Mapper.Map<Resource>(dto);
             entity.Id = SnowflakeIdGenerator.Create();
@@ -139,7 +139,7 @@ namespace LinguaNex.Resources
         {
             var entity = await resourceRepository.FindAsync(dto.Id);
             if (entity == null)
-                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.Id.ToString());
+                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageData(dto.Id.ToString());
 
             entity.Value = dto.Value;
             entity = await resourceRepository.UpdateAsync(entity, true);
@@ -150,7 +150,7 @@ namespace LinguaNex.Resources
         {
             var entity = await resourceRepository.FindAsync(a => a.Key == dto.Key && a.Culture.Name == dto.Culture);
             if (entity == null)
-                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.Key.ToString());
+                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageData(dto.Key.ToString());
 
             entity.Value = dto.Value;
             entity = await resourceRepository.UpdateAsync(entity, true);
@@ -160,7 +160,7 @@ namespace LinguaNex.Resources
         public async Task<R> BatchCreateWithoutTransate(BatchCreateWithoutTransateDto dto)
         {
             if (!await projectsRepository.AnyAsync(a => a.Id == dto.ProjectId))
-                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.ProjectId.ToString());
+                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageData(dto.ProjectId.ToString());
 
             var entities = dto.Resouces.Select(a => new Resource
             {
@@ -176,7 +176,7 @@ namespace LinguaNex.Resources
         public async Task<R> BatchUpdate(BatchUpdateResourceDto dto)
         {
             if (!await projectsRepository.AnyAsync(a => a.Id == dto.ProjectId))
-                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageDataData(dto.ProjectId.ToString());
+                throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageData(dto.ProjectId.ToString());
             var cultureIds = dto.Resouces.Select(a => a.CultureId).ToList();
             var entities = await resourceRepository.GetListAsync(a => a.ProjectId == dto.ProjectId && cultureIds.Contains(a.CultureId) && a.Key == dto.Key);
             var updateDic = dto.Resouces.ToDictionary(a => a.CultureId, a => a.Value);

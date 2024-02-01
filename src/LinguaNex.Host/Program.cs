@@ -1,6 +1,5 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using IdGen.DependencyInjection;
 using LinguaNex;
 using LinguaNex.AutoMapper;
 using LinguaNex.Const;
@@ -122,7 +121,7 @@ builder.Services.AddDbContext<LinguaNexDbContext>(options =>
 );
 
 
-builder.Services.AddChannelRLoacalEventBus();
+builder.Services.AddChannelLoacalEventBus();
 builder.Services.AddCapDistributedEventBus(x =>
 {
     x.UseEntityFramework<LinguaNexDbContext>();

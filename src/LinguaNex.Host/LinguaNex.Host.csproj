@@ -11,35 +11,35 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Autofac" Version="7.1.0" />
-		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
-		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="[1.19.6-Preview.1, 1.19.6]" />
-		<PackageReference Include="DotNetCore.CAP" Version="7.2.2" />
-		<PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="7.2.2" />
-		<PackageReference Include="DotNetCore.CAP.RedisStreams" Version="7.2.2" />
-		<PackageReference Include="DotNetCore.CAP.Sqlite" Version="7.2.2" />
-		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="8.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="8.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="8.0.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.DynamicLinq" Version="8.3.7" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
+		<PackageReference Include="Autofac" Version="8.0.0" />
+		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="9.0.0" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
+		<PackageReference Include="DotNetCore.CAP" Version="8.0.1" />
+		<PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="8.0.1" />
+		<PackageReference Include="DotNetCore.CAP.RedisStreams" Version="8.0.1" />
+		<PackageReference Include="DotNetCore.CAP.Sqlite" Version="8.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="8.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="8.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="8.0.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.DynamicLinq" Version="8.3.8" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.1">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.1">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.0" />
-		<PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.1" />
+		<PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
 		<PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
 		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="6.5.0" />
-		<PackageReference Include="Wheel.Json" Version="1.0.1" />
+		<PackageReference Include="Wheel.Json" Version="1.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>
