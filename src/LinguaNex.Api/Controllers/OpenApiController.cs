@@ -1,6 +1,8 @@
 ﻿using LinguaNex.Const;
 using LinguaNex.Dtos;
 using LinguaNex.OpenApi;
+using LinguaNex.Resources.Dtos;
+using LinguaNex.Resources;
 using Microsoft.AspNetCore.Mvc;
 using System.IO.Compression;
 using System.Reflection;
@@ -12,7 +14,7 @@ namespace LinguaNex.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OpenApiController(IOpenApiAppService openApiAppService) : LinguaNexControllerBase
+    public class OpenApiController(IOpenApiAppService openApiAppService, IResourcesAppService resourcesAppService) : LinguaNexControllerBase
     {
         /// <summary>
         /// 获取支持的地区码
@@ -31,6 +33,17 @@ namespace LinguaNex.Controllers
         /// <param name="all">是否获取所有</param>
         /// <returns></returns>
         [HttpGet("Resources/{projectId}")]
+
+        /// <summary>
+        /// 翻译项目所包含的地区的语言
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        [HttpPost("TransateMultipleLanguages")]
+        public Task<R<Dictionary<string, string>>> TransateMultipleLanguages(TransateMultipleLanguagesDto dto)
+        {
+            return resourcesAppService.TransateMultipleLanguages(dto);
+        }
         public async Task<List<ResourcesDto>> GetResources(string projectId, string? cultureName, bool all)
         {
             return (await openApiAppService.GetResources(projectId, cultureName, all)).Data;
