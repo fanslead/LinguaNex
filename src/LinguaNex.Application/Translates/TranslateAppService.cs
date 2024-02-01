@@ -20,28 +20,15 @@ namespace LinguaNex.Translates
             {
                 Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
             })}");
-            var translates = ServiceProvider.GetServices<ITranslate>();
-            ITranslate translate = null;
-            switch (dto.TranslateProvider)
+            ITranslate translate = dto.TranslateProvider switch
             {
-                case Emuns.TranslateProviderEnum.Baidu:
-                    translate = translates.First(a => a is BaiduTranslate);//ServiceProvider.GetRequiredKeyedService<ITranslate>("Baidu");
-                    break;
-                case Emuns.TranslateProviderEnum.YouDao:
-                    translate = translates.First(a => a is YouDaoTranslate);//ServiceProvider.GetRequiredKeyedService<ITranslate>("YouDao");
-                    break;
-                case Emuns.TranslateProviderEnum.Tencent:
-                    translate = translates.First(a => a is TencentTranslate);//ServiceProvider.GetRequiredKeyedService<ITranslate>("Tencent");
-                    break;
-                case Emuns.TranslateProviderEnum.Aliyun:
-                    translate = translates.First(a => a is AliyunTranslate);//ServiceProvider.GetRequiredKeyedService<ITranslate>("Aliyun");
-                    break;
-                case Emuns.TranslateProviderEnum.Ai:
-                    translate = translates.First(a => a is AiTranslate);//ServiceProvider.GetRequiredKeyedService<ITranslate>("Ai");
-                    break;
-                default:
-                    break;
-            }
+                Emuns.TranslateProviderEnum.Baidu => ServiceProvider.GetRequiredKeyedService<ITranslate>("Baidu"),
+                Emuns.TranslateProviderEnum.YouDao => ServiceProvider.GetRequiredKeyedService<ITranslate>("YouDao"),
+                Emuns.TranslateProviderEnum.Tencent => ServiceProvider.GetRequiredKeyedService<ITranslate>("Tencent"),
+                Emuns.TranslateProviderEnum.Aliyun => ServiceProvider.GetRequiredKeyedService<ITranslate>("Aliyun"),
+                Emuns.TranslateProviderEnum.Ai => ServiceProvider.GetRequiredKeyedService<ITranslate>("Ai"),
+                _ => throw new NotImplementedException()
+            };
 
             var result = await translate.Translate(dto.SourceString, dto.SourceLang, dto.TargetLang);
             await Task.Delay(200);

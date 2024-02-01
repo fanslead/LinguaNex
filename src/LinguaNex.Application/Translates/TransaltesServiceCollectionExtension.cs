@@ -19,9 +19,8 @@ namespace LinguaNex.Translates
             action.Invoke(options);
             services.AddSingleton(options);
             services.AddSingleton(sp => new BaiduTranslateClient(sp.GetRequiredService<BaiduTranslateClientOptions>()));
-
-            services.AddSingleton<ITranslate, BaiduTranslate>();
-
+            
+            services.AddKeyedSingleton<ITranslate, BaiduTranslate>("Baidu");
             return services;
         }
         public static IServiceCollection AddAiTransalte(this IServiceCollection services, Action<IKernelBuilder> action)
@@ -47,7 +46,7 @@ namespace LinguaNex.Translates
             services.AddSingleton(options);
             services.AddSingleton<YouDaoTranslateClient>();
 
-            services.AddSingleton<ITranslate, YouDaoTranslate>();
+            services.AddKeyedSingleton<ITranslate, YouDaoTranslate>("YouDao");
 
             return services;
         }
@@ -59,7 +58,7 @@ namespace LinguaNex.Translates
             services.AddSingleton(options);
             services.AddSingleton<TencentTranslateClient>();
 
-            services.AddSingleton<ITranslate, TencentTranslate>();
+            services.AddKeyedSingleton<ITranslate, TencentTranslate>("Tencent");
 
             return services;
         }
@@ -71,7 +70,7 @@ namespace LinguaNex.Translates
             services.AddSingleton(options);
             services.AddSingleton<AliyunTranslateClient>();
 
-            services.AddSingleton<ITranslate, AliyunTranslate>();
+            services.AddKeyedSingleton<ITranslate, AliyunTranslate>("Aliyun");
 
             return services;
         }
