@@ -1,4 +1,5 @@
 ﻿using LinguaNex.Aliyun;
+using LinguaNex.Emuns;
 using LinguaNex.Translates.AI;
 using LinguaNex.Translates.Aliyun;
 using LinguaNex.Translates.Baidu;
@@ -20,7 +21,7 @@ namespace LinguaNex.Translates
             services.AddSingleton(options);
             services.AddSingleton(sp => new BaiduTranslateClient(sp.GetRequiredService<BaiduTranslateClientOptions>()));
             
-            services.AddKeyedSingleton<ITranslate, BaiduTranslate>("Baidu");
+            services.AddKeyedSingleton<ITranslate, BaiduTranslate>(TranslateProviderEnum.Baidu.ToString());
             return services;
         }
         public static IServiceCollection AddAiTransalte(this IServiceCollection services, Action<IKernelBuilder> action)
@@ -34,7 +35,7 @@ namespace LinguaNex.Translates
 
             services.AddSingleton(kernel);
 
-            services.AddKeyedSingleton<ITranslate, AiTranslate>("Ai");
+            services.AddKeyedSingleton<ITranslate, AiTranslate>(TranslateProviderEnum.Ai.ToString());
 
             return services;
         }
@@ -46,7 +47,7 @@ namespace LinguaNex.Translates
             services.AddSingleton(options);
             services.AddSingleton<YouDaoTranslateClient>();
 
-            services.AddKeyedSingleton<ITranslate, YouDaoTranslate>("YouDao");
+            services.AddKeyedSingleton<ITranslate, YouDaoTranslate>(TranslateProviderEnum.YouDao.ToString());
 
             return services;
         }
@@ -58,7 +59,7 @@ namespace LinguaNex.Translates
             services.AddSingleton(options);
             services.AddSingleton<TencentTranslateClient>();
 
-            services.AddKeyedSingleton<ITranslate, TencentTranslate>("Tencent");
+            services.AddKeyedSingleton<ITranslate, TencentTranslate>(TranslateProviderEnum.Tencent.ToString());
 
             return services;
         }
@@ -70,7 +71,7 @@ namespace LinguaNex.Translates
             services.AddSingleton(options);
             services.AddSingleton<AliyunTranslateClient>();
 
-            services.AddKeyedSingleton<ITranslate, AliyunTranslate>("Aliyun");
+            services.AddKeyedSingleton<ITranslate, AliyunTranslate>(TranslateProviderEnum.Aliyun.ToString());
 
             return services;
         }

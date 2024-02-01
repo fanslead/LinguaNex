@@ -20,15 +20,7 @@ namespace LinguaNex.Translates
             {
                 Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
             })}");
-            ITranslate translate = dto.TranslateProvider switch
-            {
-                Emuns.TranslateProviderEnum.Baidu => ServiceProvider.GetRequiredKeyedService<ITranslate>("Baidu"),
-                Emuns.TranslateProviderEnum.YouDao => ServiceProvider.GetRequiredKeyedService<ITranslate>("YouDao"),
-                Emuns.TranslateProviderEnum.Tencent => ServiceProvider.GetRequiredKeyedService<ITranslate>("Tencent"),
-                Emuns.TranslateProviderEnum.Aliyun => ServiceProvider.GetRequiredKeyedService<ITranslate>("Aliyun"),
-                Emuns.TranslateProviderEnum.Ai => ServiceProvider.GetRequiredKeyedService<ITranslate>("Ai"),
-                _ => throw new NotImplementedException()
-            };
+            ITranslate translate = ServiceProvider.GetRequiredKeyedService<ITranslate>(dto.TranslateProvider.ToString());
 
             var result = await translate.Translate(dto.SourceString, dto.SourceLang, dto.TargetLang);
             await Task.Delay(200);
