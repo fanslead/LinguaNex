@@ -33,6 +33,10 @@ namespace LinguaNex.Controllers
         /// <param name="all">是否获取所有</param>
         /// <returns></returns>
         [HttpGet("Resources/{projectId}")]
+        public async Task<List<ResourcesDto>> GetResources(string projectId, string? cultureName, bool all)
+        {
+            return (await openApiAppService.GetResources(projectId, cultureName, all)).Data;
+        }
 
         /// <summary>
         /// 翻译项目所包含的地区的语言
@@ -43,10 +47,6 @@ namespace LinguaNex.Controllers
         public Task<R<Dictionary<string, string>>> TransateMultipleLanguages(TransateMultipleLanguagesDto dto)
         {
             return resourcesAppService.TransateMultipleLanguages(dto);
-        }
-        public async Task<List<ResourcesDto>> GetResources(string projectId, string? cultureName, bool all)
-        {
-            return (await openApiAppService.GetResources(projectId, cultureName, all)).Data;
         }
         /// <summary>
         /// 导出JSON文件
