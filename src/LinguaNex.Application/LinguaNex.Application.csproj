@@ -25,4 +25,13 @@
 		<ProjectReference Include="..\LinguaNex.Data\LinguaNex.Data.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Update="Translates\AI\Plugins\Translate\config.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Translates\AI\Plugins\Translate\skprompt.txt">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
 </Project>

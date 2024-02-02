@@ -8,6 +8,7 @@ using LinguaNex.DataSeeders;
 using LinguaNex.EntityFrameworkCore;
 using LinguaNex.Hubs;
 using LinguaNex.Translates;
+using LinguaNex.Translates.AI;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.Features;
@@ -112,7 +113,14 @@ if (!string.IsNullOrWhiteSpace(builder.Configuration["Translates:OpenAi:ModelId"
 {
     builder.Services.AddAiTransalte(kernelBuilder =>
     {
-        kernelBuilder.AddOpenAIChatCompletion(builder.Configuration["Translates:OpenAi:ModelId"], builder.Configuration["Translates:OpenAi:ApiKey"]);
+        HttpClient httpClient = null;
+        var url = builder.Configuration["Translates:OpenAi:Url"];
+        if (!string.IsNullOrWhiteSpace(url))
+        {
+            var handler = new OpenAIHttpClientHandler(builder.Configuration["Translates:OpenAi:Url"]);
+            httpClient = new HttpClient(handler);
+        }
+        kernelBuilder.AddOpenAIChatCompletion(builder.Configuration["Translates:OpenAi:ModelId"], builder.Configuration["Translates:OpenAi:ApiKey"], httpClient: httpClient);
     });
 }
 

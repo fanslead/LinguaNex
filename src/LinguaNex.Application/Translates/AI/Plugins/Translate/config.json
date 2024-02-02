@@ -1,0 +1,24 @@
+﻿{
+  "schema": 1,
+  "type": "completion",
+  "description": "根据输入内容进行翻译",
+  "stream": false,
+  "completion": {
+    "max_tokens": 1000,
+    "temperature": 0.7
+  },
+  "input": {
+    "parameters": [
+      {
+        "name": "input",
+        "description": "需要翻译的字符串",
+        "defaultValue": ""
+      },
+      {
+        "name": "targetLang",
+        "description": "目标语言",
+        "defaultValue": ""
+      }
+    ]
+  }
+}

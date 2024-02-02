@@ -259,6 +259,7 @@ const CultureRecouece = () => {
               { value: 1, label: '有道翻译' },
               { value: 2, label: '腾讯翻译' },
               { value: 3, label: '阿里翻译' },
+              { value: 4, label: 'AI翻译' },
             ]}
           />
         </Form.Item>
@@ -329,6 +330,7 @@ const CultureRecouece = () => {
               { value: 1, label: '有道翻译' },
               { value: 2, label: '腾讯翻译' },
               { value: 3, label: '阿里翻译' },
+              { value: 4, label: 'AI翻译' },
             ]}
           />
         </Form.Item>
