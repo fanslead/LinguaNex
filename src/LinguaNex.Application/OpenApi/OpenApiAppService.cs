@@ -2,6 +2,7 @@
 using LinguaNex.Domain;
 using LinguaNex.Dtos;
 using LinguaNex.Entities;
+using Microsoft.Extensions.Caching.Distributed;
 using System.Globalization;
 using Wheel.Core.Dto;
 using Wheel.Core.Exceptions;
@@ -9,7 +10,7 @@ using Wheel.Services;
 
 namespace LinguaNex.OpenApi
 {
-    public class OpenApiAppService(IBasicRepository<Culture, long> cultureRepository, IBasicRepository<Projects, string> projectsRepository, IBasicRepository<ProjectAssociation> projectAssociationRepository) : LinguaNexServiceBase, IOpenApiAppService
+    public class OpenApiAppService(IBasicRepository<Culture, long> cultureRepository, IBasicRepository<Projects, string> projectsRepository, IBasicRepository<ProjectAssociation> projectAssociationRepository, IDistributedCache cache) : LinguaNexServiceBase, IOpenApiAppService
     {
         public async Task<R<List<ResourcesDto>>> GetResources(string projectId, string? cultureName, bool all)
         {
@@ -18,6 +19,12 @@ namespace LinguaNex.OpenApi
                 throw new BusinessException(ErrorCode.NotExist, ErrorCode.NotExist).WithMessageData(project.Id.ToString());
             if (!project.Enalbe)
                 throw new BusinessException(ErrorCode.NotEnable, ErrorCode.NotEnable).WithMessageData(project.Name);
+            
+            var cacheData = await cache.GetAsync<List<ResourcesDto>>(BuildCacheKey(projectId, cultureName, all));
+            if(cacheData != null && cacheData.Count > 0)
+            {
+                return Success(cacheData);
+            }
 
             var datas = await cultureRepository.GetListAsync(
                 cultureRepository.BuildPredicate(
@@ -26,7 +33,7 @@ namespace LinguaNex.OpenApi
                     (!all && string.IsNullOrWhiteSpace(cultureName), a => a.Name == CultureInfo.CurrentUICulture.Name)
                     ),
                 propertySelectors: a => a.Resources
-                );
+                ); 
             var mainResouces = datas.Select(a => new ResourcesDto
             {
                 CultureName = a.Name,
@@ -66,8 +73,22 @@ namespace LinguaNex.OpenApi
                 }
             }
 
+            await cache.SetAbsoluteExpirationRelativeToNowAsync(BuildCacheKey(projectId, cultureName, all), mainResouces, TimeSpan.FromMinutes(10));
 
             return Success(mainResouces);
+        }
+
+        private string BuildCacheKey(string projectId, string? cultureName, bool all)
+        {
+            if (!string.IsNullOrWhiteSpace(cultureName))
+            {
+                return $"{projectId}:{cultureName}";
+            }
+            if (!all && string.IsNullOrWhiteSpace(cultureName))
+            {
+                return $"{projectId}:{CultureInfo.CurrentUICulture.Name}";
+            }
+            return $"{projectId}:all";
         }
     }
 }
