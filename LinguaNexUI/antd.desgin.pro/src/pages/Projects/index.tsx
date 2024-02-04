@@ -7,7 +7,7 @@ import { getProjects, postProjects, putProjectsEnableId, getProjectsCanAssociati
 import styles from './style.less';
 import { useState, useRef, useImperativeHandle } from 'react';
 import { ColumnsType } from 'antd/es/table';
-import { getOpenApiResourcesJsonProjectId, getOpenApiResourcesTomlProjectId, getOpenApiResourcesTsProjectId, getOpenApiResourcesXmlProjectId } from '@/services/LinguaNex/openApi';
+import { getOpenApiResourcesJsonProjectId, getOpenApiResourcesTomlProjectId, getOpenApiResourcesTomlProjectId, getOpenApiResourcesTsProjectId, getOpenApiResourcesXmlProjectId } from '@/services/LinguaNex/openApi';
 
 const { Paragraph } = Typography;
 
@@ -43,7 +43,7 @@ const CardList = () => {
 
   const [open, setOpen] = useState(false);
   const [openCreateModal, setOpenCreateModal] = useState(false);
-  
+
   const fetchAssociationProjectsData = async (prijectId: string | undefined) =>{
     const { data } = await getProjectsCanAssociationProjects({
       projectId: prijectId
@@ -51,7 +51,7 @@ const CardList = () => {
     setHasAssociationProjectsData(data.hasAssociationProjects);
     setCanAssociationProjectsData(data.canAssociationProjects);
   }
-  
+
 
   const [currentProjectId, setCurrentProjectId] = useState<any>();
   const [createProjectForm] = Form.useForm();
@@ -93,7 +93,7 @@ const CardList = () => {
     await deleteProjectsProjectAssociation({
       mainProjectId: mainProjectId,
       associationProjectId: projectId
-      
+
     })
     await fetchAssociationProjectsData(mainProjectId)
   }
@@ -152,13 +152,13 @@ const CardList = () => {
         break;
       case '3': getOpenApiResourcesTomlProjectId({projectId:project})
         break;
-      case '4': getOpenApiResourcesJsonProjectId({projectId:project})
+      case '4': getOpenApiResourcesTomlProjectId({projectId:project})
         break;
       case '5': getOpenApiResourcesTsProjectId({projectId:project})
         break;
     }
   };
-  
+
   const items: MenuProps['items'] = [
     {
       label: 'json',
@@ -186,9 +186,9 @@ const CardList = () => {
       icon: <UserOutlined />
     },
   ];
-  
+
   const menuProps = {
-    
+
   };
   return (
     <PageContainer content={content} extraContent={extraContent}>
@@ -225,8 +225,8 @@ const CardList = () => {
                         </Space>
                       </Button>
                     </Dropdown>,
-                    <Button key="option1" type="text" onClick={() => showModal(item.id)} >关联项目</Button>, 
-                    <Button key="option2" type="text" onClick={() => history.push('/CultureRecouece/'+item.id)}>查看</Button>, 
+                    <Button key="option1" type="text" onClick={() => showModal(item.id)} >关联项目</Button>,
+                    <Button key="option2" type="text" onClick={() => history.push('/CultureRecouece/'+item.id)}>查看</Button>,
                     <Button key="option3" type="text" onClick={() => putProjectsEnable(item.id as string)} danger={item.enalbe}>{item.enalbe?'禁用':'启用'}</Button>
                   ]}
                   >
