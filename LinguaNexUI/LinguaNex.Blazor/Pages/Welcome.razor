@@ -1,0 +1,198 @@
+﻿@page "/"
+@using LinguaNex.Blazor.Dto
+@using System.ComponentModel.DataAnnotations
+@inject NavigationManager Navigation
+
+<PageContainer Title="Projects" Extra="PageExtra()">
+    <Spin Spinning="Spinning">
+    <Card>
+        <Body>
+            <AntList Grid="grid" DataSource="@projects" TItem="ProjectDto">
+                <ListItem>
+                    <Card Hoverable>
+                        <ChildContent>
+                            <CardMeta Title="@context.Name" DescriptionTemplate="@Description(context.Id)"></CardMeta>
+                        </ChildContent>
+                        <ActionTemplate>
+                            <CardAction>
+                                <Dropdown Arrow="true">
+                                    <Overlay>
+                                        <Menu OnMenuItemClicked="(e) => HandleMenuClick(e, context.Id)">
+                                            <MenuItem Id="1">JSON</MenuItem>
+                                            <MenuItem Id="2">XML</MenuItem>
+                                            <MenuItem Id="3">TOML</MenuItem>
+                                            <MenuItem Id="4">Properties</MenuItem>
+                                            <MenuItem Id="5">TS</MenuItem>
+                                        </Menu>
+                                    </Overlay>
+                                    <ChildContent>
+                                        <Button Type="text">
+                                            <Space>
+                                                下载
+                                                <Icon Type="download" Theme="outline" />
+                                            </Space>
+                                        </Button>
+                                    </ChildContent>
+                                </Dropdown>
+                            </CardAction>
+                            <CardAction><Button Type="text">关联项目</Button></CardAction>
+                                <CardAction><Button Type="text" OnClick='() => Navigation.NavigateTo($"/CultureRecouece/{context.Id}")'>查看</Button></CardAction>
+                            <CardAction><Button Type="text" OnClick="() => PutProjectsEnable(context.Id)" Danger="@context.Enalbe">@(context.Enalbe ? "禁用" : "启用")</Button></CardAction>
+                        </ActionTemplate>
+                    </Card>
+                </ListItem>
+            </AntList>
+        </Body>
+    </Card>
+    </Spin>
+    <Modal Title="@("BasicModal")"
+           @bind-Visible="@_visible"
+           OnOk="@HandleOk"
+           OnCancel="@HandleCancel">
+            <Form Model="@model"
+              LabelColSpan="8"
+              WrapperColSpan="16"
+              OnFinish="OnFinish"
+              OnFinishFailed="OnFinishFailed"
+              @ref="@_form">
+            <FormItem Label="Name" LabelAlign=AntLabelAlignType.Left>
+                <Input @bind-Value="@context.Name" />
+            </FormItem>
+        </Form>
+    </Modal>
+</PageContainer>
+@code {
+    private ListGridType grid = new()
+        {
+            Gutter = 16,
+            Xs = 1,
+            Sm = 2,
+            Md = 4,
+            Lg = 4,
+            Xl = 6,
+            Xxl = 3,
+        };
+
+    private bool Spinning = false;
+    private ProjectDto[] projects = { };
+    [Inject]
+    ProjectsClient ProjectsClient { get; set; }
+    [Inject]
+    OpenApiClient OpenApiClient { get; set; }
+    [Inject]
+    IJSRuntime JsRuntime { get; set; }
+    [Inject]
+    IMessageService _message{ get; set; }
+
+    bool _visible = false;
+    bool _submitting = false;
+    private Form<ProjectModel> _form;
+
+    private ProjectModel model = new ProjectModel();
+    public class ProjectModel
+    {
+        [Required]
+        public string Name { get; set; }
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await GetProjects();
+    }
+    RenderFragment Description(string id) =>@<Tag OnClick="() => ItemClick(id)">@id</Tag>;
+    RenderFragment PageExtra() =>@<Button Type="dashed" OnClick="ShowOpenCreateModalModal"><Icon Type="plus-circle" Theme="outline" />新增项目</Button>;
+    public async void ItemClick(string Id)
+    {
+        await JsRuntime.InvokeVoidAsync("clipboardCopy.copyText", Id);
+        await _message.Info("Copy Success");
+    }
+
+    void ShowOpenCreateModalModal()
+    {
+        _visible = true;
+    }
+    async Task PutProjectsEnable(string id)
+    {
+        Spinning = true;
+        await ProjectsClient.EnableAsync(id);
+        await GetProjects();
+        Spinning = false;
+    }
+    async Task GetProjects()
+    {
+        var datas = await ProjectsClient.ProjectsGETAsync(1, 99, "Id Desc");
+
+        projects = datas.Data.ToArray();
+    }
+    private async Task HandleMenuClick(MenuItem item, string projectId)
+    {
+        System.IO.Stream stream = null;
+        byte[] bytes = null;
+        string fileName = "";
+        switch (item.Id)
+        {
+            case "1":
+                bytes = await OpenApiClient.JsonAsync(projectId, "");
+                fileName = "Json.zip";
+                break;
+            case "2":
+                bytes = await OpenApiClient.XmlAsync(projectId, "");
+                fileName = "Xml.zip";
+                break;
+            case "3":
+                bytes = await OpenApiClient.TomlAsync(projectId, "");
+                fileName = "Toml.zip";
+                break;
+            case "4":
+                bytes = await OpenApiClient.PropertiesAsync(projectId, "");
+                fileName = "Properties.zip";
+                break;
+            case "5":
+                bytes = await OpenApiClient.TsAsync(projectId, "");
+                fileName = "Ts.zip";
+                break;
+            default:
+                break;
+        }
+        if (bytes != null)
+        {
+            stream = new System.IO.MemoryStream(bytes);
+            using var streamRef = new DotNetStreamReference(stream);
+            await JsRuntime.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+        }
+    }
+    /// <summary>
+    /// on modal OK button is click, submit form manually
+    /// </summary>
+    /// <param name="e"></param>
+    private async Task HandleOk(MouseEventArgs e)
+    {
+        _submitting = true;
+        await ProjectsClient.ProjectsPOSTAsync(new CreateProjectDto
+        {
+            Name = model.Name
+            });
+        await GetProjects();
+        _form.Submit();
+    }
+
+    private void HandleCancel(MouseEventArgs e)
+    {
+        model = new();
+        Console.WriteLine(e);
+    }
+    /// <summary>
+    /// when form is submited, close the modal
+    /// </summary>
+    private void OnFinish(EditContext editContext)
+    {
+        _submitting = false;
+        _visible = false;
+        model = new();
+    }
+
+    private void OnFinishFailed(EditContext editContext)
+    {
+        model = new();
+    }
+}

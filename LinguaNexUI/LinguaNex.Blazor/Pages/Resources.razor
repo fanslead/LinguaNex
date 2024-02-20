@@ -1,0 +1,87 @@
+﻿@page "/CultureRecouece/{Id?}"
+@using AntDesign.TableModels
+@using System.ComponentModel
+@using System.Net.Http.Headers
+@using Microsoft.Extensions.Logging
+<PageContainer Title="CultureRecouece">
+    <Spin Spinning="Spinning">
+        <Card>
+            <Body>
+                <Flex Vertical="true">
+                    <Divider Orientation="left"><Button Type="@ButtonType.Text">新增区域</Button></Divider>
+                    <Flex Wrap="wrap" Gap="small">
+                        @foreach (var i in Cultures)
+                        {
+                            <Tooltip Title='@(SupportedCulture.ChineseLanguages[i.Name] + "-" + @SupportedCulture.EnglishLanguages[i.Name])'>
+                                <Tag>@i.Name</Tag>
+                            </Tooltip>
+                        }
+                    </Flex>
+                    <Divider Orientation="left">资源</Divider>
+                    <Table TItem="IDictionary<string, Dto.CultureResourceDto>" DataSource="_data" Loading="_loading" Total="_total" OnChange="HandleTableChange" PageSize="20" RemoteDataSource RowKey='x=>x["key"].Value'
+                            ScrollX="150%">
+                         @foreach (var key in Columns)
+                        {
+                            if (key.DataIndex == "key")
+                            {
+                                <PropertyColumn Filterable Width="10%" Fixed="left" Property=@(c=>c[key.DataIndex].Value) Title="@key.Title"></PropertyColumn>
+                            }
+                            else
+                            {
+                                <PropertyColumn Width="20%" Property=@(c=>c[key.DataIndex].Value) Title="@key.Title"></PropertyColumn>
+                            }
+                        }
+                    </Table>
+                </Flex>
+            </Body>
+        </Card>
+    </Spin>
+</PageContainer>
+
+@code {
+    [Parameter]
+    public string? Id { get; set; }
+
+
+    private bool Spinning = false;
+
+    RenderFragment PageExtra() =>@<Button Type="dashed"><Icon Type="plus-circle" Theme="outline" />新增地区</Button>;
+
+    bool _loading = false;
+
+    int _total;
+    IDictionary<string, Dto.CultureResourceDto>[] _data = { };
+
+    Dto.CultureDto[] Cultures = { };
+
+    [Inject] HttpClient Http { get; set; }
+    [Inject] CultureClient CultureClient { get; set; }
+    [Inject] ResourcesClient ResourcesClient { get; set; }
+    [Inject] ILogger<Resources> Logger { get; set; }
+    Dto.AntdColumn[] Columns = { };
+    SupportedCulture SupportedCulture = new ();
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await GetCulture();
+    }
+    public ListGridType CultureGrid = new ListGridType { Gutter = 1, Column = 20 };
+    async Task GetCulture()
+    {
+        var columnsData = await ResourcesClient.ColumnsAsync(Id);
+        Columns = columnsData.Data.ToArray();
+        var result = await CultureClient.CultureGETAsync(Id, 1, 99, "Id");
+        Cultures = result.Data.ToArray();
+    }
+    async Task HandleTableChange(QueryModel<IDictionary<string, Dto.CultureResourceDto>> queryModel)
+    {
+        _loading = true;
+        var columnsData = await ResourcesClient.ColumnsAsync(Id).ConfigureAwait(false);
+        Columns = columnsData.Data.ToArray();
+        Logger.LogInformation(System.Text.Json.JsonSerializer.Serialize(queryModel));
+        var resourcesData = await ResourcesClient.Project2Async(null, Id, queryModel.FilterModel.FirstOrDefault()?.SelectedValues?.FirstOrDefault(), queryModel.PageIndex, queryModel.PageSize, orderBy: "Id").ConfigureAwait(false);
+        _data = resourcesData.Data.ToArray();
+        _total = int.Parse(resourcesData.Total);
+        _loading = false;
+    }
+}
