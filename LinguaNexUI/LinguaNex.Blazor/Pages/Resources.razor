@@ -35,16 +35,20 @@
                          </Button>
                     </Flex>
                     <Table @ref="tableRef" TItem="IDictionary<string, Dto.CultureResourceDto>" DataSource="_data" Loading="_loading" Total="_total" OnChange="HandleTableChange" PageSize="20" RemoteDataSource RowKey='x=>x["key"].Value'
-                            ScrollX="150%">
+                            ScrollX="2500">
                          @foreach (var key in Columns)
                         {
                             if (key.DataIndex == "key")
                             {
-                                <PropertyColumn Filterable Width="10%" Fixed="left" Property=@(c=>c[key.DataIndex].Value) Title='@key.Title'   ></PropertyColumn>
+                                <ActionColumn Title="Action" Width="100" Fixed="left">
+                                    <a>编辑</a>
+                                    <a>删除</a>
+                                </ActionColumn>
+                                <PropertyColumn Filterable Width="100" Fixed="left" Property=@(c=>c[key.DataIndex].Value) Title='@key.Title'   ></PropertyColumn>
                             }
                             else
                             {
-                                <PropertyColumn Width="20%" Property=@(c=>c[key.DataIndex].Value) Title='@string.Join("-", key.Title, key.ShortTitle)'></PropertyColumn>
+                                <PropertyColumn Width="200" Property=@(c=>c[key.DataIndex].Value) Title='@string.Join("-", key.Title, key.ShortTitle)'></PropertyColumn>
                             }
                         }
                     </Table>
@@ -68,6 +72,9 @@
     public string? Id { get; set; }
 
     RenderFragment PageExtra() =>@<Button Type="dashed"><Icon Type="plus-circle" Theme="outline" />新增地区</Button>;
+
+    IDictionary<string, (bool edit, IDictionary<string, Dto.CultureResourceDto> data)> editCache = new Dictionary<string, (bool edit, IDictionary<string, Dto.CultureResourceDto> data)>();
+    List<IDictionary<string, Dto.CultureResourceDto>> listOfData = new();
 
     private bool Spinning = false;
 
@@ -153,5 +160,9 @@
             tableRef.ReloadData();
             Spinning = false;
         });
+    }
+    async Task DeleteResource(string key)
+    {
+        ResourcesClient.ResourcesDELETEAsync()
     }
 }
