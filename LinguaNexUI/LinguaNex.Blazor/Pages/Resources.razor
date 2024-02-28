@@ -41,14 +41,24 @@
                             if (key.DataIndex == "key")
                             {
                                 <ActionColumn Title="Action" Width="100" Fixed="left">
-                                    <a>编辑</a>
                                     <a @onclick='() => DeleteResource(context["key"].Value)'>删除</a>
                                 </ActionColumn>
                                 <PropertyColumn Filterable Width="100" Fixed="left" Property=@(c=>c[key.DataIndex].Value) Title='@key.Title'   ></PropertyColumn>
                             }
                             else
                             {
-                                <PropertyColumn Width="200" Property=@(c=>c[key.DataIndex].Value) Title='@string.Join("-", key.Title, key.ShortTitle)'></PropertyColumn>
+                                <PropertyColumn Width="200" Property=@(c=>c[key.DataIndex].Value) Title='@string.Join("-", key.Title, key.ShortTitle)'>
+                                    @if (editId == string.Join(",", context["key"].Value, key.DataIndex))
+                                    {
+                                        <Input Type="text" @bind-Value="context[key.DataIndex].Value" OnBlur="() => stopEdit(context[key.DataIndex].Value)" AutoFocus />
+                                    }
+                                    else
+                                    {
+                                        <div class="editable-cell-value-wrap" style="padding-right:24px" @onclick='()=>startEdit(string.Join(",", context["key"].Value, key.DataIndex))'>
+                                            @context[key.DataIndex].Value
+                                        </div>
+                                    }
+                                </PropertyColumn>
                             }
                         }
                     </Table>
@@ -83,6 +93,10 @@
     bool _resource_visible { get; set; } = false;
     bool _UploadResource_visible { get; set; } = false;
     int _total;
+
+
+    string editId;
+
     IDictionary<string, Dto.CultureResourceDto>[] _data = { };
     Table<IDictionary<string, Dto.CultureResourceDto>> tableRef;
     Dto.CultureDto[] Cultures = { };
@@ -168,4 +182,48 @@
         tableRef.ReloadData();
         Spinning = false;
     }
+
+    void startEdit(string id)
+    {
+        editId = id;
+    }
+    async Task stopEdit(string data)
+    {
+        var keys = editId.Split(",");
+        Logger.LogInformation(editId);
+        await ResourcesClient.ByCultureAndKeyAsync(new Dto.UpdateResourceByCultureAndKeyDto
+        {
+            Key = keys[0],
+            Culture = keys[1],
+            Value = data,
+            Project = Id
+        });
+        editId = null;
+
+        Spinning = true;
+        tableRef.ReloadData();
+        Spinning = false;
+    }
 }
+
+
+<style>
+    .editable-cell {
+        position: relative;
+    }
+
+    .editable-cell-value-wrap {
+        padding: 5px 12px;
+        cursor: pointer;
+    }
+
+    .editable-row:hover .editable-cell-value-wrap {
+        padding: 4px 11px;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+    }
+
+    [data-theme='dark'] .editable-row:hover .editable-cell-value-wrap {
+        border: 1px solid #434343;
+    }
+</style>

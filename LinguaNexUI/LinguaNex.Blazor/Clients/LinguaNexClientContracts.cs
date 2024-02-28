@@ -347,6 +347,8 @@ namespace LinguaNex.Blazor.Dto
 
         [System.Text.Json.Serialization.JsonPropertyName("culture")]
         public string Culture { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("project")]
+        public string Project { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("key")]
         public string Key { get; set; }
