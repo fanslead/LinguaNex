@@ -30,7 +30,7 @@
                         <Button Type="@ButtonType.Primary" OnClick="ShowOpenUploadResourceModalModal">
                             <Icon Type="upload" Theme="outline" />上传文件
                          </Button>
-                        <Button Type="@ButtonType.Primary" OnClick="() => tableRef.ReloadData()">
+                        <Button Type="@ButtonType.Primary" OnClick="ReloadData">
                             <Icon Type="reload" Theme="outline" />刷新
                          </Button>
                     </Flex>
@@ -109,8 +109,10 @@
     SupportedCulture SupportedCulture = new ();
     protected override async Task OnInitializedAsync()
     {
+        Spinning = true;
         await base.OnInitializedAsync();
         await GetCulture();
+        Spinning = false;
     }
     public ListGridType CultureGrid = new ListGridType { Gutter = 1, Column = 20 };
     async Task GetCulture()
@@ -122,6 +124,7 @@
     }
     async Task HandleTableChange(QueryModel<IDictionary<string, Dto.CultureResourceDto>> queryModel)
     {
+        Spinning = true;
         _loading = true;
         var columnsData = await ResourcesClient.ColumnsAsync(Id).ConfigureAwait(false);
         Columns = columnsData.Data.ToArray();
@@ -130,6 +133,7 @@
         _data = resourcesData.Data.ToArray();
         _total = int.Parse(resourcesData.Total);
         _loading = false;
+        Spinning = false;
     }
 
     void ShowOpenCreateCultureModalModal()
@@ -192,6 +196,13 @@
     void startEdit(string id)
     {
         editId = id;
+    }
+    void ReloadData()
+    {
+        _visible = false;
+        _resource_visible = false;
+        _UploadResource_visible = false;
+        tableRef.ReloadData();
     }
     async Task stopEdit(string data)
     {
