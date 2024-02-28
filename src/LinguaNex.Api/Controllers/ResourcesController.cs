@@ -47,6 +47,16 @@ namespace LinguaNex.Controllers
             return resourcesAppService.DeleteAsync(id);
         }
         /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{projectId}/{key}")]
+        public Task<R> DeleteByKeyAsync(string key, string projectId)
+        {
+            return resourcesAppService.DeleteByKeyAsync(key, projectId);
+        }
+        /// <summary>
         /// 根据地区获取所有多语言资源
         /// </summary>
         /// <param name="cultureId"></param>

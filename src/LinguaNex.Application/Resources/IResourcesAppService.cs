@@ -19,6 +19,7 @@ namespace LinguaNex.Resources
         Task<R<ResourceDto>> UpdateByCultureAndKeyAsync(UpdateResourceByCultureAndKeyDto dto);
 
         Task<R> DeleteAsync(long id);
+        Task<R> DeleteByKeyAsync(string key, string projectId);
         Task<R<Dictionary<string, string>>> TransateMultipleLanguages(TransateMultipleLanguagesDto dto);
         Task<R> BatchCreateWithoutTransate(BatchCreateWithoutTransateDto dto);
         Task<R> BatchUpdate(BatchUpdateResourceDto dto);

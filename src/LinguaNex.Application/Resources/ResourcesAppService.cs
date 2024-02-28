@@ -213,6 +213,11 @@ namespace LinguaNex.Resources
             await resourceRepository.DeleteAsync(a => a.Key == resource.Key && a.ProjectId == resource.ProjectId, true);
             return Success();
         }
+        public async Task<R> DeleteByKeyAsync(string key, string projectId)
+        {
+            await resourceRepository.DeleteAsync(a => a.Key == key && a.ProjectId == projectId, true);
+            return Success();
+        }
         private List<Resource> TraverseJson(JsonElement element, string parent, long cultureId, string projectId)
         {
             List<Resource> resources = new();

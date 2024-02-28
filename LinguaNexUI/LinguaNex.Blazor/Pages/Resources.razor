@@ -42,7 +42,7 @@
                             {
                                 <ActionColumn Title="Action" Width="100" Fixed="left">
                                     <a>编辑</a>
-                                    <a>删除</a>
+                                    <a @onclick='() => DeleteResource(context["key"].Value)'>删除</a>
                                 </ActionColumn>
                                 <PropertyColumn Filterable Width="100" Fixed="left" Property=@(c=>c[key.DataIndex].Value) Title='@key.Title'   ></PropertyColumn>
                             }
@@ -163,6 +163,9 @@
     }
     async Task DeleteResource(string key)
     {
-        
+        await ResourcesClient.ResourcesDELETEByKeyAsync(key, Id);
+        Spinning = true;
+        tableRef.ReloadData();
+        Spinning = false;
     }
 }
