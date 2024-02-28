@@ -135,14 +135,20 @@
     void ShowOpenCreateCultureModalModal()
     {
         _visible = true;
+        _resource_visible = false;
+        _UploadResource_visible = false;
     }
     
     void ShowOpenCreateResourceModalModal()
     {
         _resource_visible = true;
+        _visible = false;
+        _UploadResource_visible = false;
     }
     void ShowOpenUploadResourceModalModal()
     {
+        _visible = false;
+        _resource_visible = false;
         _UploadResource_visible = true;
     }
 
