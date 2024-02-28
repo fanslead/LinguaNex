@@ -1,4 +1,5 @@
-﻿using LinguaNex.Resources.Dtos;
+﻿using LinguaNex.Emuns;
+using LinguaNex.Resources.Dtos;
 using Wheel.Core.Dto;
 using Wheel.DependencyInjection;
 
@@ -11,7 +12,7 @@ namespace LinguaNex.Resources
         Task<Page<ResourceDto>> GetResourcePageByCulture(ResourcePageRequest request);
         Task<Page<Dictionary<string, CultureResourceDto>>> GetResourcePageByProject(ResourcePageRequest request);
         Task<R<List<AntdColumn>>> GetResourcePageByProjectTableColumns(string projectId);
-        Task<R> BatchCreateByJsonFileAsync(long cultureId, bool? translate, BatchCreateByJsonFileDto dto);
+        Task<R> BatchCreateByJsonFileAsync(long cultureId, bool? translate, TranslateProviderEnum? translateProvider, BatchCreateByJsonFileDto dto);
         Task<R<ResourceDto>> CreateAsync(CreateResourceDto dto);
 
         Task<R<ResourceDto>> UpdateAsync(UpdateResourceDto dto);

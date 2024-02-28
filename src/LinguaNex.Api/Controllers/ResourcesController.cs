@@ -1,4 +1,5 @@
-﻿using LinguaNex.Resources;
+﻿using LinguaNex.Emuns;
+using LinguaNex.Resources;
 using LinguaNex.Resources.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Wheel.Controllers;
@@ -21,9 +22,9 @@ namespace LinguaNex.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost("File/{cultureId}")]
-        public Task<R> BatchCreateByJsonFileAsync(long cultureId, [FromQuery] bool? translate, [FromForm] BatchCreateByJsonFileDto dto)
+        public Task<R> BatchCreateByJsonFileAsync(long cultureId, [FromQuery] bool? translate, TranslateProviderEnum? translateProvider, [FromForm] BatchCreateByJsonFileDto dto)
         {
-            return resourcesAppService.BatchCreateByJsonFileAsync(cultureId, translate, dto);
+            return resourcesAppService.BatchCreateByJsonFileAsync(cultureId, translate, translateProvider, dto);
         }
         /// <summary>
         /// 添加

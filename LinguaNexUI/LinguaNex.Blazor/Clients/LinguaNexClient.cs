@@ -6,6 +6,7 @@
 
 using LinguaNex.Blazor.Dto;
 using System.IO;
+using System.Net.Http;
 
 #pragma warning disable 108 // Disable "CS0108 '{derivedDto}.ToJson()' hides inherited member '{dtoBase}.ToJson()'. Use the new keyword if hiding was intended."
 #pragma warning disable 114 // Disable "CS0114 '{derivedDto}.RaisePropertyChanged(String)' hides inherited member 'dtoBase.RaisePropertyChanged(String)'. To make the current member override that implementation, add the override keyword. Otherwise add the new keyword."
@@ -2318,9 +2319,9 @@ namespace LinguaNex.Blazor
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="LinguaNexApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<R> FileAsync(long cultureId, bool? translate, FileParameter file)
+        public virtual System.Threading.Tasks.Task<R> FileAsync(string cultureId, bool? translate, TranslateProviderEnum? translateProvider, FileParameter file)
         {
-            return FileAsync(cultureId, translate, file, System.Threading.CancellationToken.None);
+            return FileAsync(cultureId, translate, translateProvider, file, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2329,7 +2330,7 @@ namespace LinguaNex.Blazor
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="LinguaNexApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<R> FileAsync(long cultureId, bool? translate, FileParameter file, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<R> FileAsync(string cultureId, bool? translate, TranslateProviderEnum? translateProvider, FileParameter file, System.Threading.CancellationToken cancellationToken)
         {
             if (cultureId == null)
                 throw new System.ArgumentNullException("cultureId");
@@ -2367,6 +2368,10 @@ namespace LinguaNex.Blazor
                     if (translate != null)
                     {
                         urlBuilder_.Append(System.Uri.EscapeDataString("translate")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(translate, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (translateProvider != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("translateProvider")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(translateProvider, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     }
                     urlBuilder_.Length--;
 

@@ -45,7 +45,7 @@
             </Body>
         </Card>
     </Spin>
-    <Modal Title="@("BasicModal")"
+    <Modal Title="新增项目"
            @bind-Visible="@_visible"
            OnOk="@HandleOk"
            OnCancel="@HandleCancel">
@@ -62,16 +62,20 @@
     </Modal>
     <Modal Title="关联项目"
            @bind-Visible="@_association_visible"
-            Footer="null">
-        <Transfer DataSource="dataSource"
-                  TargetKeys="GetTargetKeys()"
-                  ShowSearch="true"
-                  SelectedKeys="selectedKeys"
-                  Titles="titles"
-                  OnChange="OnChange"
-                  OnSearch="OnSearch"
-                  OnScroll="OnScroll"
-                  OnSelectChange="OnSelectChange"></Transfer>
+            Footer="null"
+           >
+           <Body >
+            <Transfer 
+                      DataSource="dataSource"
+                      TargetKeys="GetTargetKeys()"
+                      ShowSearch="true"
+                      SelectedKeys="selectedKeys"
+                      Titles="titles"
+                      OnChange="OnChange"
+                      OnSearch="OnSearch"
+                      OnScroll="OnScroll"
+                      OnSelectChange="OnSelectChange"></Transfer>
+           </Body>
     </Modal>
 </PageContainer>
 @code {
@@ -112,11 +116,7 @@
     private Form<ProjectModel> _form;
 
     private ProjectModel model = new ProjectModel();
-    public class ProjectModel
-    {
-        [Required]
-        public string Name { get; set; }
-    }
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();

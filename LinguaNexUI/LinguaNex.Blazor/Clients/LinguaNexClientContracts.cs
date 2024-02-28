@@ -209,7 +209,7 @@ namespace LinguaNex.Blazor.Dto
         public string Value { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("cultureId")]
-        public long CultureId { get; set; }
+        public string CultureId { get; set; }
 
     }
 
@@ -221,7 +221,7 @@ namespace LinguaNex.Blazor.Dto
         public string Value { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("cultureId")]
-        public long CultureId { get; set; }
+        public string CultureId { get; set; }
 
     }
 
@@ -251,7 +251,7 @@ namespace LinguaNex.Blazor.Dto
         public string Value { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("cultureId")]
-        public long CultureId { get; set; }
+        public string CultureId { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("projectId")]
         public string ProjectId { get; set; }
@@ -296,7 +296,7 @@ namespace LinguaNex.Blazor.Dto
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
-        public long Id { get; set; }
+        public string Id { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("key")]
         public string Key { get; set; }
@@ -305,7 +305,7 @@ namespace LinguaNex.Blazor.Dto
         public string Value { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("cultureId")]
-        public long CultureId { get; set; }
+        public string CultureId { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("projectId")]
         public string ProjectId { get; set; }
@@ -361,7 +361,7 @@ namespace LinguaNex.Blazor.Dto
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
-        public long Id { get; set; }
+        public string Id { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("value")]
         public string Value { get; set; }

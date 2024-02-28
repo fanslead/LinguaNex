@@ -1,0 +1,129 @@
+﻿<Modal Title="新增资源"
+       @bind-Visible="@Visible"
+       OnOk="@HandleOk"
+       OnCancel="@HandleCancel">
+    <Form Model="@model"
+          LabelColSpan="8"
+          WrapperColSpan="16"
+          OnFinish="Finish"
+          OnFinishFailed="OnFinishFailed"
+          @ref="@_form">
+
+        <FormItem Label="Key" LabelAlign=AntLabelAlignType.Left>
+            <Input @bind-Value="@context.Key" />
+        </FormItem>
+        <FormItem Label="Value" LabelAlign=AntLabelAlignType.Left>
+            <Input @bind-Value="@context.Value" />
+        </FormItem>
+        <FormItem Label="地区" LabelAlign=AntLabelAlignType.Left>
+            <Select TItem="SelectOption"
+                    TItemValue="string"
+                    DataSource="SelectCultureOptions"
+                    EnableSearch="true"
+                    LabelName="@nameof(SelectOption.Label)"
+                    ValueName="@nameof(SelectOption.Value)"
+                    @bind-Value="@context.CultureId" />
+        </FormItem>
+
+        <FormItem Label="是否同步地区" LabelAlign=AntLabelAlignType.Left>
+            <Switch @bind-Checked="@context.SyncCulture" />
+        </FormItem>
+        <FormItem Label="是否翻译" LabelAlign=AntLabelAlignType.Left>
+            <Switch @bind-Checked="@context.Translate" />
+        </FormItem>
+        <FormItem Label="翻译方式" LabelAlign=AntLabelAlignType.Left>
+            <Select TItem="TranslateProviderSelectOption"
+                    TItemValue="Dto.TranslateProviderEnum"
+                    DataSource="TranslateProviderOptions"
+                    EnableSearch="true"
+                    LabelName="@nameof(TranslateProviderSelectOption.Label)"
+                    ValueName="@nameof(TranslateProviderSelectOption.Value)"
+                    @bind-Value="@context.TranslateProvider" />
+        </FormItem>
+    </Form>
+</Modal>
+
+@code {
+    [Inject] ResourcesClient ResourcesClient { get; set; }
+    [Inject] CultureClient CultureClient { get; set; }
+    [Parameter]
+    public bool Visible { get; set; } = false;
+    [Parameter]
+    public string ProjectId { get; set; }
+    [Parameter]
+    public EventCallback<string> OnFinish { get; set; }
+    bool _submitting = false;
+    private Form<ResourceModel> _form;
+
+    private ResourceModel model = new ResourceModel();
+
+    private SupportedCulture[] SupportedCultures = SupportedCulture.All().ToArray();
+    private SelectOption[] SelectCultureOptions = { };
+    private TranslateProviderSelectOption[] TranslateProviderOptions = { };
+
+    class SelectOption
+    {
+        public string Label { get; set; }
+        public string Value { get; set; }
+    }
+    class TranslateProviderSelectOption
+    {
+        public string Label { get; set; }
+        public Dto.TranslateProviderEnum Value { get; set; }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await CultureClient.CultureGETAsync(ProjectId, 1, 99, "Id");
+        SelectCultureOptions = result.Data.Select(a => new SelectOption { Label = string.Join("-",SupportedCulture.ChineseLanguages[a.Name],SupportedCulture.EnglishLanguages[a.Name], a.Name), Value = a.Id }).ToArray();
+        TranslateProviderOptions = new List<TranslateProviderSelectOption>()
+        {
+            new TranslateProviderSelectOption{ Label = "百度翻译", Value = Dto.TranslateProviderEnum._0},
+            new TranslateProviderSelectOption{ Label = "有道翻译", Value = Dto.TranslateProviderEnum._1},
+            new TranslateProviderSelectOption{ Label = "腾讯翻译", Value = Dto.TranslateProviderEnum._2},
+            new TranslateProviderSelectOption{ Label = "阿里翻译", Value = Dto.TranslateProviderEnum._3},
+            new TranslateProviderSelectOption{ Label = "AI翻译", Value = Dto.TranslateProviderEnum._4}
+        }.ToArray();
+        await base.OnInitializedAsync();
+    }
+    /// <summary>
+    /// on modal OK button is click, submit form manually
+    /// </summary>
+    /// <param name="e"></param>
+    private async Task HandleOk(MouseEventArgs e)
+    {
+        _submitting = true;
+        await ResourcesClient.ResourcesPOSTAsync(new Dto.CreateResourceDto
+            {
+                Key = model.Key,
+                Value = model.Value,
+                ProjectId = ProjectId,
+                CultureId = model.CultureId,
+                Translate = model.Translate,
+                SyncCulture = model.SyncCulture,
+                TranslateProvider = model.TranslateProvider
+            });
+        _form.Submit();
+    }
+
+    private void HandleCancel(MouseEventArgs e)
+    {
+        Visible = false;
+        model = new();
+    }
+    /// <summary>
+    /// when form is submited, close the modal
+    /// </summary>
+    private async Task Finish(EditContext editContext)
+    {
+        _submitting = false;
+        Visible = false;
+        model = new();
+        await OnFinish.InvokeAsync();
+    }
+
+    private void OnFinishFailed(EditContext editContext)
+    {
+        model = new();
+    }
+}

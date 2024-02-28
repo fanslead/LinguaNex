@@ -8,8 +8,13 @@
         <Card>
             <Body>
                 <Flex Vertical="true">
-                    <Divider Orientation="left"><Button Type="@ButtonType.Text">新增区域</Button></Divider>
+                    <Divider Orientation="left">区域</Divider>
                     <Flex Wrap="wrap" Gap="small">
+                        
+                        <Tag Checkable Color="@PresetColor.Blue.ToString()" OnClick="ShowOpenCreateCultureModalModal">
+                            <Icon Type="plus" />新增
+                        </Tag>
+                        
                         @foreach (var i in Cultures)
                         {
                             <Tooltip Title='@(SupportedCulture.ChineseLanguages[i.Name] + "-" + @SupportedCulture.EnglishLanguages[i.Name])'>
@@ -18,23 +23,43 @@
                         }
                     </Flex>
                     <Divider Orientation="left">资源</Divider>
-                    <Table TItem="IDictionary<string, Dto.CultureResourceDto>" DataSource="_data" Loading="_loading" Total="_total" OnChange="HandleTableChange" PageSize="20" RemoteDataSource RowKey='x=>x["key"].Value'
+                    <Flex Wrap="wrap" Gap="small" Style="margin-bottom:16px">
+                        <Button Type="@ButtonType.Primary" OnClick="ShowOpenCreateResourceModalModal">
+                             <Icon Type="plus" />新增
+                         </Button>
+                        <Button Type="@ButtonType.Primary" OnClick="ShowOpenUploadResourceModalModal">
+                            <Icon Type="upload" Theme="outline" />上传文件
+                         </Button>
+                        <Button Type="@ButtonType.Primary" OnClick="() => tableRef.ReloadData()">
+                            <Icon Type="reload" Theme="outline" />刷新
+                         </Button>
+                    </Flex>
+                    <Table @ref="tableRef" TItem="IDictionary<string, Dto.CultureResourceDto>" DataSource="_data" Loading="_loading" Total="_total" OnChange="HandleTableChange" PageSize="20" RemoteDataSource RowKey='x=>x["key"].Value'
                             ScrollX="150%">
                          @foreach (var key in Columns)
                         {
                             if (key.DataIndex == "key")
                             {
-                                <PropertyColumn Filterable Width="10%" Fixed="left" Property=@(c=>c[key.DataIndex].Value) Title="@key.Title"></PropertyColumn>
+                                <PropertyColumn Filterable Width="10%" Fixed="left" Property=@(c=>c[key.DataIndex].Value) Title='@key.Title'   ></PropertyColumn>
                             }
                             else
                             {
-                                <PropertyColumn Width="20%" Property=@(c=>c[key.DataIndex].Value) Title="@key.Title"></PropertyColumn>
+                                <PropertyColumn Width="20%" Property=@(c=>c[key.DataIndex].Value) Title='@string.Join("-", key.Title, key.ShortTitle)'></PropertyColumn>
                             }
                         }
                     </Table>
                 </Flex>
             </Body>
         </Card>
+        <CreateCulture Visible="_visible" OnFinish="OnFinish" ProjectId="@Id">
+
+        </CreateCulture>
+        <CreateResource Visible="_resource_visible" OnFinish="OnResourceFinish" ProjectId="@Id">
+
+        </CreateResource>
+        <UploadResourceFile Visible="_UploadResource_visible" OnFinish="OnUploadResourceFinish" ProjectId="@Id">
+
+        </UploadResourceFile>
     </Spin>
 </PageContainer>
 
@@ -42,16 +67,17 @@
     [Parameter]
     public string? Id { get; set; }
 
+    RenderFragment PageExtra() =>@<Button Type="dashed"><Icon Type="plus-circle" Theme="outline" />新增地区</Button>;
 
     private bool Spinning = false;
 
-    RenderFragment PageExtra() =>@<Button Type="dashed"><Icon Type="plus-circle" Theme="outline" />新增地区</Button>;
-
     bool _loading = false;
-
+    bool _visible { get; set; } = false;
+    bool _resource_visible { get; set; } = false;
+    bool _UploadResource_visible { get; set; } = false;
     int _total;
     IDictionary<string, Dto.CultureResourceDto>[] _data = { };
-
+    Table<IDictionary<string, Dto.CultureResourceDto>> tableRef;
     Dto.CultureDto[] Cultures = { };
 
     [Inject] HttpClient Http { get; set; }
@@ -79,9 +105,53 @@
         var columnsData = await ResourcesClient.ColumnsAsync(Id).ConfigureAwait(false);
         Columns = columnsData.Data.ToArray();
         Logger.LogInformation(System.Text.Json.JsonSerializer.Serialize(queryModel));
-        var resourcesData = await ResourcesClient.Project2Async(null, Id, queryModel.FilterModel.FirstOrDefault()?.SelectedValues?.FirstOrDefault(), queryModel.PageIndex, queryModel.PageSize, orderBy: "Id").ConfigureAwait(false);
+        var resourcesData = await ResourcesClient.Project2Async(null, Id, queryModel.FilterModel.FirstOrDefault()?.SelectedValues?.FirstOrDefault(), queryModel.PageIndex, queryModel.PageSize, orderBy: "Id Desc").ConfigureAwait(false);
         _data = resourcesData.Data.ToArray();
         _total = int.Parse(resourcesData.Total);
         _loading = false;
+    }
+
+    void ShowOpenCreateCultureModalModal()
+    {
+        _visible = true;
+    }
+    
+    void ShowOpenCreateResourceModalModal()
+    {
+        _resource_visible = true;
+    }
+    void ShowOpenUploadResourceModalModal()
+    {
+        _UploadResource_visible = true;
+    }
+
+    private async Task OnFinish()
+    {
+        await GetCulture();
+        tableRef.ReloadData();
+        await Task.Delay(2000);
+        _visible = false;
+    }
+    private async Task OnResourceFinish()
+    {
+        _resource_visible = false;
+        await Task.Run(async () =>
+        {
+            await Task.Delay(2000);
+            Spinning = true;
+            tableRef.ReloadData();
+            Spinning = false;
+        });
+    }
+    private async Task OnUploadResourceFinish()
+    {
+        _UploadResource_visible = false;
+        await Task.Run(async () =>
+        {
+            await Task.Delay(2000);
+            Spinning = true;
+            tableRef.ReloadData();
+            Spinning = false;
+        });
     }
 }

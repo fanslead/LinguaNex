@@ -9,6 +9,8 @@ using System.Text.Json;
 using Wheel.Core.Dto;
 using Wheel.Core.Exceptions;
 using Wheel.Services;
+using System.Linq.Dynamic.Core;
+using LinguaNex.Emuns;
 
 namespace LinguaNex.Resources
 {
@@ -65,7 +67,7 @@ namespace LinguaNex.Resources
 
         public async Task<Page<Dictionary<string, CultureResourceDto>>> GetResourcePageByProject(ResourcePageRequest request)
         {
-            var query = resourceRepository.GetQueryableWithIncludes(a => a.Culture).Where(a => a.ProjectId == request.ProjectId);
+            var query = resourceRepository.GetQueryableWithIncludes(a => a.Culture).OrderBy(request.OrderBy).Where(a => a.ProjectId == request.ProjectId);
             if (!request.Key.IsNullOrWhiteSpace())
             {
                 query = query.Where(a => request.Key.Contains(a.Key));
@@ -93,7 +95,7 @@ namespace LinguaNex.Resources
             return Success(columns);
         }
 
-        public async Task<R> BatchCreateByJsonFileAsync(long cultureId, bool? translate, BatchCreateByJsonFileDto dto)
+        public async Task<R> BatchCreateByJsonFileAsync(long cultureId, bool? translate, TranslateProviderEnum? translateProvider, BatchCreateByJsonFileDto dto)
         {
             if (Path.GetExtension(dto.File.FileName) != ".json")
                 throw new BusinessException(ErrorCode.NotSupported, ErrorCode.NotSupported).WithMessageData(Path.GetExtension(dto.File.FileName));
@@ -111,7 +113,7 @@ namespace LinguaNex.Resources
                     var existKeys = resources.Select(a => a.Key).ToList();
                     await resourceRepository.DeleteAsync(a => existKeys.Contains(a.Key), true);
                     await resourceRepository.InsertManyAsync(resources, true);
-                    await DistributedEventBus.PublishAsync(new BatchCreateResourceEto { CultureId = cultureId, FirstResourceId = resources.First().Id, Translate = translate });
+                    await DistributedEventBus.PublishAsync(new BatchCreateResourceEto { CultureId = cultureId, FirstResourceId = resources.First().Id, Translate = translate, TranslateProvider = translateProvider });
                 }
             }
             return Success();

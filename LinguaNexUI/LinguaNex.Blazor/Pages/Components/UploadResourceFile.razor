@@ -1,0 +1,155 @@
+﻿@using Microsoft.Extensions.Logging
+<Modal Title="上传资源"
+       @bind-Visible="@Visible"
+       OnOk="@HandleOk"
+       OnCancel="@HandleCancel">
+
+    <Form Model="@model"
+          LabelColSpan="8"
+          WrapperColSpan="16"
+          OnFinish="Finish"
+          OnFinishFailed="OnFinishFailed"
+          @ref="@_form">
+
+        <FormItem Label="地区" LabelAlign=AntLabelAlignType.Left>
+            <Select TItem="SelectOption"
+                    TItemValue="string"
+                    DataSource="SelectCultureOptions"
+                    EnableSearch="true"
+                    LabelName="@nameof(SelectOption.Label)"
+                    ValueName="@nameof(SelectOption.Value)"
+                    @bind-Value="@context.CultureId" />
+        </FormItem>
+        <FormItem Label="是否翻译" LabelAlign=AntLabelAlignType.Left>
+            <Switch @bind-Checked="@context.Translate" />
+        </FormItem>
+        <FormItem Label="翻译方式" LabelAlign=AntLabelAlignType.Left>
+            <Select TItem="TranslateProviderSelectOption"
+                    TItemValue="Dto.TranslateProviderEnum"
+                    DataSource="TranslateProviderOptions"
+                    EnableSearch="true"
+                    LabelName="@nameof(TranslateProviderSelectOption.Label)"
+                    ValueName="@nameof(TranslateProviderSelectOption.Value)"
+                    @bind-Value="@context.TranslateProvider" />
+        </FormItem>
+        <FormItem Label="选择文件" LabelAlign=AntLabelAlignType.Left>
+            <InputFile OnChange="LoadFiles" accept="application/json">
+                <Button Icon="upload">
+                    <span>Upload</span>
+                </Button>
+            </InputFile>
+        </FormItem>
+    </Form>
+
+</Modal>
+
+@code {
+
+    [Inject] ILogger<UploadResourceFile> Logger { get; set; }
+    [Inject] ResourcesClient ResourcesClient { get; set; }
+    [Inject] CultureClient CultureClient { get; set; }
+    private List<IBrowserFile> loadedFiles = new();
+    bool _submitting = false;
+    [Parameter]
+    public bool Visible { get; set; } = false;
+    [Parameter]
+    public string ProjectId { get; set; }
+    [Parameter]
+    public EventCallback<string> OnFinish { get; set; }
+
+    private Form<UploadResourceFileModel> _form;
+
+    private UploadResourceFileModel model = new UploadResourceFileModel();
+
+    private SupportedCulture[] SupportedCultures = SupportedCulture.All().ToArray();
+    private SelectOption[] SelectCultureOptions = { };
+    private TranslateProviderSelectOption[] TranslateProviderOptions = { };
+    Upload upload;
+    List<UploadFileItem> fileList = new List<UploadFileItem>
+    {
+    };
+    class SelectOption
+    {
+        public string Label { get; set; }
+        public string Value { get; set; }
+    }
+    class TranslateProviderSelectOption
+    {
+        public string Label { get; set; }
+        public Dto.TranslateProviderEnum Value { get; set; }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await CultureClient.CultureGETAsync(ProjectId, 1, 99, "Id");
+        SelectCultureOptions = result.Data.Select(a => new SelectOption { Label = string.Join("-", SupportedCulture.ChineseLanguages[a.Name], SupportedCulture.EnglishLanguages[a.Name], a.Name), Value = a.Id }).ToArray();
+        TranslateProviderOptions = new List<TranslateProviderSelectOption>()
+        {
+            new TranslateProviderSelectOption{ Label = "百度翻译", Value = Dto.TranslateProviderEnum._0},
+            new TranslateProviderSelectOption{ Label = "有道翻译", Value = Dto.TranslateProviderEnum._1},
+            new TranslateProviderSelectOption{ Label = "腾讯翻译", Value = Dto.TranslateProviderEnum._2},
+            new TranslateProviderSelectOption{ Label = "阿里翻译", Value = Dto.TranslateProviderEnum._3},
+            new TranslateProviderSelectOption{ Label = "AI翻译", Value = Dto.TranslateProviderEnum._4}
+        }.ToArray();
+        await base.OnInitializedAsync();
+    }
+
+    /// <summary>
+    /// on modal OK button is click, submit form manually
+    /// </summary>
+    /// <param name="e"></param>
+    private async Task HandleOk(MouseEventArgs e)
+    {
+        _submitting = true;
+        if (loadedFiles.Count == 0)
+            return;
+        var file = loadedFiles.First();
+        await ResourcesClient.FileAsync(model.CultureId, model.Translate, model.TranslateProvider, new Dto.FileParameter(file.OpenReadStream(), file.Name, file.ContentType));
+        _form.Submit();
+    }
+
+    private void HandleCancel(MouseEventArgs e)
+    {
+        Visible = false;
+        model = new();
+        fileList = new();
+    }
+    /// <summary>
+    /// when form is submited, close the modal
+    /// </summary>
+    private async Task Finish(EditContext editContext)
+    {
+        _submitting = false;
+        Visible = false;
+        model = new();
+        fileList = new();
+        await OnFinish.InvokeAsync();
+    }
+
+    private void OnFinishFailed(EditContext editContext)
+    {
+        model = new();
+    }
+    bool BeforeUpload(UploadFileItem file)
+    {
+        fileList.Add(file);
+        return false;
+    }
+    private void LoadFiles(InputFileChangeEventArgs e)
+    {
+        loadedFiles.Clear();
+
+        foreach (var file in e.GetMultipleFiles(10))
+        {
+            try
+            {
+                loadedFiles.Add(file);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError("File: {FileName} Error: {Error}",
+                    file.Name, ex.Message);
+            }
+        }
+    }
+}
