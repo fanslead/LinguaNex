@@ -14,7 +14,7 @@ namespace LinguaNex.Blazor
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://47.119.20.111/"/*builder.HostEnvironment.BaseAddress*/) });
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(/*"http://47.119.20.111/"*/builder.HostEnvironment.BaseAddress) });
             builder.Services.AddScoped<CultureClient>();
             builder.Services.AddScoped<OpenApiClient>();
             builder.Services.AddScoped<ProjectsClient>();
