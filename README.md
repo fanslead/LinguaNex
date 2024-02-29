@@ -10,7 +10,7 @@
 
 测试环境
 
-http://47.119.20.111/Projects
+http://47.119.20.111
 
 http://47.119.20.111/swagger/index.html
 ### 应用场景
@@ -124,15 +124,21 @@ initLinguaNex({
 
 
 ## 效果图
-![image](https://github.com/fanslead/LinguaNex/assets/22066473/5f59075e-7058-4c8e-83fc-b1d434d28af4)
+![image](https://github.com/fanslead/LinguaNex/assets/22066473/afcc5346-b21b-4762-880f-aa60ea7e36c3)
 
-![image](https://github.com/fanslead/LinguaNex/assets/22066473/492f515f-76a1-4b49-a601-914ae147e14c)
+![image](https://github.com/fanslead/LinguaNex/assets/22066473/f97edbcb-6523-43d8-a97a-fe56be92dfa1)
 
-![image](https://github.com/fanslead/LinguaNex/assets/22066473/5a729175-3f4f-4061-b77c-42e8727d95ee)
+![image](https://github.com/fanslead/LinguaNex/assets/22066473/184186cf-99c6-4cba-8b34-da928baf9167)
 
-![image](https://github.com/fanslead/LinguaNex/assets/22066473/a205a732-787d-48d9-a154-18f815e07b89)
+![image](https://github.com/fanslead/LinguaNex/assets/22066473/d8cbe946-2f73-4e37-b1df-f18816055a20)
 
-![image](https://github.com/fanslead/LinguaNex/assets/22066473/99b13aba-f0b3-4b25-befc-775716fa6936)
+![image](https://github.com/fanslead/LinguaNex/assets/22066473/eff1d832-5011-4a87-9c11-f651f739785e)
+
+![image](https://github.com/fanslead/LinguaNex/assets/22066473/a7d6f086-5c77-49f8-824d-cafee8038731)
+
+![image](https://github.com/fanslead/LinguaNex/assets/22066473/360eedad-ef6a-445d-bab6-03e2f9fe5c4a)
+
+![image](https://github.com/fanslead/LinguaNex/assets/22066473/3070bb22-d5d0-4d95-9035-379308a91054)
 
 ## RoadMap
 - [x] Project项目管理API
