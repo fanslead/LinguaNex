@@ -9,10 +9,8 @@
 自动翻译，翻译效果根据不同翻译Provider效果不一致。
 
 测试环境
+http://abc.linguanex.com/
 
-http://47.119.20.111
-
-http://47.119.20.111/swagger/index.html
 ### 应用场景
 通过API/SDK拉取多语言资源加载，可选WebSocket对接实现即时更新多语言资源。
 - API后端项目响应内容，如错误码对应的Message国际化多语言处理。
